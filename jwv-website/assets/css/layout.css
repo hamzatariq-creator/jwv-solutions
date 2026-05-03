@@ -1,0 +1,125 @@
+/* Layout — containers, sections, grids */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.container--narrow { max-width: var(--container-narrow); }
+.container--text { max-width: var(--container-text); }
+
+/* Sections */
+.section {
+  padding-block: var(--section-padding-y);
+  position: relative;
+}
+.section--tight { padding-block: clamp(3rem, 6vh, 5rem); }
+.section--full { min-height: 100vh; display: flex; align-items: center; }
+
+/* Section backgrounds are unified at the body level — no per-section bg.
+   Section variants are kept as semantic markers (no visual effect) in case
+   downstream pages still reference them. */
+.section--paper,
+.section--deeper { background: transparent; }
+
+/* Oil-amber hairline separators between adjacent top-level sections AND above
+   the footer. The line is constrained to the container width (not end-to-end)
+   so it visually echoes the line above .site-footer__bottom. Implemented as a
+   ::before on the section so the rule sits exactly at the section seam. */
+main > * + *,
+.site-footer {
+  position: relative;
+}
+main > * + *::before,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  max-width: calc(var(--container-max) - 2 * var(--container-padding));
+  margin-inline: auto;
+  height: 1px;
+  background: var(--color-rule-oil);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grids */
+.grid { display: grid; gap: var(--space-6); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.grid--companies {
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--space-7);
+}
+
+/* Two-column section split */
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-9); }
+  .split--reverse > :first-child { order: 2; }
+}
+
+/* Section heading row */
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 880px;
+  margin-bottom: var(--space-8);
+}
+.section-heading p { color: var(--color-text-muted); }
+body.paper .section-heading p { color: var(--color-text-ink-muted); }
+
+/* Subtle horizontal rule */
+.rule {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+  border: 0;
+  margin-block: var(--space-7);
+}
+body.paper .rule { background: var(--color-border-ink); }
+
+/* Stack */
+.stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.stack--lg { gap: var(--space-6); }
+
+/* Inline layout */
+.inline { display: inline-flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+/* Stat band */
+.stat-band {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-6);
+  padding-block: var(--space-7);
+  border-block: 1px solid var(--color-border);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.stat__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: var(--lh-tight);
+  color: var(--color-text-bright);
+  font-feature-settings: "tnum";
+}
+.stat__label {
+  font-size: var(--fs-body-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+body.paper .stat__value { color: var(--color-text-ink); }
+body.paper .stat__label { color: var(--color-text-ink-muted); }

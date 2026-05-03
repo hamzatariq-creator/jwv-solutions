@@ -1,0 +1,99 @@
+/* Stats band — 2x2 grid of large numbers + labels + descriptions */
+.stats-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+
+.stats-band__cell {
+  padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* center children — kills the L/R asymmetry between
+                              "3" (1 char) and "100+" (4 chars) */
+  text-align: center;
+  gap: var(--space-4);
+}
+
+/* Internal dividers — vertical between columns, horizontal between rows */
+.stats-band__cell:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  background: var(--color-border);
+}
+body.paper .stats-band__cell:not(:last-child)::after {
+  background: var(--color-border-ink);
+}
+
+/* Right edge of left column */
+.stats-band__cell:nth-child(odd):not(:last-child)::after {
+  top: clamp(2rem, 5vw, 4rem);
+  bottom: clamp(2rem, 5vw, 4rem);
+  right: 0;
+  width: 1px;
+}
+
+/* Bottom edge of top row */
+.stats-band__cell:nth-child(1)::before,
+.stats-band__cell:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  left: clamp(2rem, 5vw, 4rem);
+  right: clamp(2rem, 5vw, 4rem);
+  bottom: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+body.paper .stats-band__cell:nth-child(1)::before,
+body.paper .stats-band__cell:nth-child(2)::before {
+  background: var(--color-border-ink);
+}
+
+.stats-band__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  color: var(--color-accent);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-band__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 500;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-bright);
+}
+body.paper .stats-band__label { color: var(--color-text-ink); }
+
+.stats-band__desc {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+  max-width: 32ch;
+  margin-top: var(--space-2);
+  margin-inline: auto;     /* center the constrained-width description */
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+body.paper .stats-band__desc { color: var(--color-text-ink-muted); }
+
+/* Mobile — collapse to single column, dividers become bottom borders only */
+@media (max-width: 760px) {
+  .stats-band { grid-template-columns: 1fr; }
+  .stats-band__cell::after,
+  .stats-band__cell::before {
+    display: none !important;
+  }
+  .stats-band__cell:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
+  body.paper .stats-band__cell:not(:last-child) {
+    border-bottom-color: var(--color-border-ink);
+  }
+}

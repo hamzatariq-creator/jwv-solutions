@@ -1,0 +1,106 @@
+/* Subsidiary card — used on Home, About, Our Companies index */
+.subsidiary-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+  position: relative;
+}
+body.paper .subsidiary-card {
+  background: var(--color-bg-paper-soft);
+  border-color: var(--color-border-ink);
+}
+
+.subsidiary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-strong);
+}
+body.paper .subsidiary-card:hover {
+  border-color: var(--color-border-ink-strong);
+}
+
+.subsidiary-card__media {
+  aspect-ratio: 4 / 3;
+  background: var(--color-bg-deepest) center / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.subsidiary-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 60%,
+    rgba(14, 16, 20, 0.55) 100%
+  );
+}
+
+.subsidiary-card__accent {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 1;
+}
+.subsidiary-card[data-company="altaris"] .subsidiary-card__accent { background: var(--color-altaris); }
+.subsidiary-card[data-company="artech"] .subsidiary-card__accent { background: var(--color-artech); }
+.subsidiary-card[data-company="michaelson"] .subsidiary-card__accent { background: var(--color-michaelson); }
+
+.subsidiary-card__body {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.subsidiary-card__eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+body.paper .subsidiary-card__eyebrow { color: var(--color-text-ink-muted); }
+
+.subsidiary-card__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-bright);
+}
+body.paper .subsidiary-card__title { color: var(--color-text-ink); }
+
+.subsidiary-card__desc {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+body.paper .subsidiary-card__desc { color: var(--color-text-ink-soft); }
+
+.subsidiary-card__link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--color-text-bright);
+}
+body.paper .subsidiary-card__link { color: var(--color-text-ink); }
+.subsidiary-card__link::after {
+  content: "→";
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.subsidiary-card:hover .subsidiary-card__link::after {
+  transform: translateX(6px);
+}

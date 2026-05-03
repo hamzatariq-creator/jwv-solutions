@@ -1,0 +1,70 @@
+/* Scroll-reveal classes (driven by reveal.js IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children by index — set --i custom property in markup or JS */
+.reveal--stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal--stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade-in only (no translate) */
+.fade-in {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.fade-in.is-visible { opacity: 1; }
+
+/* Hero entrance — runs once on load via .hero-loaded class added by JS */
+.hero-headline,
+.hero-sub,
+.hero-cta {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+}
+.hero-loaded .hero-headline { opacity: 1; transform: translateY(0); transition-delay: 100ms; }
+.hero-loaded .hero-sub { opacity: 1; transform: translateY(0); transition-delay: 280ms; }
+.hero-loaded .hero-cta { opacity: 1; transform: translateY(0); transition-delay: 460ms; }
+
+/* Simple counter-up effect target */
+.counter { font-variant-numeric: tabular-nums; }
+
+/* Marquee-style horizontal scroll (optional, for logo strip) */
+.marquee {
+  display: flex;
+  gap: var(--space-8);
+  animation: marquee 60s linear infinite;
+  width: max-content;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Reduced-motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal--stagger > *, .fade-in,
+  .hero-headline, .hero-sub, .hero-cta {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .marquee { animation: none !important; }
+}

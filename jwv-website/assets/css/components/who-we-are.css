@@ -1,0 +1,109 @@
+/* Who We Are section — stacked photo card on left, copy on right */
+.who-we-are {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+@media (max-width: 880px) {
+  .who-we-are {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+}
+
+/* Image column */
+.who-we-are__media {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* The decorative back card (offset behind the photo) */
+.who-we-are__media::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: 32px;
+  bottom: 32px;
+  background: var(--color-accent);
+  border-radius: var(--radius-md);
+  z-index: 0;
+  opacity: 0.85;
+}
+body.paper .who-we-are__media::before {
+  background: var(--color-michaelson);
+  opacity: 0.9;
+}
+
+/* The photo frame */
+.who-we-are__photo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-soft) center / cover no-repeat;
+  box-shadow: var(--shadow-card);
+}
+body.paper .who-we-are__photo { background-color: var(--color-bg-paper-soft); }
+
+/* Subtle gradient placeholder treatment for when no photo is set */
+.who-we-are__photo--placeholder {
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(176,122,53,0.18), transparent 40%),
+    radial-gradient(circle at 75% 70%, rgba(201,212,220,0.10), transparent 40%),
+    linear-gradient(140deg, #1A1E24 0%, #14171C 60%, #0E1014 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.paper .who-we-are__photo--placeholder {
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(176,122,53,0.15), transparent 40%),
+    radial-gradient(circle at 75% 70%, rgba(139,58,46,0.10), transparent 40%),
+    linear-gradient(140deg, #ECE8DF 0%, #F6F4EF 60%, #ECE8DF 100%);
+}
+.who-we-are__photo--placeholder::after {
+  content: "Team photo placeholder";
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+body.paper .who-we-are__photo--placeholder::after {
+  color: var(--color-text-ink-muted);
+}
+
+/* Copy column */
+.who-we-are__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 56ch;
+}
+
+.who-we-are__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  font-weight: 400;
+  color: var(--color-text-bright);
+}
+body.paper .who-we-are__heading { color: var(--color-text-ink); }
+
+.who-we-are__body {
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+body.paper .who-we-are__body { color: var(--color-text-ink-soft); }
+
+.who-we-are__cta {
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}

@@ -1,0 +1,341 @@
+/* Home page — hero scroll-scrub + sections */
+
+/* Hero — scroll-scrubbed canvas with overlay text. Always dark regardless
+   of theme because the canvas paints dark industrial imagery. */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 720px;
+  width: 100%;
+  overflow: hidden;
+  background: #0E1014;
+}
+
+/* Pinned scroll-scrub container — 250vh on desktop gives the scrub room to
+   breathe. On small screens we shorten to 150vh so the scrub plays out (~half
+   a viewport of scroll past the hero) without trapping the user for 2.5
+   viewports. With prefers-reduced-motion, the scrub doesn't run at all, so
+   collapse to one viewport so content is reachable immediately. */
+.hero-pin-spacer {
+  height: 250vh;
+  position: relative;
+}
+@media (max-width: 880px) {
+  .hero-pin-spacer { height: 150vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-pin-spacer { height: 100vh; }
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 720px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* Hero canvas always renders dark industrial imagery — pin the gradient to
+     fixed dark stops so light theme doesn't bleed cream behind the canvas, and
+     so the bottom edge meets the body bg (#14171C) without a visible step. */
+  background: linear-gradient(180deg, #0E1014 0%, #14171C 100%);
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-hero-frames);
+  display: block;
+}
+
+/* Static fallback image (loaded immediately so the page never appears blank). */
+.hero-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: var(--z-hero-frames);
+  opacity: 1;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.hero-canvas.is-ready ~ .hero-fallback { opacity: 0; }
+
+.hero-content {
+  position: relative;
+  z-index: var(--z-hero-text);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: 0 var(--container-padding);
+  pointer-events: none;
+}
+.hero-content > * { pointer-events: auto; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--space-7);
+  align-items: center;
+}
+@media (max-width: 880px) {
+  .hero-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.hero-text > .hero-sub {
+  max-width: 44ch;
+}
+
+/* Hero text colors are pinned to dark-theme values — the canvas underneath is
+   always dark, so we must NOT inherit light-theme tokens (which would render
+   dark text on a dark canvas). Selectors are doubled-up (.hero-content + class)
+   so they outweigh `body.paper h1/p {…}` from base.css in light mode. */
+.hero-content .hero-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: #8E8B83;
+}
+
+.hero-content .hero-headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  font-weight: 400;
+  color: #F4F1EA;
+  text-wrap: balance;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+.hero-content .hero-headline em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.hero-content .hero-sub {
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-relaxed);
+  color: #D6D2C8;
+  max-width: 36ch;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* CTAs inside the hero overlay the always-dark canvas, so they must keep their
+   dark-theme appearance even when the rest of the site is in light mode.
+   Selectors include .hero-sticky to push specificity to 3 classes, beating
+   `body.paper .btn--primary` / `body.paper .link-arrow` from button.css
+   (which is body + 2 classes — equal class count but lower beats element). */
+.hero-sticky .hero-content .btn--primary {
+  background: #F4F1EA;
+  color: #0E1014;
+  border-color: #F4F1EA;
+}
+.hero-sticky .hero-content .btn--primary:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #0E1014;
+}
+.hero-sticky .hero-content .link-arrow {
+  color: #F4F1EA;
+}
+
+/* Scroll cue */
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-6);
+  transform: translateX(-50%);
+  z-index: var(--z-hero-text);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: #8E8B83;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  pointer-events: none;
+  opacity: 0.7;
+}
+.hero-scroll-cue::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 36px;
+  background: #8E8B83;
+  animation: scroll-cue-pulse 2.4s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes scroll-cue-pulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* On mobile, restack the hero so the screen is fully covered with no empty
+   dark band: header at top → animation directly below header (fills available
+   vertical space) → text content below the animation. */
+@media (max-width: 880px) {
+  .hero-sticky {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "stage"
+      "content";
+    align-items: stretch;
+    padding-top: var(--header-height);
+    min-height: 100vh;
+  }
+
+  /* Animation slot — fills the row above the text */
+  .hero-canvas,
+  .hero-fallback {
+    grid-area: stage;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  .hero-fallback { object-fit: cover; }
+
+  /* Text slot — sits below the animation, sized to its content */
+  .hero-content {
+    grid-area: content;
+    position: relative;
+    padding: var(--space-6) var(--container-padding) var(--space-7);
+    z-index: var(--z-hero-text);
+  }
+  .hero-text { padding-bottom: 0; }
+  .hero-headline { font-size: clamp(2.5rem, 9vw, 3.5rem); }
+
+  /* Hide the scroll cue on mobile — the layout already guides the eye down */
+  .hero-scroll-cue { display: none; }
+}
+
+/* Companies section */
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-6);
+}
+
+/* Approach section — quote-led (bg unified with body) */
+.approach {
+  position: relative;
+  overflow: hidden;
+}
+.approach__quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.25;
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-bright);
+  font-weight: 400;
+  max-width: 28ch;
+}
+.approach__quote em { color: var(--color-accent); font-style: italic; }
+.approach__attribution {
+  font-size: var(--fs-body-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  margin-top: var(--space-5);
+}
+
+/* Leadership preview */
+.leadership-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+}
+
+/* CTA closing block — side-by-side feature image + content (bg unified with body). */
+.cta-block {
+  padding-block: var(--space-9);
+}
+.cta-block__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  align-items: center;
+}
+.cta-block__media {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  background: var(--color-bg-soft);
+}
+.cta-block__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, transparent 55%, rgba(0,0,0,0.32) 100%);
+  pointer-events: none;
+}
+.cta-block__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cta-block__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+.cta-block__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  max-width: 18ch;
+  margin: 0;
+}
+.cta-block__sub {
+  font-size: var(--fs-body-lg);
+  color: var(--color-text-muted);
+  max-width: 50ch;
+  margin: 0;
+}
+.cta-block__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 880px) {
+  .cta-block__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .cta-block__media {
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+  }
+}

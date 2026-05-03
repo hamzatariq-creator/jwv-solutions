@@ -1,0 +1,16 @@
+{
+  "name": "JWV Solutions",
+  "short_name": "JWV",
+  "description": "Operating partners across three independent industrial businesses.",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#0E1014",
+  "theme_color": "#0E1014",
+  "icons": [
+    {
+      "src": "/assets/images/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

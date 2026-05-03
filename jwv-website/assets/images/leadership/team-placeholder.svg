@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder illustration of three partners">
+  <defs>
+    <!-- Background gradient — matches the Who We Are section bg -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E1014"/>
+      <stop offset="60%" stop-color="#14171C"/>
+      <stop offset="100%" stop-color="#1A1E24"/>
+    </linearGradient>
+
+    <!-- Warm key light from upper-right (matches brand lighting story) -->
+    <radialGradient id="warmlight" cx="0.85" cy="0.18" r="0.85">
+      <stop offset="0%" stop-color="#B07A35" stop-opacity="0.22"/>
+      <stop offset="55%" stop-color="#B07A35" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#B07A35" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Figure tone — duotone gradient, lighter at top, deeper at base -->
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A4F58"/>
+      <stop offset="100%" stop-color="#23272D"/>
+    </linearGradient>
+
+    <!-- Per-figure rim light tints -->
+    <linearGradient id="rim-cool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C9D4DC" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#C9D4DC" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="rim-warm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4A24C" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#D4A24C" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="rim-deep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8B3A2E" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#8B3A2E" stop-opacity="0.10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background plate -->
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+
+  <!-- Warm key light overlay (upper-right) -->
+  <rect width="1600" height="1200" fill="url(#warmlight)"/>
+
+  <!-- Atmospheric particulate (a few faint dots) -->
+  <g fill="#FFFFFF" opacity="0.04">
+    <circle cx="240" cy="300" r="2"/>
+    <circle cx="900" cy="180" r="1.5"/>
+    <circle cx="1380" cy="420" r="2"/>
+    <circle cx="1100" cy="700" r="1.5"/>
+    <circle cx="320" cy="780" r="1.5"/>
+    <circle cx="600" cy="540" r="1"/>
+  </g>
+
+  <!-- Subtle horizon line where the figures stand -->
+  <rect x="0" y="950" width="1600" height="250" fill="#0A0C10" opacity="0.55"/>
+  <line x1="120" y1="950" x2="1480" y2="950" stroke="#2A2E36" stroke-width="1" opacity="0.6"/>
+
+  <!-- ============================================================ -->
+  <!-- Figure 1 — left, slightly turned to its right -->
+  <g transform="translate(440, 0)">
+    <!-- Body / shoulders -->
+    <path d="M -210 950 Q -210 760 -130 730 Q -70 712 0 712 Q 70 712 130 730 Q 210 760 210 950 Z" fill="url(#figure)"/>
+    <!-- Neck -->
+    <rect x="-32" y="608" width="64" height="68" fill="url(#figure)"/>
+    <!-- Head — slightly tilted -->
+    <ellipse cx="0" cy="540" rx="80" ry="94" fill="url(#figure)"/>
+    <!-- Warm rim highlight on right side -->
+    <path d="M 80 540 Q 78 480 64 460 L 64 620 Q 78 600 80 540 Z" fill="url(#rim-cool)"/>
+    <!-- Shoulder rim highlight -->
+    <path d="M 210 950 Q 210 800 130 740 L 110 760 Q 190 810 190 950 Z" fill="url(#rim-cool)" opacity="0.6"/>
+  </g>
+
+  <!-- Figure 2 — center, taller, facing forward -->
+  <g transform="translate(800, 0)">
+    <path d="M -224 950 Q -224 750 -138 720 Q -70 700 0 700 Q 70 700 138 720 Q 224 750 224 950 Z" fill="url(#figure)"/>
+    <rect x="-34" y="592" width="68" height="70" fill="url(#figure)"/>
+    <ellipse cx="0" cy="520" rx="86" ry="100" fill="url(#figure)"/>
+    <path d="M 86 520 Q 84 460 70 440 L 70 600 Q 84 580 86 520 Z" fill="url(#rim-warm)"/>
+    <path d="M 224 950 Q 224 790 138 730 L 118 750 Q 204 800 204 950 Z" fill="url(#rim-warm)" opacity="0.6"/>
+  </g>
+
+  <!-- Figure 3 — right, slightly turned to its left, closest to the warm light -->
+  <g transform="translate(1180, 0)">
+    <path d="M -210 950 Q -210 760 -130 730 Q -70 712 0 712 Q 70 712 130 730 Q 210 760 210 950 Z" fill="url(#figure)"/>
+    <rect x="-32" y="608" width="64" height="68" fill="url(#figure)"/>
+    <ellipse cx="0" cy="540" rx="80" ry="94" fill="url(#figure)"/>
+    <!-- Warm rim is strongest on this figure (closest to key light) -->
+    <path d="M 80 540 Q 78 480 64 460 L 64 620 Q 78 600 80 540 Z" fill="url(#rim-deep)"/>
+    <path d="M 210 950 Q 210 800 130 740 L 110 760 Q 190 810 190 950 Z" fill="url(#rim-deep)" opacity="0.7"/>
+  </g>
+
+  <!-- Placeholder label -->
+  <text x="800" y="1130" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', monospace" font-size="20" fill="#6E6B65" text-anchor="middle" letter-spacing="6" font-weight="500">
+    PLACEHOLDER · THREE PARTNERS
+  </text>
+</svg>

@@ -1,0 +1,200 @@
+/* Site header */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-header);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition: background var(--duration-base) var(--ease-out),
+              backdrop-filter var(--duration-base) var(--ease-out),
+              height var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  height: var(--header-height-scrolled);
+  background: rgba(14, 16, 20, 0.72);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  border-bottom-color: var(--color-rule-oil);
+}
+:root.paper .site-header.is-scrolled,
+body.paper .site-header.is-scrolled {
+  background: rgba(246, 244, 239, 0.78);
+  border-bottom-color: var(--color-rule-oil);
+}
+
+/* Home page only: while the header is still transparent (not scrolled), it sits
+   over the always-dark hero canvas — so its text/icons must read as light in
+   BOTH themes. Once `.is-scrolled` is added, the rule reverts to theme tokens
+   so the header is readable on the body bg too. */
+body.page-home .site-header:not(.is-scrolled) .site-logo,
+body.page-home .site-header:not(.is-scrolled) .site-nav__link,
+body.page-home .site-header:not(.is-scrolled) .site-nav__link[aria-current="page"],
+body.page-home .site-header:not(.is-scrolled) .theme-toggle,
+body.page-home .site-header:not(.is-scrolled) .nav-toggle {
+  color: #F4F1EA;
+}
+body.page-home .site-header:not(.is-scrolled) .site-nav__link {
+  color: #D6D2C8;
+}
+body.page-home .site-header:not(.is-scrolled) .theme-toggle {
+  border-color: rgba(244, 241, 234, 0.32);
+}
+
+.site-header__inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+/* Theme toggle button — sits beside primary nav */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule-oil);
+  color: var(--color-text-bright);
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+.theme-toggle:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.theme-toggle__icon { width: 18px; height: 18px; display: block; }
+.theme-toggle__icon--sun  { display: none; }
+.theme-toggle__icon--moon { display: block; }
+:root.paper .theme-toggle__icon--sun,
+body.paper  .theme-toggle__icon--sun  { display: block; }
+:root.paper .theme-toggle__icon--moon,
+body.paper  .theme-toggle__icon--moon { display: none; }
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-text-bright);
+  letter-spacing: var(--ls-tight);
+}
+body.paper .site-logo { color: var(--color-text-ink); }
+.site-logo__mark {
+  width: 32px; height: 32px;
+  display: inline-block;
+}
+.site-logo__wordmark {
+  display: inline-block;
+  font-feature-settings: "ss01";
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.site-nav__link {
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  position: relative;
+  padding-block: var(--space-2);
+}
+body.paper .site-nav__link { color: var(--color-text-ink-soft); }
+.site-nav__link[aria-current="page"] {
+  color: var(--color-text-bright);
+}
+body.paper .site-nav__link[aria-current="page"] { color: var(--color-text-ink); }
+.site-nav__link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+.site-nav__cta {
+  font-size: var(--fs-body-sm);
+}
+
+/* Mobile nav toggle */
+.nav-toggle {
+  display: none;
+  width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  color: inherit;
+}
+.nav-toggle__bars {
+  width: 22px; height: 14px;
+  position: relative;
+}
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform var(--duration-base) var(--ease-out),
+              top var(--duration-base) var(--ease-out);
+}
+.nav-toggle__bars::before { top: 0; }
+.nav-toggle__bars::after { top: 12px; }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::before {
+  top: 6px;
+  transform: rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::after {
+  top: 6px;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 880px) {
+  .site-nav { display: none; }
+  .nav-toggle { display: inline-flex; }
+
+  .site-nav.is-open {
+    display: flex;
+    position: fixed;
+    inset: var(--header-height) 0 0 0;
+    background: var(--color-bg-deep);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-7) var(--container-padding);
+    overflow-y: auto;
+    gap: var(--space-5);
+  }
+  .site-nav.is-open .site-nav__list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    width: 100%;
+  }
+  .site-nav.is-open .site-nav__link {
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-tight);
+  }
+}

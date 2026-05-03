@@ -1,0 +1,128 @@
+/* Industry Partners — heading + horizontal infinite-scroll marquee of logos.
+   Background is unified with body; the section divider is the oil hairline
+   from layout.css (main > * + *). */
+.partners {
+  text-align: center;
+  position: relative;
+}
+
+.partners__eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+body.paper .partners__eyebrow { color: var(--color-text-ink-muted); }
+
+.partners__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-snug);
+  font-weight: 500;
+  color: var(--color-text-bright);
+  max-width: 18ch;
+  margin: 0 auto;
+}
+body.paper .partners__heading { color: var(--color-text-ink); }
+
+.partners__rule {
+  width: 64px;
+  height: 2px;
+  background: var(--color-accent);
+  margin: var(--space-5) auto var(--space-7);
+  border-radius: 2px;
+}
+
+/* The marquee track — full width, fades at edges */
+.partners__track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.partners__lane {
+  display: flex;
+  align-items: center;
+  gap: clamp(3rem, 6vw, 6rem);
+  width: max-content;
+  animation: partners-scroll 50s linear infinite;
+}
+.partners__track:hover .partners__lane {
+  animation-play-state: paused;
+}
+
+@keyframes partners-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Each logo — real brand SVG, normalized to a single neutral tone via CSS filter
+   so dark logos read clearly on the dark section background and feel visually consistent
+   across the strip. */
+.partner-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  min-width: 160px;
+  padding: 0 var(--space-4);
+  flex: 0 0 auto;
+  opacity: 0.75;
+  transition: opacity var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+
+.partner-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  /* Convert original brand color to near-white for legibility on the dark section.
+     This is standard "neutralize for monochrome partner strip" treatment. */
+  filter: brightness(0) invert(1) opacity(0.92);
+  transition: filter var(--duration-fast) var(--ease-out);
+}
+
+.partner-logo:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Per-logo height tuning so different aspect ratios all visually balance */
+.partner-logo--parker  img { height: 36px; }
+.partner-logo--eaton   img { height: 38px; }
+.partner-logo--bosch   img { height: 40px; }
+.partner-logo--rexroth img { height: 32px; }
+.partner-logo--pall    img { height: 44px; }
+
+/* In light mode, invert the filter so logos render as dark on cream */
+:root.paper .partner-logo img,
+body.paper .partner-logo img,
+.section--paper .partner-logo img {
+  filter: brightness(0.15) opacity(0.85);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .partners__lane { animation: none !important; }
+}

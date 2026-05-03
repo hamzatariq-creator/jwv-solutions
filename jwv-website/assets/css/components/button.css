@@ -1,0 +1,97 @@
+/* Buttons & links — restrained, industrial */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-pill);
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+/* Primary — accent-filled */
+.btn--primary {
+  background: var(--color-text-bright);
+  color: var(--color-bg-deepest);
+  border-color: var(--color-text-bright);
+}
+.btn--primary:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg-deepest);
+}
+body.paper .btn--primary {
+  background: var(--color-text-ink);
+  color: var(--color-bg-paper);
+  border-color: var(--color-text-ink);
+}
+body.paper .btn--primary:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg-deepest);
+}
+
+/* Ghost — outline */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-bright);
+  border-color: var(--color-border-strong);
+}
+.btn--ghost:hover {
+  border-color: var(--color-text-bright);
+  background: rgba(244, 241, 234, 0.04);
+  color: var(--color-text-bright);
+}
+body.paper .btn--ghost {
+  color: var(--color-text-ink);
+  border-color: var(--color-border-ink-strong);
+}
+body.paper .btn--ghost:hover {
+  background: rgba(26, 24, 23, 0.04);
+}
+
+/* Quiet text link with arrow */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text-bright);
+  padding-block: var(--space-2);
+  position: relative;
+}
+body.paper .link-arrow { color: var(--color-text-ink); }
+.link-arrow::after {
+  content: "→";
+  display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.link-arrow:hover::after { transform: translateX(4px); }
+.link-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left center;
+  transform: scaleX(0.16);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.link-arrow:hover::before { transform: scaleX(1); }
