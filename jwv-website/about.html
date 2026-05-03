@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="/assets/css/components/subsidiary-card.css">
   <link rel="stylesheet" href="/assets/css/components/form.css">
   <link rel="stylesheet" href="/assets/css/pages/inner.css">
+  <link rel="stylesheet" href="/assets/css/pages/about.css">
 </head>
 <body class="page-about">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -59,48 +60,103 @@
   </header>
 
   <main id="main">
-    <section class="page-hero">
+
+    <!-- HERO — split: text left, image right -->
+    <section class="page-hero page-hero--split">
       <div class="container">
-        <div class="page-hero__inner reveal">
-          <span class="eyebrow">About JWV Solutions</span>
-          <h1 class="page-hero__title">A small group of operating partners <em>holding industrial businesses for the long run.</em></h1>
-          <p class="page-hero__lead">JWV Solutions is the parent of three independent operating companies — Altaris Industrial, ARTech Lubricants, and Michaelson Fluid Power. We exist to support each of them, not to consolidate them. The partners are the same across the group, and we run on a horizon measured in decades.</p>
+        <div class="page-hero__split reveal">
+          <div class="page-hero__inner">
+            <span class="eyebrow">About JWV Solutions</span>
+            <h1 class="page-hero__title">A small group of operating partners <em>holding industrial businesses for the long run.</em></h1>
+            <p class="page-hero__lead">JWV Solutions is the parent of three independent operating companies — Altaris Industrial, ARTech Lubricants, and Michaelson Fluid Power. We exist to support each of them, not to consolidate them. The partners are the same across the group, and we run on a horizon measured in decades.</p>
+            <div class="page-hero__cta">
+              <a class="btn btn--primary" href="/#companies">Meet the companies</a>
+              <a class="link-arrow" href="/partnerships.html">Partnership inquiries</a>
+            </div>
+          </div>
+          <figure class="page-hero__media" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              loading="eager"
+              decoding="async">
+          </figure>
         </div>
       </div>
     </section>
 
+    <!-- WE ARE / WE ARE NOT — contrast grid -->
     <section class="section section--tight">
       <div class="container">
-        <div class="prose reveal">
-          <h2>What we are</h2>
-          <p>An industrial holding company with three operating businesses serving customers across packaging, lubricants, and hydraulic fluid power. We own the businesses, we don't run them day-to-day. We support, we don't direct.</p>
-
-          <h2>What we are not</h2>
-          <ul>
-            <li>We are <strong>not</strong> a private-equity fund with an exit timeline.</li>
-            <li>We are <strong>not</strong> a roll-up that consolidates brands and strips identity.</li>
-            <li>We are <strong>not</strong> a holding company that outsources operating decisions to consultants.</li>
-            <li>We are <strong>not</strong> looking for the next quarter's number.</li>
-          </ul>
-
-          <h2>How we make decisions</h2>
-          <p>Each operating company has its own management, its own customers, and its own discipline. The group's role is to provide capital, governance, and a stable horizon — and otherwise stay out of the way. When we do step in, it is to help an operating company invest in a long-horizon project that a quarterly-driven owner would never approve.</p>
-
-          <h2>What we look for in a business</h2>
-          <p>Companies with strong customer relationships, technical depth, and a culture worth preserving. Every business we hold has a name customers and employees recognize — we don't subsume those names into a parent brand.</p>
-
-          <h2>Where we're based</h2>
-          <p>The group's operating footprint is concentrated in the US Northeast, with subsidiaries in Rhode Island, Connecticut, and surrounding markets. Customer reach extends across the United States, with regulated-industry capability in defense, aerospace, marine, and medical adjacencies.</p>
+        <header class="section-header reveal">
+          <span class="eyebrow">What we are</span>
+          <h2>An industrial holding company — by intent, not by accident.</h2>
+        </header>
+        <div class="we-are-grid reveal--stagger">
+          <div class="we-are-block we-are-block--positive">
+            <span class="eyebrow">We are</span>
+            <p>An industrial holding company with three operating businesses serving customers across packaging, lubricants, and hydraulic fluid power. We <strong>own</strong> the businesses; we don't run them day-to-day. We <strong>support</strong>; we don't direct.</p>
+          </div>
+          <div class="we-are-block we-are-block--negative">
+            <span class="eyebrow">We are not</span>
+            <ul>
+              <li>A private-equity fund with an exit timeline.</li>
+              <li>A roll-up that consolidates brands and strips identity.</li>
+              <li>A holding company that outsources operating decisions to consultants.</li>
+              <li>Chasing the next quarter's number.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- FEATURE BAND — how we make decisions -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="feature-band reveal">
+          <figure class="feature-band__media" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              loading="lazy"
+              decoding="async">
+          </figure>
+          <div class="feature-band__content">
+            <span class="eyebrow">Decisions</span>
+            <h2>Capital, governance, and a stable horizon — then we stay out of the way.</h2>
+            <p>Each operating company has its own management, its own customers, and its own discipline. When we step in, it is to help an operating company invest in a long-horizon project that a quarterly-driven owner would never approve.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURE BAND REVERSED — where we're based -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="feature-band feature-band--reverse reveal">
+          <div class="feature-band__content">
+            <span class="eyebrow">Footprint</span>
+            <h2>Rooted in the US Northeast. Reach across the country.</h2>
+            <p>The group's operating footprint is concentrated in Rhode Island, Connecticut, and surrounding markets. Customer reach extends across the United States, with regulated-industry capability in defense, aerospace, marine, and medical adjacencies.</p>
+          </div>
+          <figure class="feature-band__media" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1473445730015-841f29a9490b?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              loading="lazy"
+              decoding="async">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPANIES — existing subsidiary-card grid -->
     <section class="section">
       <div class="container">
-        <div class="section-heading reveal">
+        <header class="section-header reveal">
           <span class="eyebrow">Our companies</span>
           <h2>Three businesses, each operating independently.</h2>
-        </div>
+        </header>
         <div class="companies-grid reveal--stagger">
           <article class="subsidiary-card" data-company="altaris">
             <div class="subsidiary-card__accent"></div>

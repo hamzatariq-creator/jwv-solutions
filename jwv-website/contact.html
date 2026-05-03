@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="/assets/css/components/subsidiary-card.css">
   <link rel="stylesheet" href="/assets/css/components/form.css">
   <link rel="stylesheet" href="/assets/css/pages/inner.css">
+  <link rel="stylesheet" href="/assets/css/pages/contact.css">
 </head>
 <body class="page-contact">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -58,96 +59,130 @@
   </header>
 
   <main id="main">
-    <section class="page-hero">
+
+    <!-- HERO — split: text left, image right -->
+    <section class="page-hero page-hero--split">
       <div class="container">
-        <div class="page-hero__inner reveal">
-          <span class="eyebrow">Contact</span>
-          <h1 class="page-hero__title">Get in touch with the group office.</h1>
-          <p class="page-hero__lead">For sales, service, products, or careers at one of our operating companies, please contact them directly using the links below. For corporate matters or partnership inquiries, the form below reaches the JWV Solutions partners.</p>
+        <div class="page-hero__split reveal">
+          <div class="page-hero__inner">
+            <span class="eyebrow">Contact</span>
+            <h1 class="page-hero__title">Two ways to reach us — <em>both go to a real person.</em></h1>
+            <p class="page-hero__lead">For sales, service, products, or careers at one of our operating companies, contact them directly. For corporate matters or partnership inquiries, the form below reaches the JWV Solutions partners.</p>
+          </div>
+          <figure class="page-hero__media" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              loading="eager"
+              decoding="async">
+          </figure>
         </div>
       </div>
     </section>
 
+    <!-- OPERATING COMPANY CARDS — fast referrals -->
     <section class="section section--tight">
       <div class="container">
-        <div class="contact-grid">
-          <!-- Operating-company redirects (left side) -->
-          <div class="stack stack--lg reveal">
-            <div>
-              <span class="eyebrow">Operating company contact</span>
-              <p style="margin-top: var(--space-3); color: var(--color-text-muted); max-width: 40ch;">For anything related to a specific business — products, services, quotes, support, careers — go directly to that company:</p>
-            </div>
+        <header class="section-header reveal">
+          <span class="eyebrow">Operating companies</span>
+          <h2>For products, quotes, service, or careers — go directly to the company.</h2>
+        </header>
+        <div class="criteria-grid reveal--stagger">
+          <article class="op-card" data-company="altaris">
+            <h3 class="op-card__title">Altaris Industrial</h3>
+            <p class="op-card__desc">Industrial liquids and pastes — contract packaging, toll mixing, post-processing, procurement and warehousing.</p>
+            <a class="link-arrow" href="https://altarisindustrial.com" rel="noopener">altarisindustrial.com</a>
+          </article>
 
-            <div class="contact-block">
-              <h3 class="contact-block__title">Altaris Industrial</h3>
-              <p class="contact-block__detail">Industrial liquids and pastes — contract packaging, toll mixing, post-processing, procurement and warehousing.</p>
-              <a class="link-arrow" href="https://altarisindustrial.com" rel="noopener">altarisindustrial.com</a>
-            </div>
+          <article class="op-card" data-company="artech">
+            <h3 class="op-card__title">ARTech Lubricants</h3>
+            <p class="op-card__desc">Specialty greases, MIL-SPEC silicones, AGMA gear oils, and contract blending.</p>
+            <a class="link-arrow" href="https://artechlubricants.com" rel="noopener">artechlubricants.com</a>
+          </article>
 
-            <div class="contact-block">
-              <h3 class="contact-block__title">ARTech Lubricants</h3>
-              <p class="contact-block__detail">Specialty greases, MIL-SPEC silicones, AGMA gear oils, and contract blending.</p>
-              <a class="link-arrow" href="https://artechlubricants.com" rel="noopener">artechlubricants.com</a>
-            </div>
+          <article class="op-card" data-company="michaelson">
+            <h3 class="op-card__title">Michaelson Fluid Power</h3>
+            <p class="op-card__desc">Hydraulic power units, authorized distribution, and authorized repair for Parker, Eaton, Denison, and others.</p>
+            <a class="link-arrow" href="https://michaelsonfluidpower.com" rel="noopener">michaelsonfluidpower.com</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            <div class="contact-block">
-              <h3 class="contact-block__title">Michaelson Fluid Power</h3>
-              <p class="contact-block__detail">Hydraulic power units, authorized distribution, and authorized repair for Parker, Eaton, Denison, and others.</p>
-              <a class="link-arrow" href="https://michaelsonfluidpower.com" rel="noopener">michaelsonfluidpower.com</a>
-            </div>
-          </div>
-
-          <!-- Group contact form (right side) -->
-          <div class="reveal">
-            <div style="margin-bottom: var(--space-5);">
-              <span class="eyebrow">Group office</span>
-              <h2 style="margin-top: var(--space-3); font-size: clamp(1.5rem, 2.5vw, 2rem);">Reach the JWV partners.</h2>
-              <p style="margin-top: var(--space-3); color: var(--color-text-muted); max-width: 50ch;">Use this form for corporate matters, media or industry inquiries, or for confidential conversations about partnership and succession.</p>
-            </div>
-
-            <form class="form" data-form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" novalidate>
-              <div class="form-row">
-                <label class="form-label" for="topic">Topic</label>
-                <select class="form-select" id="topic" name="topic" required>
-                  <option value="">Please select…</option>
-                  <option value="partnerships">Partnership / succession inquiry</option>
-                  <option value="corporate">Corporate matters</option>
-                  <option value="media">Media or industry inquiry</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-row--split">
-                <div class="form-row">
-                  <label class="form-label" for="name">Your name</label>
-                  <input class="form-input" id="name" name="name" type="text" required autocomplete="name">
-                </div>
-                <div class="form-row">
-                  <label class="form-label" for="company">Company</label>
-                  <input class="form-input" id="company" name="company" type="text" autocomplete="organization">
-                </div>
-              </div>
-              <div class="form-row--split">
-                <div class="form-row">
-                  <label class="form-label" for="email">Email</label>
-                  <input class="form-input" id="email" name="email" type="email" required autocomplete="email">
-                </div>
-                <div class="form-row">
-                  <label class="form-label" for="phone">Phone (optional)</label>
-                  <input class="form-input" id="phone" name="phone" type="tel" autocomplete="tel">
-                </div>
-              </div>
-              <div class="form-row">
-                <label class="form-label" for="message">Message</label>
-                <textarea class="form-textarea" id="message" name="message" rows="6" required></textarea>
-              </div>
-              <button class="btn btn--primary" type="submit">Send message</button>
-              <p class="form-help">We'll respond within one business day. Direct, partner-to-partner — no intermediaries.</p>
-              <div class="form-status" role="status" aria-live="polite"></div>
-            </form>
+    <!-- GROUP CONTACT — feature band (image left, form right) -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="feature-band reveal">
+          <figure class="feature-band__media" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              loading="lazy"
+              decoding="async">
+          </figure>
+          <div class="feature-band__content">
+            <span class="eyebrow">Group office</span>
+            <h2>Reach the JWV partners directly.</h2>
+            <p>Use this form for corporate matters, media or industry inquiries, or for confidential conversations about partnership and succession. We respond within one business day — partner-to-partner, no intermediaries.</p>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- THE FORM -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="reveal" style="max-width: var(--container-text); margin: 0 auto;">
+          <form class="form" data-form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" novalidate>
+            <div class="form-row">
+              <label class="form-label" for="topic">Topic</label>
+              <select class="form-select" id="topic" name="topic" required>
+                <option value="">Please select…</option>
+                <option value="partnerships">Partnership / succession inquiry</option>
+                <option value="corporate">Corporate matters</option>
+                <option value="media">Media or industry inquiry</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-row--split">
+              <div class="form-row">
+                <label class="form-label" for="name">Your name</label>
+                <input class="form-input" id="name" name="name" type="text" required autocomplete="name">
+              </div>
+              <div class="form-row">
+                <label class="form-label" for="company">Company</label>
+                <input class="form-input" id="company" name="company" type="text" autocomplete="organization">
+              </div>
+            </div>
+            <div class="form-row--split">
+              <div class="form-row">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" id="email" name="email" type="email" required autocomplete="email">
+              </div>
+              <div class="form-row">
+                <label class="form-label" for="phone">Phone (optional)</label>
+                <input class="form-input" id="phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="message">Message</label>
+              <textarea class="form-textarea" id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button class="btn btn--primary" type="submit">Send message</button>
+            <p class="form-help">We'll respond within one business day. Direct, partner-to-partner — no intermediaries.</p>
+            <div class="form-status" role="status" aria-live="polite"></div>
+          </form>
+
+          <!-- Quick alternative — fast for visitors who don't want a form -->
+          <div class="quick-contact">
+            <span class="quick-contact__label">Or just write to us</span>
+            <a href="mailto:info@jwv-solutions.com">info@jwv-solutions.com</a>
+            <a href="https://www.linkedin.com/company/jwv-solutions" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">

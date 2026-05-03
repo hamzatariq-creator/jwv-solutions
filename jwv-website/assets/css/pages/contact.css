@@ -1,0 +1,76 @@
+/* Contact page — split hero, company-accented operating-company cards,
+   and a closing reach-out band. Shared layout primitives live in inner.css. */
+
+/* Operating-company referral cards — accent-coloured per company */
+.op-card {
+  padding: var(--space-5);
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.op-card:hover { transform: translateY(-2px); }
+body.paper .op-card {
+  background: var(--color-bg-paper-soft, #FAF7F1);
+  border-color: var(--color-border-ink);
+}
+.op-card[data-company="altaris"]    { border-left-color: var(--color-altaris); }
+.op-card[data-company="artech"]     { border-left-color: var(--color-artech); }
+.op-card[data-company="michaelson"] { border-left-color: var(--color-michaelson); }
+
+.op-card__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: var(--ls-tight);
+  font-weight: 500;
+  color: var(--color-text-bright);
+  margin: 0;
+}
+body.paper .op-card__title { color: var(--color-text-ink); }
+.op-card__desc {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+body.paper .op-card__desc { color: var(--color-text-ink-muted); }
+.op-card .link-arrow { font-size: var(--fs-body-sm); }
+
+/* Quick-contact strip — direct email + LinkedIn under the form -- a fast
+   alternative for visitors who don't want to fill in the form */
+.quick-contact {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-7);
+  align-items: baseline;
+}
+body.paper .quick-contact { border-top-color: var(--color-border-ink); }
+.quick-contact__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.quick-contact a {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  color: var(--color-text-bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border-strong);
+  transition: color var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+body.paper .quick-contact a { color: var(--color-text-ink); }
+.quick-contact a:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}

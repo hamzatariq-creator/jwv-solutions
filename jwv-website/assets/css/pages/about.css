@@ -1,0 +1,76 @@
+/* About page — split hero, "we are / we are not" contrast band,
+   alternating feature bands. Shared layout primitives (.page-hero--split,
+   .feature-band, .section-header) live in inner.css. */
+
+.we-are-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  align-items: start;
+}
+.we-are-block {
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+body.paper .we-are-block {
+  border-color: var(--color-border-ink);
+  background: var(--color-bg-paper-soft, #FAF7F1);
+}
+.we-are-block--positive {
+  border-left: 3px solid var(--color-accent);
+}
+.we-are-block--negative {
+  border-left: 3px solid var(--color-text-muted);
+}
+.we-are-block .eyebrow { font-size: var(--fs-eyebrow); }
+.we-are-block p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+  margin: 0;
+}
+body.paper .we-are-block p { color: var(--color-text-ink-soft); }
+.we-are-block p strong {
+  color: var(--color-text-bright);
+  font-weight: 600;
+}
+body.paper .we-are-block p strong { color: var(--color-text-ink); }
+.we-are-block ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.we-are-block ul li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+body.paper .we-are-block ul li { color: var(--color-text-ink-muted); }
+.we-are-block ul li::before {
+  content: "—";
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+}
+.we-are-block ul li strong {
+  color: var(--color-text-bright);
+  font-weight: 600;
+}
+body.paper .we-are-block ul li strong { color: var(--color-text-ink); }
+
+@media (max-width: 880px) {
+  .we-are-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+}
