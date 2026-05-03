@@ -1,0 +1,242 @@
+/* Industries served — asymmetric image-tile grid with one featured tile.
+   Uses v4 tokens (graphite surfaces, amber accent) and inherits the
+   hairline-rule treatment between sections from layout.css. */
+
+.industries {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+}
+
+.industries__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  align-items: end;
+}
+@media (max-width: 880px) {
+  .industries__header { grid-template-columns: 1fr; gap: var(--space-4); }
+}
+
+.industries__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  font-weight: 400;
+  color: var(--color-text-bright);
+  max-width: 22ch;
+  margin: 0;
+}
+body.paper .industries__heading { color: var(--color-text-ink); }
+
+.industries__meta {
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--color-text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+@media (max-width: 880px) {
+  .industries__meta { text-align: left; }
+}
+.industries__meta strong {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* Asymmetric grid — 3 cols × 3 rows, with one wide featured tile spanning
+   2 columns. 7 regular tiles + 1 wide feature = 9 cells, fills perfectly. */
+.industries__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(220px, 26vh);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+body.paper .industries__grid {
+  background: var(--color-border-ink);
+  border-color: var(--color-border-ink);
+}
+
+.industry-tile {
+  position: relative;
+  background: var(--color-bg-soft);
+  padding: var(--space-5);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  overflow: hidden;
+  text-decoration: none;
+  isolation: isolate;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* Image layer */
+.industry-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--img, linear-gradient(135deg, #1A1E24 0%, #0E1014 70%));
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1), filter var(--duration-base) ease;
+}
+/* Legibility gradient — concentrated at bottom so the image breathes up top */
+.industry-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(14,16,20,0.94) 0%,
+    rgba(14,16,20,0.74) 26%,
+    rgba(14,16,20,0.30) 56%,
+    rgba(14,16,20,0.05) 82%,
+    transparent 100%
+  );
+  z-index: 1;
+  transition: opacity var(--duration-base) ease;
+}
+.industry-tile > * { position: relative; z-index: 2; }
+
+.industry-tile:hover::before { transform: scale(1.06); filter: brightness(1.08); }
+.industry-tile:hover::after { opacity: 0.88; }
+.industry-tile:hover .industry-tile__arrow {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #0E1014;
+  transform: rotate(-45deg);
+}
+
+.industry-tile__num {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-bright);
+  padding: 0.35rem 0.75rem;
+  background: rgba(14,16,20,0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244,241,234,0.18);
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+
+.industry-tile__arrow {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(14,16,20,0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244,241,234,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-bright);
+  font-size: 1rem;
+  transition:
+    background var(--duration-fast) ease,
+    transform var(--duration-base) ease,
+    color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+.industry-tile__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: var(--ls-tight);
+  line-height: 0.98;
+  color: #F4F1EA;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.industry-tile__name .dot { color: var(--color-accent); }
+
+.industry-tile__desc {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-normal);
+  color: rgba(244,241,234,0.86);
+  max-width: 28ch;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Span variants — feature tile is wide (2 cols × 1 row) so the grid stays
+   completely filled with 8 industries in a 3×3 layout. */
+.industry-tile--feature {
+  grid-column: span 2;
+}
+.industry-tile--feature .industry-tile__name {
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+}
+.industry-tile--feature .industry-tile__desc {
+  font-size: 0.98rem;
+  max-width: 38rem;
+}
+.industry-tile--feature .industry-tile__arrow {
+  width: 44px;
+  height: 44px;
+  font-size: 1.15rem;
+}
+
+/* Featured-sector treatment — keep image visible with amber edge + tint */
+.industry-tile--featured {
+  outline: 1px solid var(--color-accent);
+  outline-offset: -1px;
+}
+.industry-tile--featured::after {
+  background: linear-gradient(
+    to top,
+    rgba(176,122,53,0.88) 0%,
+    rgba(176,122,53,0.52) 32%,
+    rgba(14,16,20,0.22) 68%,
+    transparent 100%
+  );
+}
+.industry-tile--featured .industry-tile__num {
+  background: rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.28);
+  color: #fff;
+}
+.industry-tile--featured .industry-tile__desc { color: rgba(255,255,255,0.94); }
+
+/* Light theme — keep tiles dark-on-image for legibility, but soften the
+   grid hairlines so the seams don't shout against cream paper. */
+body.paper .industry-tile {
+  background: var(--color-bg-soft);
+}
+
+@media (max-width: 900px) {
+  .industries__grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(220px, 30vh);
+  }
+  /* On 2-col tablet, the wide feature still spans both columns */
+  .industry-tile--feature { grid-column: span 2; }
+  .industry-tile--feature .industry-tile__name {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .industries__grid { grid-template-columns: 1fr; grid-auto-rows: minmax(240px, 34vh); }
+  .industry-tile--feature { grid-column: span 1; }
+}

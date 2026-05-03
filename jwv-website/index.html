@@ -41,6 +41,8 @@
   <link rel="stylesheet" href="/assets/css/components/subsidiary-card.css">
   <link rel="stylesheet" href="/assets/css/components/form.css">
   <link rel="stylesheet" href="/assets/css/components/stats-band.css">
+  <link rel="stylesheet" href="/assets/css/components/by-numbers.css">
+  <link rel="stylesheet" href="/assets/css/components/industries.css">
   <link rel="stylesheet" href="/assets/css/components/who-we-are.css">
   <link rel="stylesheet" href="/assets/css/components/partners-marquee.css">
   <link rel="stylesheet" href="/assets/css/components/companies-scrolly.css">
@@ -118,36 +120,56 @@
       </div>
     </section>
 
-    <!-- STATS: numerical credibility band — sourced from audit data across the three companies -->
-    <section class="section section--tight section--deeper" aria-labelledby="stats-heading">
+    <!-- BY THE NUMBERS: six-stat data wall — group-level credibility -->
+    <section class="section section--tight" aria-labelledby="by-numbers-heading">
       <div class="container">
-        <h2 id="stats-heading" class="sr-only">JWV Solutions at a glance</h2>
-        <div class="stats-band reveal--stagger">
-
-          <div class="stats-band__cell">
-            <div class="stats-band__value" data-target="3">0</div>
-            <div class="stats-band__label">Operating companies</div>
-            <p class="stats-band__desc">Three independent industrial businesses, each focused on what it does best.</p>
+        <div class="by-numbers reveal">
+          <div class="by-numbers__header">
+            <div>
+              <span class="eyebrow">By the numbers</span>
+              <h2 id="by-numbers-heading" class="by-numbers__heading" style="margin-top: var(--space-3);">A focused group, <em>not a conglomerate</em>.</h2>
+            </div>
+            <p class="by-numbers__lead">Three independent industrial businesses operating from Rhode Island and Connecticut. Every customer relationship, every audit, every quality system — owned by the people who run that subsidiary.</p>
           </div>
 
-          <div class="stats-band__cell">
-            <div class="stats-band__value" data-target="100" data-suffix="+">0+</div>
-            <div class="stats-band__label">Years combined expertise</div>
-            <p class="stats-band__desc">Over a century of combined operating history across our three companies.</p>
+          <div class="by-numbers__grid reveal--stagger">
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">001</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="3">0</span></div>
+              <span class="by-numbers__label">Operating companies</span>
+              <p class="by-numbers__desc">Altaris Industrial · ARTech Lubricants · Michaelson Fluid Power.</p>
+            </div>
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">002</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="9">0</span><span class="by-numbers__suffix">+</span></div>
+              <span class="by-numbers__label">Sectors served</span>
+              <p class="by-numbers__desc">Aerospace · Defense · Marine · Medical · Automotive · Rail · Mining · Industrial.</p>
+            </div>
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">003</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="100">0</span><span class="by-numbers__suffix">+</span></div>
+              <span class="by-numbers__label">Years combined</span>
+              <p class="by-numbers__desc">Compounded New England industrial manufacturing tenure across the group.</p>
+            </div>
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">004</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="4">0</span></div>
+              <span class="by-numbers__label">Authorized OEM lines</span>
+              <p class="by-numbers__desc">Parker · Eaton · Denison · Monarch — genuine parts and factory-certified rebuilds.</p>
+            </div>
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">005</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="3">0</span></div>
+              <span class="by-numbers__label">Operating locations</span>
+              <p class="by-numbers__desc">Facilities across Rhode Island and Connecticut, serving customers nationwide.</p>
+            </div>
+            <div class="by-numbers__stat">
+              <span class="by-numbers__index">006</span>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="100">0</span><span class="by-numbers__suffix">%</span></div>
+              <span class="by-numbers__label">Lot traceability</span>
+              <p class="by-numbers__desc">Full chain of custody from raw material intake through final packaging and shipment.</p>
+            </div>
           </div>
-
-          <div class="stats-band__cell">
-            <div class="stats-band__value" data-target="3">0</div>
-            <div class="stats-band__label">Operating locations</div>
-            <p class="stats-band__desc">Facilities across Rhode Island and Connecticut serving customers nationwide.</p>
-          </div>
-
-          <div class="stats-band__cell">
-            <div class="stats-band__value" data-target="12" data-suffix="+">0+</div>
-            <div class="stats-band__label">Industries served</div>
-            <p class="stats-band__desc">Aerospace, defense, marine, medical, automotive, rail, mining, industrial, and more.</p>
-          </div>
-
         </div>
       </div>
     </section>
@@ -347,6 +369,79 @@
           <div>
             <h4>Operator-led</h4>
             <p style="margin-top: var(--space-3); color: var(--color-text-muted);">The partners are operators first. Our role is to support what each company already does well — not to direct it from a distance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INDUSTRIES SERVED: asymmetric image-tile grid — markets the group ships into -->
+    <section class="section section--tight" aria-labelledby="industries-heading">
+      <div class="container">
+        <div class="industries reveal">
+          <div class="industries__header">
+            <div>
+              <span class="eyebrow">Industries served</span>
+              <h2 id="industries-heading" class="industries__heading" style="margin-top: var(--space-3);">Markets where downtime is the metric that matters.</h2>
+            </div>
+            <div class="industries__meta"><strong>08</strong> sectors · single-source group</div>
+          </div>
+
+          <div class="industries__grid reveal--stagger">
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/jet-engine.jpg');">
+              <span class="industry-tile__num">001</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Aerospace<span class="dot">.</span></span>
+              <span class="industry-tile__desc">Flight-critical adhesives, sealants, and authorized OEM hydraulic systems for AS9100D and ITAR-controlled programs.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/medical-syringe.jpg');">
+              <span class="industry-tile__num">002</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Medical<span class="dot">.</span></span>
+              <span class="industry-tile__desc">ISO 13485 materials, specialty lubricants, and contract packaging for medical device manufacturers.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/auto-assembly.jpg');">
+              <span class="industry-tile__num">003</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Automotive<span class="dot">.</span></span>
+              <span class="industry-tile__desc">EV thermal interface, conductive epoxies, and high-spec lubrication for assembly lines.</span>
+            </a>
+
+            <a class="industry-tile industry-tile--feature industry-tile--featured" href="/contact.html" style="--img: url('/assets/images/industries/refinery.jpg');">
+              <span class="industry-tile__num">004 · Featured sector</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Energy &amp; Industrial<span class="dot">.</span></span>
+              <span class="industry-tile__desc">Hydraulic power units, specialty greases, and contract-packaged industrial fluids engineered for grid, refinery, and heavy-process infrastructure.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/defense-helicopter.jpg');">
+              <span class="industry-tile__num">005</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Defense<span class="dot">.</span></span>
+              <span class="industry-tile__desc">ITAR-cleared materials, MIL-SPEC lubricants, and hydraulic systems for ground, air, and naval defense programs.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/pcb-electronics.jpg');">
+              <span class="industry-tile__num">006</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Electronics<span class="dot">.</span></span>
+              <span class="industry-tile__desc">IPC- and RoHS-compliant solder pastes, conductive epoxies, and thermal interface compounds.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/factory-floor.jpg');">
+              <span class="industry-tile__num">007</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Rail &amp; Mining<span class="dot">.</span></span>
+              <span class="industry-tile__desc">High-load greases, gear oils, and authorized fluid-power for steel mills, mines, and rail-yard equipment.</span>
+            </a>
+
+            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/marine-port.jpg');">
+              <span class="industry-tile__num">008</span>
+              <span class="industry-tile__arrow" aria-hidden="true">→</span>
+              <span class="industry-tile__name">Marine<span class="dot">.</span></span>
+              <span class="industry-tile__desc">Salt-spec lubricants and authorized fluid-power systems for marine and offshore platforms.</span>
+            </a>
           </div>
         </div>
       </div>

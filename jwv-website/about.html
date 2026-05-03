@@ -24,7 +24,6 @@
   <link rel="stylesheet" href="/assets/css/components/header.css">
   <link rel="stylesheet" href="/assets/css/components/footer.css">
   <link rel="stylesheet" href="/assets/css/components/button.css">
-  <link rel="stylesheet" href="/assets/css/components/subsidiary-card.css">
   <link rel="stylesheet" href="/assets/css/components/form.css">
   <link rel="stylesheet" href="/assets/css/pages/inner.css">
   <link rel="stylesheet" href="/assets/css/pages/about.css">
@@ -150,47 +149,71 @@
       </div>
     </section>
 
-    <!-- COMPANIES — existing subsidiary-card grid -->
-    <section class="section">
+    <!-- PRINCIPLES — what stays constant across the operating companies -->
+    <section class="section section--tight" aria-labelledby="principles-heading">
       <div class="container">
         <header class="section-header reveal">
-          <span class="eyebrow">Our companies</span>
-          <h2>Three businesses, each operating independently.</h2>
+          <span class="eyebrow">Principles</span>
+          <h2 id="principles-heading">What stays constant across all three businesses.</h2>
         </header>
-        <div class="companies-grid reveal--stagger">
-          <article class="subsidiary-card" data-company="altaris">
-            <div class="subsidiary-card__accent"></div>
-            <div class="subsidiary-card__media" style="background-image: linear-gradient(135deg, #1A1E24, #2A3038);" aria-label="Altaris Industrial"></div>
-            <div class="subsidiary-card__body">
-              <span class="subsidiary-card__eyebrow">Altaris Industrial</span>
-              <h3 class="subsidiary-card__title">Industrial liquids and pastes</h3>
-              <p class="subsidiary-card__desc">Contract packaging, toll mixing, post-processing, procurement and warehousing.</p>
-              <a class="subsidiary-card__link" href="https://altarisindustrial.com" rel="noopener">Visit altarisindustrial.com</a>
+        <ol class="principles reveal--stagger">
+          <li>
+            <span class="principles__num">01</span>
+            <div class="principles__text">
+              <h3>Operator-led</h3>
+              <p>Each operating company is run by its own leadership — the people closest to the customer, the line, and the lot. The group exists to support that, not to second-guess it.</p>
             </div>
-          </article>
-          <article class="subsidiary-card" data-company="artech">
-            <div class="subsidiary-card__accent"></div>
-            <div class="subsidiary-card__media" style="background-image: linear-gradient(135deg, #2A2218, #4A3820);" aria-label="ARTech Lubricants"></div>
-            <div class="subsidiary-card__body">
-              <span class="subsidiary-card__eyebrow">ARTech Lubricants</span>
-              <h3 class="subsidiary-card__title">Specialty greases and silicones</h3>
-              <p class="subsidiary-card__desc">A boutique blender of MIL-SPEC silicones, gear oils, and specialty greases.</p>
-              <a class="subsidiary-card__link" href="https://artechlubricants.com" rel="noopener">Visit artechlubricants.com</a>
+          </li>
+          <li>
+            <span class="principles__num">02</span>
+            <div class="principles__text">
+              <h3>Independently certified</h3>
+              <p>Every subsidiary holds its own ISO, AS9100D, ISO 13485, ITAR, or industry-specific authorization — not a shared parent cert that papers over operating differences.</p>
             </div>
-          </article>
-          <article class="subsidiary-card" data-company="michaelson">
-            <div class="subsidiary-card__accent"></div>
-            <div class="subsidiary-card__media" style="background-image: linear-gradient(135deg, #2A1814, #4E2620);" aria-label="Michaelson Fluid Power"></div>
-            <div class="subsidiary-card__body">
-              <span class="subsidiary-card__eyebrow">Michaelson Fluid Power</span>
-              <h3 class="subsidiary-card__title">Hydraulic systems and authorized repair</h3>
-              <p class="subsidiary-card__desc">Custom hydraulic power units, authorized distribution, and authorized repair.</p>
-              <a class="subsidiary-card__link" href="https://michaelsonfluidpower.com" rel="noopener">Visit michaelsonfluidpower.com</a>
+          </li>
+          <li>
+            <span class="principles__num">03</span>
+            <div class="principles__text">
+              <h3>Long horizon</h3>
+              <p>No fund timeline, no forced exit. We hold companies for decades, which lets each operating team make decisions that pay off over years instead of quarters.</p>
             </div>
-          </article>
+          </li>
+          <li>
+            <span class="principles__num">04</span>
+            <div class="principles__text">
+              <h3>Single-source support</h3>
+              <p>One relationship can span industrial packaging, specialty lubrication, and fluid-power motion — useful for buyers who would otherwise carry three vendors and three audits.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- LOCATIONS — facilities across Rhode Island and Connecticut -->
+    <section class="section section--tight" aria-labelledby="locations-heading">
+      <div class="container">
+        <div class="locations reveal">
+          <span class="eyebrow">Locations</span>
+          <h2 id="locations-heading" class="locations__heading">Facilities across Rhode Island and Connecticut.</h2>
+          <p class="locations__body">Group operations are concentrated in the US Northeast — industrial packaging and warehousing in North Smithfield, RI; specialty lubricant blending in Bethel, CT; and a dedicated fluid-power facility in Smithfield, RI. Customer reach extends nationwide, with regulated-industry capability for defense, aerospace, marine, and medical programs.</p>
+          <div class="locations__row reveal--stagger">
+            <figure>
+              <img src="/assets/images/facilities/factory-floor.jpg" alt="Industrial packaging and warehousing facility" loading="lazy" decoding="async">
+              <figcaption>Altaris · N. Smithfield, RI</figcaption>
+            </figure>
+            <figure>
+              <img src="/assets/images/facilities/machine-shop.jpg" alt="Specialty lubricant blending facility" loading="lazy" decoding="async">
+              <figcaption>ARTech · Bethel, CT</figcaption>
+            </figure>
+            <figure>
+              <img src="/assets/images/facilities/industrial-pipes.jpg" alt="Hydraulic fluid-power facility" loading="lazy" decoding="async">
+              <figcaption>Michaelson · Smithfield, RI</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">
