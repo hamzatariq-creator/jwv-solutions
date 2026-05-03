@@ -11,11 +11,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jwv-solutions.com/companies/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://jwv-solutions.com/partnerships.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

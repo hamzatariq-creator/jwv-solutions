@@ -2,5 +2,17 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "jwv-website",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/companies",
+      "destination": "/#companies",
+      "permanent": true
+    },
+    {
+      "source": "/companies/",
+      "destination": "/#companies",
+      "permanent": true
+    }
+  ]
 }
