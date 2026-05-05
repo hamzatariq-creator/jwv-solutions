@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/base.css">
   <link rel="stylesheet" href="/assets/css/layout.css">
   <link rel="stylesheet" href="/assets/css/animations.css">
+  <link rel="stylesheet" href="/assets/css/components/preloader.css">
   <link rel="stylesheet" href="/assets/css/components/header.css">
   <link rel="stylesheet" href="/assets/css/components/footer.css">
   <link rel="stylesheet" href="/assets/css/components/button.css">
@@ -29,22 +30,33 @@
   <link rel="stylesheet" href="/assets/css/pages/about.css">
 </head>
 <body class="page-about">
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__panel preloader__panel--top"></div>
+    <div class="preloader__panel preloader__panel--bottom"></div>
+    <div class="preloader__stage">
+      <div class="preloader__logo">
+        <img class="preloader__img preloader__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64">
+        <img class="preloader__img preloader__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64">
+      </div>
+      <div class="preloader__meter">
+        <div class="preloader__line"><span class="preloader__line-fill"></span></div>
+        <div class="preloader__count"><span class="preloader__count-num" data-count>0</span><span class="preloader__count-pct">%</span></div>
+      </div>
+    </div>
+  </div>
+
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/" aria-label="JWV Solutions home">
-        <svg class="site-logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <circle cx="16" cy="16" r="15.25" stroke="currentColor" stroke-width="1"/>
-          <path d="M16 6 L23 22 H9 Z" stroke="currentColor" stroke-width="1" fill="none" stroke-linejoin="round"/>
-        </svg>
-        <span class="site-logo__wordmark">JWV Solutions</span>
+        <img class="site-logo__img site-logo__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64" aria-hidden="true">
+      <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
       </a>
       <nav class="site-nav" aria-label="Primary">
         <ul class="site-nav__list">
           <li><a class="site-nav__link" href="/about.html" aria-current="page">About</a></li>
-          <li><a class="site-nav__link" href="/#companies">Our Companies</a></li>
-          <li><a class="site-nav__link" href="/partnerships.html">Partnerships</a></li>
+        <li><a class="site-nav__link" href="/partnerships.html">Partnerships</a></li>
           <li><a class="site-nav__link" href="/contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -221,11 +233,8 @@
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <a class="site-logo" href="/" aria-label="JWV Solutions home">
-            <svg class="site-logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <circle cx="16" cy="16" r="15.25" stroke="currentColor" stroke-width="1"/>
-              <path d="M16 6 L23 22 H9 Z" stroke="currentColor" stroke-width="1" fill="none" stroke-linejoin="round"/>
-            </svg>
-            <span class="site-logo__wordmark">JWV Solutions</span>
+            <img class="site-logo__img site-logo__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64" aria-hidden="true">
+      <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
           </a>
           <p>Operating partners across three independent industrial businesses.</p>
         </div>

@@ -86,22 +86,26 @@ body.paper  .theme-toggle__icon--moon { display: none; }
 .site-logo {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 500;
   color: var(--color-text-bright);
-  letter-spacing: var(--ls-tight);
+  line-height: 0;
 }
 body.paper .site-logo { color: var(--color-text-ink); }
-.site-logo__mark {
-  width: 32px; height: 32px;
-  display: inline-block;
+.site-logo__img {
+  display: block;
+  height: 64px;
+  width: auto;
+  transition: height var(--duration-base) var(--ease-out);
 }
-.site-logo__wordmark {
-  display: inline-block;
-  font-feature-settings: "ss01";
-}
+.site-header.is-scrolled .site-logo__img { height: 48px; }
+.site-footer .site-logo__img { height: 72px; }
+/* Default (dark theme): show the white logo, hide the black one */
+.site-logo__img--light { display: none; }
+body.paper .site-logo__img--dark  { display: none; }
+body.paper .site-logo__img--light { display: block; }
+/* Home page hero: header is transparent over the always-dark hero canvas in
+   BOTH themes — force the white (dark-theme) logo until the header is scrolled. */
+body.page-home .site-header:not(.is-scrolled) .site-logo__img--light { display: none; }
+body.page-home .site-header:not(.is-scrolled) .site-logo__img--dark  { display: block; }
 
 .site-nav {
   display: flex;

@@ -8,10 +8,12 @@ import { initSmoothScroll } from './smooth-scroll.js';
 import { initCounter } from './counter.js';
 import { initCompaniesScrolly } from './companies-scrolly.js';
 import { initTheme } from './theme.js';
+import { initPreloader } from './preloader.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Always run
+initPreloader();
 initTheme();
 initNav();
 initReveal();
