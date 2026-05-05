@@ -1,59 +1,72 @@
-/* Preloader — cinematic intro with split-panel exit.
-   Two stacked panels cover the viewport. Center stage holds the logo, a thin
-   accent line that fills, and a tabular percentage counter. On dismissal the
-   panels split — top slides up, bottom slides down — revealing the page. */
+/* Preloader — homepage-only brand splash, editorial register.
+   Composition: top hairline → logo with clip-path & focus reveal →
+   small-caps tagline → full-width bottom progress hairline. Exit fades
+   the whole stage with a subtle upward translate. */
 
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* Two halves of the curtain */
-.preloader__panel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 50.5%;
-  background: var(--color-bg-deepest);
-  transition: transform 0.95s cubic-bezier(0.83, 0, 0.17, 1);
-  will-change: transform;
-}
-.preloader__panel--top    { top: 0; }
-.preloader__panel--bottom { bottom: 0; }
-
-.preloader.is-leaving .preloader__panel--top    { transform: translateY(-100%); }
-.preloader.is-leaving .preloader__panel--bottom { transform: translateY(100%); }
-
-/* Stage sits above the panels */
-.preloader__stage {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-7);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  background: var(--color-bg-deepest);
+  pointer-events: none;
+  transition:
+    opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.preloader.is-leaving .preloader__stage {
+.preloader.is-leaving {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-1.4%);
 }
 
-/* Logo */
-.preloader__logo {
+/* Subtle radial vignette for depth */
+.preloader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+:root.paper .preloader::before {
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(20,15,8,0.06) 100%);
+}
+
+.preloader__center {
   position: relative;
-  width: min(460px, 66vw);
-  overflow: hidden;
-  animation: pre-logo-reveal 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* Top hairline draws outward from center */
+.preloader__top-rule {
+  display: block;
+  width: 220px;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: pre-rule 1.0s 0.15s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes pre-rule { to { transform: scaleX(1); } }
+
+/* Logo: clip-path reveal from horizon + blur-to-sharp + slight scale */
+.preloader__logo {
+  width: min(420px, 60vw);
+  clip-path: inset(50% 0 50% 0);
+  filter: blur(5px);
+  opacity: 0;
+  transform: scale(0.97);
+  animation: pre-logo-reveal 1.25s 0.55s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
 @keyframes pre-logo-reveal {
-  0%   { clip-path: inset(50% 0 50% 0); transform: scale(0.965); opacity: 0; filter: blur(6px); }
+  0%   { clip-path: inset(50% 0 50% 0); filter: blur(5px); opacity: 0; transform: scale(0.97); }
   55%  { opacity: 1; }
-  100% { clip-path: inset(0 0 0 0);     transform: scale(1);     opacity: 1; filter: blur(0); }
+  100% { clip-path: inset(0 0 0 0);   filter: blur(0);   opacity: 1; transform: scale(1); }
 }
 
 .preloader__img {
@@ -65,102 +78,73 @@
 :root.paper .preloader__img--dark  { display: none; }
 :root.paper .preloader__img--light { display: block; }
 
-/* Diagonal sheen pass — single, restrained */
-.preloader__logo::after {
-  content: "";
-  position: absolute;
-  inset: -25% -30%;
-  background: linear-gradient(115deg,
-    transparent 38%,
-    rgba(244,241,234,0.0) 47%,
-    rgba(244,241,234,0.55) 50%,
-    rgba(244,241,234,0.0) 53%,
-    transparent 62%);
-  transform: translateX(-115%);
-  animation: pre-sheen 1.45s 1.15s cubic-bezier(0.4, 0, 0.2, 1) both;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-:root.paper .preloader__logo::after {
-  background: linear-gradient(115deg,
-    transparent 38%,
-    rgba(176,122,53,0.0) 47%,
-    rgba(176,122,53,0.6) 50%,
-    rgba(176,122,53,0.0) 53%,
-    transparent 62%);
-  mix-blend-mode: multiply;
-}
-@keyframes pre-sheen {
-  to { transform: translateX(115%); }
-}
-
-/* Meter row: thin accent line + ticking counter */
-.preloader__meter {
-  display: flex;
+/* Tagline: small caps with diamond separators */
+.preloader__tagline {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.62);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: pre-fade-up 0.95s 1.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-5);
-  width: min(460px, 66vw);
-  animation: pre-meter-in 0.7s 0.85s cubic-bezier(0.4, 0, 0.2, 1) both;
+  gap: 12px;
 }
-@keyframes pre-meter-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+:root.paper .preloader__tagline { color: rgba(20, 15, 8, 0.6); }
+
+.preloader__diamond {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  background: var(--color-accent);
+  transform: rotate(45deg);
 }
 
-.preloader__line {
-  flex: 1;
-  position: relative;
+@keyframes pre-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Full-width bottom progress hairline — fills slowly across the whole intro */
+.preloader__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 1px;
-  background: rgba(244,241,234,0.12);
+  background: rgba(244, 241, 234, 0.10);
   overflow: hidden;
 }
-:root.paper .preloader__line { background: rgba(20,15,8,0.18); }
+:root.paper .preloader__progress { background: rgba(20, 15, 8, 0.12); }
 
-.preloader__line-fill {
+.preloader__progress-fill {
   display: block;
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-text-bright));
-  box-shadow: 0 0 8px var(--color-accent);
-  animation: pre-fill 1.7s 0.95s cubic-bezier(0.65, 0, 0.35, 1) both;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(176, 122, 53, 0.5) 30%,
+    var(--color-accent) 100%);
+  animation: pre-progress 2.85s 0.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
-:root.paper .preloader__line-fill {
-  background: var(--color-accent);
-  box-shadow: none;
-}
-@keyframes pre-fill {
-  from { width: 0; }
-  to   { width: 100%; }
-}
-
-.preloader__count {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  color: var(--color-text-bright);
-  font-variant-numeric: tabular-nums;
-  display: inline-flex;
-  align-items: baseline;
-  min-width: 4.5ch;
-  justify-content: flex-end;
-}
-:root.paper .preloader__count { color: var(--color-text-ink); }
-
-.preloader__count-num { display: inline-block; min-width: 2ch; text-align: right; }
-.preloader__count-pct { opacity: 0.5; margin-left: 2px; font-size: 9px; }
+@keyframes pre-progress { to { width: 100%; } }
 
 @media (prefers-reduced-motion: reduce) {
+  .preloader__top-rule,
   .preloader__logo,
-  .preloader__meter,
-  .preloader__logo::after,
-  .preloader__line-fill { animation: none; }
-  .preloader__logo { clip-path: none; opacity: 1; transform: none; filter: none; }
-  .preloader__line-fill { width: 100%; }
-  .preloader.is-leaving .preloader__panel--top,
-  .preloader.is-leaving .preloader__panel--bottom {
-    transition: opacity 0.25s ease-out;
-    opacity: 0;
+  .preloader__tagline,
+  .preloader__progress-fill {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    filter: none;
+  }
+  .preloader__progress-fill { width: 100%; }
+  .preloader.is-leaving {
+    transition: opacity 0.4s ease-out;
     transform: none;
   }
 }
