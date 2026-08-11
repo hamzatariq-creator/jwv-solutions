@@ -1,0 +1,716 @@
+/* Companies grid — scalable alternative to the pinned scrollytelling section.
+ *
+ * The problem this solves: in companies-scrolly.css each `.company-fold` is
+ * `min-height: 100vh` and the folds stack in normal flow, so section height is
+ * N x 100vh. Three companies = 300vh; ten companies = 1000vh of pinned
+ * scrolling before the reader reaches anything else.
+ *
+ * Here the ingot cinematic lives in a FIXED-HEIGHT spacer that never grows, and
+ * every company is shown at once in a grid below it. Scroll length is the same
+ * at three companies or twelve — only the grid gains rows.
+ *
+ * Layout borrows the hairline-grid + layered-tile pattern from industries.css:
+ * `gap: 1px` over a border-colored container so the gaps ARE the seams, and each
+ * tile paints its image through an inline `--img` custom property.
+ *
+ * Brand accents come from an inline `--tile-accent` per tile rather than
+ * `[data-company="..."]` rules (the approach in subsidiary-card.css). That keeps
+ * adding a company a markup-only change — no CSS edit per business.
+ *
+ * NAMING: the block is `companies-wall`, not `companies-grid`. `.companies-grid`
+ * is already taken by a dead rule in pages/home.css (a leftover from the removed
+ * /companies page) that sets `display: grid` with auto-fit columns. home.css
+ * loads after this file, so reusing that name silently turned the section into a
+ * two-column grid with the cinematic and the tiles side by side. Do not rename
+ * back unless that rule is deleted first. */
+
+.companies-wall {
+  position: relative;
+}
+
+/* ============================================================
+   1. Cinematic — fixed scroll length, independent of tile count
+   ============================================================ */
+
+/* THE important declaration in this file: a constant height. The scrub is
+   mapped to this element, so the ingot always animates across exactly 80vh of
+   travel no matter how many companies exist below it. */
+.companies-wall__cinematic {
+  position: relative;
+  height: 180vh;
+  height: 180svh;
+}
+
+.companies-wall__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.companies-wall__canvas,
+.companies-wall__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.companies-wall__canvas { display: block; }
+
+.companies-wall__fallback {
+  object-fit: cover;
+  object-position: 65% center;
+  opacity: 1;
+  transition: opacity var(--duration-slow) var(--ease-out);
+  pointer-events: none;
+}
+/* Cross-fade the static first frame out once the canvas starts drawing */
+.companies-wall__canvas.is-ready ~ .companies-wall__fallback { opacity: 0; }
+
+/* Scrim so the intro copy stays legible over the render */
+.companies-wall__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(14, 16, 20, 0.92) 0%,
+    rgba(14, 16, 20, 0.74) 26%,
+    rgba(14, 16, 20, 0.26) 54%,
+    transparent 78%
+  );
+}
+
+/* --- Intro copy, held in the left safe zone over the canvas --- */
+.companies-wall__intro {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.companies-wall__intro-inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+.companies-wall__intro-text {
+  max-width: 540px;
+  pointer-events: auto;
+}
+
+/* Copy sits on the always-dark canvas, so colors are pinned to dark-theme
+   values in both themes. Selectors are doubled up to outweigh `body.paper h2/p`
+   from base.css in light mode — same technique as .company-fold. */
+.companies-wall .companies-wall__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: #8E8B83;
+  margin-bottom: var(--space-4);
+}
+.companies-wall__eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.companies-wall .companies-wall__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 4vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  color: #F4F1EA;
+  margin-bottom: var(--space-4);
+}
+
+.companies-wall .companies-wall__lede {
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: #D6D2C8;
+  max-width: 46ch;
+}
+
+/* Count readout, top-right — written from the real tile count by JS */
+.companies-wall__count {
+  position: absolute;
+  top: calc(var(--header-height) + var(--space-5));
+  right: clamp(1.5rem, 5vw, 3rem);
+  z-index: 4;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8E8B83;
+  pointer-events: none;
+}
+.companies-wall__count-value {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-feature-settings: "tnum";
+  color: #F4F1EA;
+}
+
+.companies-wall__cue {
+  position: absolute;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: #8E8B83;
+  pointer-events: none;
+}
+
+/* ============================================================
+   2. The grid
+   ============================================================ */
+
+.companies-wall__body {
+  padding-block: var(--space-8) var(--section-padding-y);
+}
+
+/* Tiles and panels are BOTH direct children of the wall, alternating
+   tile / panel / tile / panel in source order. Keeping the panel a sibling
+   rather than a child lets it take `grid-column: 1 / -1` and unfold as a
+   full-width drawer under its row — and avoids nesting an <h3> inside the
+   tile's <button>, which is invalid. */
+.companies-wall__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+body.paper .companies-wall__grid {
+  background: var(--color-border-ink);
+  border-color: var(--color-border-ink);
+}
+
+/* --- Tile face --- */
+.company-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-height: 268px;
+  padding: var(--space-5);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  background: var(--color-bg-soft);
+  /* Brand accent bar along the top edge — identifies the company at rest,
+     which starts to matter once there are eight or ten of these. Must be a
+     border, not an inset box-shadow: the ::before image layer below is
+     `inset: 0`, which resolves against the padding box and would paint straight
+     over a shadow. A border sits outside that box and stays visible. */
+  border-top: 3px solid var(--tile-accent, var(--color-accent));
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: opacity var(--duration-base) var(--ease-out),
+              outline-color var(--duration-fast) var(--ease-out);
+}
+
+/* Image layer */
+.company-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--img, linear-gradient(135deg, #1A1E24 0%, #0E1014 70%));
+  background-size: cover;
+  background-position: center;
+  /* Held back at rest so hover reads as the tile "lighting up" */
+  filter: grayscale(0.62) brightness(0.58);
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              filter var(--duration-base) ease;
+}
+
+/* Legibility gradient, weighted to the bottom where the text sits */
+.company-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(14, 16, 20, 0.94) 0%,
+    rgba(14, 16, 20, 0.76) 28%,
+    rgba(14, 16, 20, 0.32) 58%,
+    rgba(14, 16, 20, 0.06) 84%,
+    transparent 100%
+  );
+  transition: opacity var(--duration-base) ease;
+}
+
+/* Cursor-tracked accent glow. --mx/--my are written by companies-wall.js.
+   Where color-mix is unsupported the whole background declaration is dropped
+   and the tile still lights up via saturation, outline and the badge. */
+.company-tile__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition: opacity var(--duration-base) var(--ease-out);
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--tile-accent, var(--color-accent)) 30%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+/* Paint order inside a tile:
+     0  ::before  image
+     1  ::after   legibility scrim
+     2  glow
+     3  drawn frame
+     4  badges + text
+     5  trigger::after, the full-tile hit area
+   z-index only — deliberately NOT `position: relative`. The two badges are
+   absolutely positioned and this rule outranks them (0,2,0 vs 0,1,0), so adding
+   `position` here drops them back into flex flow: the number stretches to full
+   tile width and the toggle lands on the left. Flex items honour z-index while
+   still `position: static`, so z-index alone is enough for the text children. */
+.company-tile > *:not(.company-tile__glow):not(.company-tile__frame) {
+  z-index: 4;
+}
+
+/* --- Drawn frame: a viewfinder rectangle that strokes itself on approach ---
+   The dash length is 400 because the viewBox is a fixed 0 0 100 100 and the
+   rect fills it, so the path is always 400 user units no matter how the tile is
+   sized on screen. (The markup also carries pathLength="100", but Chrome still
+   computes dashes against the geometric length, which left partial strokes
+   showing at rest — hence the literal 400.) vector-effect keeps the stroke a
+   true 1px despite the preserveAspectRatio="none" stretch. */
+.company-tile__frame {
+  position: absolute;
+  inset: 12px;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  z-index: 3;
+  overflow: visible;
+  pointer-events: none;
+}
+.company-tile__frame rect {
+  fill: none;
+  stroke: var(--tile-accent, var(--color-accent));
+  stroke-width: 1;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* --- Tile content --- */
+.company-tile__num {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-bright);
+  background: rgba(14, 16, 20, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 241, 234, 0.18);
+  border-radius: var(--radius-pill);
+}
+
+/* Plus badge — rotates 45deg into a close mark when the panel is open */
+.company-tile__toggle {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--color-text-bright);
+  background: rgba(14, 16, 20, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 241, 234, 0.18);
+  border-radius: 50%;
+  transition: background var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              color var(--duration-fast) ease,
+              transform var(--duration-base) var(--ease-out);
+}
+
+.company-tile__heading { margin: 0; }
+
+/* The button carries only the company name as its accessible label; the
+   stretched ::after makes the whole tile the hit area. */
+.company-tile__trigger {
+  display: block;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.company-tile__trigger::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+.company-tile__trigger:focus { outline: none; }
+
+.company-tile__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  letter-spacing: var(--ls-tight);
+  line-height: 1.02;
+  color: #F4F1EA;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.company-tile .company-tile__tagline {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-normal);
+  color: rgba(244, 241, 234, 0.82);
+  max-width: 32ch;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  margin: 0;
+}
+
+.company-tile__hint {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.5);
+  transition: color var(--duration-fast) ease;
+}
+
+/* ============================================================
+   3. The "light up"
+   ============================================================ */
+
+/* Keyboard focus ring — outside the hover query so it also applies on touch
+   devices driven by a keyboard. */
+.company-tile:has(.company-tile__trigger:focus-visible) {
+  outline: 2px solid var(--tile-accent, var(--color-accent));
+  outline-offset: -2px;
+}
+
+/* Hover effects are pointer-gated so touch devices never get stuck showing a
+   dimmed grid with nothing lit up. */
+@media (hover: hover) and (pointer: fine) {
+  .company-tile:hover::before,
+  .company-tile:has(.company-tile__trigger:focus-visible)::before,
+  .company-tile.is-open::before {
+    transform: scale(1.05);
+    filter: grayscale(0) brightness(1.06);
+  }
+
+  .company-tile:hover::after,
+  .company-tile:has(.company-tile__trigger:focus-visible)::after {
+    opacity: 0.86;
+  }
+
+  /* The drawn frame is the hover border now, so no outline here — two
+     rectangles competing at the same edge reads as a mistake. */
+  .company-tile:hover .company-tile__frame rect,
+  .company-tile:has(.company-tile__trigger:focus-visible) .company-tile__frame rect {
+    stroke-dashoffset: 0;
+  }
+
+
+  .company-tile:hover .company-tile__glow,
+  .company-tile:has(.company-tile__trigger:focus-visible) .company-tile__glow {
+    opacity: 1;
+  }
+
+  .company-tile:hover .company-tile__toggle,
+  .company-tile:has(.company-tile__trigger:focus-visible) .company-tile__toggle {
+    background: var(--tile-accent, var(--color-accent));
+    border-color: var(--tile-accent, var(--color-accent));
+    color: #0E1014;
+  }
+
+  .company-tile:hover .company-tile__hint,
+  .company-tile:has(.company-tile__trigger:focus-visible) .company-tile__hint {
+    color: rgba(244, 241, 234, 0.85);
+  }
+
+  /* One lights up, the rest recede */
+  .companies-wall__grid:hover .company-tile:not(:hover) { opacity: 0.42; }
+  .companies-wall__grid:has(.company-tile__trigger:focus-visible)
+    .company-tile:not(:has(.company-tile__trigger:focus-visible)) { opacity: 0.42; }
+
+  /* An open tile stays lit while its panel is being read. Listed after the
+     dimming rules so it wins at equal specificity. */
+  .companies-wall__grid .company-tile.is-open { opacity: 1; }
+}
+
+/* Touch: no dimming, and images sit closer to full strength since there is no
+   hover to reveal them. */
+@media (hover: none), (pointer: coarse) {
+  .company-tile::before { filter: grayscale(0.15) brightness(0.9); }
+}
+
+/* Open state — applies on every input type */
+.company-tile.is-open .company-tile__frame rect { stroke-dashoffset: 0; }
+.company-tile.is-open .company-tile__toggle {
+  transform: rotate(45deg);
+  background: var(--tile-accent, var(--color-accent));
+  border-color: var(--tile-accent, var(--color-accent));
+  color: #0E1014;
+}
+
+/* ============================================================
+   4. Expand-in-place panel
+   ============================================================ */
+
+/* Spans the full row so it reads as a drawer beneath the tile rather than a
+   stretched column.
+ *
+ * `display: none` while closed is load-bearing, not just a hide. A full-width
+ * grid item sitting between two tiles forces a row break, which would drop
+ * every tile onto its own row and destroy the 3-across packing. Taking closed
+ * panels out of grid placement entirely lets the tiles pack normally; JS then
+ * moves the one open panel to sit after the last tile of its row and mounts it.
+ *
+ * The 0fr -> 1fr grid-template-rows trick animates to content height, which
+ * `height: auto` cannot do. */
+.company-tile__panel {
+  display: none;
+  grid-column: 1 / -1;
+  background: var(--color-bg-mid);
+}
+body.paper .company-tile__panel { background: var(--color-bg-paper-soft); }
+
+/* Mounted = in the layout but still collapsed. JS forces a reflow between
+   adding this class and `.is-open` so the transition has a start value. */
+.company-tile__panel.is-mounted {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-out);
+}
+
+.company-tile__panel.is-mounted.is-open {
+  grid-template-rows: 1fr;
+}
+
+.company-tile__panel-inner { overflow: hidden; }
+
+.company-tile__panel-body {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: var(--space-6) var(--space-7);
+  padding: var(--space-6) var(--space-6) var(--space-7);
+  box-shadow: inset 0 2px 0 var(--tile-accent, var(--color-accent));
+}
+
+/* Panel contents lift in behind the unfolding drawer rather than being
+   revealed already in place — the drawer opening and the content arriving are
+   two beats, not one. */
+.company-tile__panel-body > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.company-tile__panel.is-open .company-tile__panel-body > * {
+  opacity: 1;
+  transform: none;
+}
+.company-tile__panel.is-open .company-tile__panel-body > *:nth-child(1) { transition-delay: 140ms; }
+.company-tile__panel.is-open .company-tile__panel-body > *:nth-child(2) { transition-delay: 240ms; }
+
+.company-tile__panel .company-tile__desc {
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+  margin: 0;
+}
+body.paper .company-tile__panel .company-tile__desc { color: var(--color-text-ink-soft); }
+
+.company-tile__highlights {
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.company-tile__highlights li {
+  position: relative;
+  padding-left: var(--space-5);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-muted);
+}
+body.paper .company-tile__highlights li { color: var(--color-text-ink-muted); }
+.company-tile__highlights li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 14px;
+  height: 1px;
+  background: var(--tile-accent, var(--color-accent));
+}
+
+/* Facts column */
+.company-tile__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+body.paper .company-tile__facts { border-bottom-color: var(--color-border-ink); }
+
+.company-tile__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.company-tile__fact-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+body.paper .company-tile__fact-label { color: var(--color-text-ink-muted); }
+
+.company-tile__fact-value {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--color-text-bright);
+  font-feature-settings: "tnum";
+  margin: 0;
+}
+body.paper .company-tile__fact-value { color: var(--color-text-ink); }
+
+/* No image in here on purpose — the tile directly above already shows this
+   company's photo, and repeating it added ~340px of height plus a large dead
+   gap under the left column. */
+.company-tile__aside {
+  display: flex;
+  flex-direction: column;
+}
+.company-tile__cta { align-self: flex-start; margin-top: auto; }
+
+/* ============================================================
+   4b. Staggered entrance
+   ============================================================ */
+
+/* `is-armed` is added by JS, so a scripting failure leaves the tiles visible
+   instead of clipped to nothing. The stagger index is set as --tile-delay. */
+.companies-wall__grid.is-armed .company-tile { clip-path: inset(0 0 101% 0); }
+.companies-wall__grid.is-armed.is-revealed .company-tile {
+  animation: tile-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) var(--tile-delay, 0ms) both;
+}
+@keyframes tile-rise {
+  from { clip-path: inset(0 0 101% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ============================================================
+   5. Responsive — mirrors the industries.css breakpoints
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .companies-wall__grid { grid-template-columns: repeat(2, 1fr); }
+  .company-tile__panel-body { grid-template-columns: 1fr; }
+  .companies-wall__cinematic { height: 160vh; height: 160svh; }
+}
+
+@media (max-width: 640px) {
+  .companies-wall__scrim {
+    background: linear-gradient(
+      to top,
+      rgba(14, 16, 20, 0.95) 0%,
+      rgba(14, 16, 20, 0.82) 45%,
+      rgba(14, 16, 20, 0.45) 80%,
+      rgba(14, 16, 20, 0.25) 100%
+    );
+  }
+  .companies-wall__count { top: calc(var(--header-height) + var(--space-3)); }
+}
+
+@media (max-width: 560px) {
+  .companies-wall__grid { grid-template-columns: 1fr; }
+  .company-tile { min-height: 220px; }
+  .companies-wall__cinematic { height: 140vh; height: 140svh; }
+  .company-tile__panel-body { padding: var(--space-5) var(--space-5) var(--space-6); }
+}
+
+/* ============================================================
+   6. Reduced motion
+   ============================================================ */
+
+/* The scrolly section this replaces left `.company-fold { min-height: 100vh }`
+   in place under reduced motion, so those users still scrolled the full
+   N x 100vh — past a frozen canvas. Here the cinematic collapses to a single
+   static panel, the same treatment the hero already gets in pages/home.css. */
+@media (prefers-reduced-motion: reduce) {
+  .companies-wall__cinematic {
+    height: auto;
+  }
+  .companies-wall__sticky {
+    position: relative;
+    height: 72vh;
+    min-height: 460px;
+  }
+  .companies-wall__cue { display: none; }
+
+  .company-tile::before { filter: grayscale(0.15) brightness(0.92); }
+  .company-tile__glow { display: none; }
+  .companies-wall__grid:hover .company-tile:not(:hover) { opacity: 1; }
+
+  .companies-wall__grid.is-armed .company-tile { clip-path: none; }
+  .companies-wall__grid.is-armed.is-revealed .company-tile { animation: none; }
+  .company-tile__frame rect { stroke-dashoffset: 0; stroke-opacity: 0.35; transition: none; }
+  .company-tile__panel-body > * { opacity: 1; transform: none; transition: none; }
+}

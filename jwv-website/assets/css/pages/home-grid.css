@@ -1,0 +1,703 @@
+/* ============================================================================
+   home-grid.css — page-scoped design layer for index-grid.html
+   ============================================================================
+
+   Direction: "Machined Editorial". A precision-instrument reading of the brand —
+   Swiss technical manual crossed with a film title sequence. Hairline rules,
+   spec-sheet metadata in mono, one display serif used at real scale, and a
+   single easing family so every movement feels like the same machine.
+
+   Rules this layer follows:
+   - Everything is scoped to `body.page-grid`. Nothing here can reach index.html
+     or the inner pages, which share the same component stylesheets.
+   - Loads last in <head>, so it wins on specificity ties with home.css.
+   - Reveals are masked (clip / translate inside overflow), never bare opacity
+     fades. Fades read as "a website"; masks read as "designed".
+   - Type carries the hierarchy. No cards or frosted panels bolted around text.
+   ========================================================================== */
+
+body.page-grid {
+  /* Typography swap. Archivo is a grotesque with industrial bones; IBM Plex
+     Mono replaces the system mono stack, which upgrades every eyebrow, label
+     and data readout on the page in one declaration. Fraunces stays. */
+  --font-sans: 'Archivo', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* One easing family. --ease-out already exists; these extend it. */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-machine: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-reveal: 1100ms;
+
+  --rule: rgba(244, 241, 234, 0.12);
+  --rule-strong: rgba(244, 241, 234, 0.24);
+}
+body.page-grid.paper {
+  --rule: rgba(26, 24, 23, 0.14);
+  --rule-strong: rgba(26, 24, 23, 0.28);
+}
+
+/* Tighter, more deliberate tracking across the page */
+body.page-grid { letter-spacing: -0.005em; }
+
+body.page-grid .eyebrow,
+body.page-grid .by-numbers__label,
+body.page-grid .site-footer__col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   1. Filmic texture — grain + vignette over everything
+   ============================================================ */
+
+.film {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* SVG turbulence as a tiled data URI, nudged between 8 positions so the grain
+   crawls the way film does rather than sitting still like a texture overlay. */
+.film__grain {
+  position: absolute;
+  inset: -150%;
+  width: 400%;
+  height: 400%;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-drift 900ms steps(1) infinite;
+}
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  12%  { transform: translate(-3%, -4%); }
+  25%  { transform: translate(2%, -2%); }
+  37%  { transform: translate(-2%, 3%); }
+  50%  { transform: translate(3%, 1%); }
+  62%  { transform: translate(-1%, -3%); }
+  75%  { transform: translate(2%, 2%); }
+  87%  { transform: translate(-3%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+.film__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 42%, rgba(0, 0, 0, 0.42) 100%);
+}
+body.page-grid.paper .film__grain { opacity: 0.035; }
+body.page-grid.paper .film__vignette {
+  background: radial-gradient(120% 90% at 50% 45%, transparent 48%, rgba(90, 78, 60, 0.16) 100%);
+}
+
+/* ============================================================
+   2. Reticle cursor
+   ============================================================ */
+
+.reticle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  /* Deliberately no mix-blend-mode. `difference` looked clever on flat panels
+     but turned to mud over the photographic tiles, which is exactly where the
+     labelled state matters most. Solid colours with a paper variant instead. */
+  --reticle-ink: #F4F1EA;
+  --reticle-on-ink: #0E1014;
+}
+body.page-grid.paper .reticle {
+  --reticle-ink: #1A1817;
+  --reticle-on-ink: #F6F4EF;
+}
+.reticle.is-live { opacity: 1; }
+.reticle.is-down .reticle__ring { transform: scale(0.86); }
+
+/* Crosshair ring — the "instrument" read */
+.reticle__ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1px solid var(--reticle-ink);
+  border-radius: 50%;
+  transition: width 420ms var(--ease-expo), height 420ms var(--ease-expo),
+              margin 420ms var(--ease-expo), background 300ms var(--ease-out),
+              border-color 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+.reticle__dot {
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--reticle-ink);
+  transition: opacity 240ms var(--ease-out);
+}
+.reticle__label {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--reticle-on-ink);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out), transform 420ms var(--ease-expo);
+}
+
+/* Over an interactive target the ring inflates into a filled chip and labels
+   itself with whatever the element declared in data-cursor. */
+.reticle.is-active .reticle__ring {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  background: var(--reticle-ink);
+  border-color: transparent;
+}
+.reticle.is-active .reticle__dot { opacity: 0; }
+.reticle.is-active .reticle__label { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+body.page-grid.has-reticle,
+body.page-grid.has-reticle a,
+body.page-grid.has-reticle button,
+body.page-grid.has-reticle [data-cursor] { cursor: none; }
+
+/* ============================================================
+   3. Scroll progress + section readout
+   ============================================================ */
+
+.scan {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 190;
+  pointer-events: none;
+  background: transparent;
+}
+.scan__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-michaelson), var(--color-accent) 45%, var(--color-altaris));
+}
+
+.readout {
+  position: fixed;
+  left: clamp(1.25rem, 3vw, 2.5rem);
+  bottom: clamp(1.25rem, 3vw, 2rem);
+  z-index: 190;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+.readout.is-live { opacity: 1; }
+.readout__index { color: var(--color-text-bright); font-variant-numeric: tabular-nums; }
+.readout__sep { opacity: 0.4; }
+.readout__name {
+  margin-left: 0.35rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--rule);
+  color: var(--color-text-bright);
+}
+body.page-grid.paper .readout__index,
+body.page-grid.paper .readout__name { color: var(--color-text-ink); }
+body.page-grid.paper .readout { color: var(--color-text-ink-muted); }
+@media (max-width: 900px) { .readout { display: none; } }
+
+/* ============================================================
+   4. Boot sequence (preloader)
+   ============================================================ */
+
+/* Hidden unless the `js` class is on <html>, which an inline script in <head>
+   sets before first paint. Without that gate a visitor with JS disabled — or
+   any failure to load the module — would be left staring at two black panels
+   with nothing to lift them. */
+.boot { display: none; }
+html.js .boot {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+}
+
+/* Two panels that split apart to reveal the page — a curtain, not a fade. */
+.boot__panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50.5%;
+  background: #0B0D10;
+  transition: transform 1000ms var(--ease-expo);
+}
+.boot__panel--top { top: 0; }
+.boot__panel--bottom { bottom: 0; }
+.boot.is-parting .boot__panel--top { transform: translateY(-100%); }
+.boot.is-parting .boot__panel--bottom { transform: translateY(100%); }
+
+.boot__inner {
+  position: absolute;
+  inset: 0;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  transition: opacity 420ms var(--ease-out);
+}
+.boot.is-parting .boot__inner { opacity: 0; }
+
+.boot__meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(142, 139, 131, 0.9);
+  opacity: 0;
+  animation: boot-meta 900ms var(--ease-expo) 120ms forwards;
+}
+.boot__meta--tr, .boot__meta--br { text-align: right; }
+.boot__meta--bl, .boot__meta--br { align-self: end; }
+@keyframes boot-meta { to { opacity: 1; } }
+
+.boot__center {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.boot__count {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.15em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(5rem, 17vw, 15rem);
+  line-height: 0.8;
+  letter-spacing: -0.045em;
+  color: #F4F1EA;
+  font-variant-numeric: tabular-nums;
+}
+.boot__count-pct {
+  font-family: var(--font-mono);
+  font-size: 0.09em;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  transform: translateY(0.6em);
+}
+.boot__rule {
+  display: block;
+  width: min(46vw, 460px);
+  height: 1px;
+  background: rgba(244, 241, 234, 0.16);
+  overflow: hidden;
+}
+.boot__rule-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--color-accent);
+}
+body.page-grid.paper .boot__panel { background: #F2EFE8; }
+body.page-grid.paper .boot__count { color: #1A1817; }
+body.page-grid.paper .boot__rule { background: rgba(26, 24, 23, 0.16); }
+
+/* ============================================================
+   5. Kinetic type — masked word reveals
+   ============================================================ */
+
+/* Word-level rather than line-level: each word masks independently, so the
+   effect survives rewrapping at any viewport without re-measuring.
+
+   Every "hidden until revealed" state on this page hangs off `.js-motion`,
+   which grid-experience.js sets on <body> only once it is running. If the
+   module fails to load, nothing is ever hidden and the page renders plainly —
+   the alternative is a blank page of invisible headings. */
+.kw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Room for descenders so `g`/`y` are not clipped by the mask */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.js-motion .kw__i {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform var(--dur-reveal) var(--ease-expo);
+  transition-delay: var(--kd, 0ms);
+  will-change: transform;
+}
+.js-motion [data-kinetic].is-revealed .kw__i { transform: translateY(0); }
+
+/* ============================================================
+   6. Colour zones — the background must not stay one flat value
+   ============================================================ */
+
+body.page-grid .zone { position: relative; }
+body.page-grid .zone--deep { background: var(--color-bg-deepest); }
+body.page-grid .zone--lift {
+  background:
+    radial-gradient(90% 120% at 12% 0%, rgba(176, 122, 53, 0.09), transparent 62%),
+    var(--color-bg-mid);
+}
+body.page-grid.paper .zone--deep { background: var(--color-bg-paper); }
+body.page-grid.paper .zone--lift {
+  background:
+    radial-gradient(90% 120% at 12% 0%, rgba(176, 122, 53, 0.12), transparent 62%),
+    var(--color-bg-paper-soft);
+}
+
+/* ============================================================
+   7. Header
+   ============================================================ */
+
+body.page-grid .site-nav__link {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   8. Hero
+   ============================================================ */
+
+body.page-grid .hero-grid { grid-template-columns: minmax(0, 1fr); }
+body.page-grid .hero-text { max-width: min(100%, 880px); }
+
+body.page-grid .hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+body.page-grid .hero-eyebrow::before {
+  content: "";
+  width: 46px;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  animation: rule-draw 900ms var(--ease-expo) 200ms forwards;
+}
+@keyframes rule-draw { to { transform: scaleX(1); } }
+
+body.page-grid .hero-headline {
+  font-size: clamp(2.75rem, 6.6vw, 6.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.038em;
+  font-weight: 400;
+}
+body.page-grid .hero-headline em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-accent);
+}
+body.page-grid .hero-sub {
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  line-height: 1.55;
+  max-width: 48ch;
+}
+
+/* Engineered data strip along the base of the hero */
+.hero-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Must clear --z-hero-frames (5), which the canvas and its fallback sit on,
+     or the strip renders underneath the artwork. */
+  z-index: var(--z-hero-text);
+  border-top: 1px solid var(--rule);
+  background: linear-gradient(to top, rgba(11, 13, 16, 0.72), transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.hero-strip__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.hero-strip__cell {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 1.1rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(214, 210, 200, 0.72);
+  border-left: 1px solid var(--rule);
+  padding-left: 1.25rem;
+}
+.hero-strip__cell:first-child { border-left: 0; padding-left: 0; }
+.hero-strip__cell b {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #F4F1EA;
+  font-variant-numeric: tabular-nums;
+}
+.hero-strip__cell--cue { justify-content: flex-end; gap: 0.9rem; }
+.hero-strip__line {
+  display: block;
+  width: 54px;
+  height: 1px;
+  background: var(--color-accent);
+  transform-origin: 0 50%;
+  animation: cue-sweep 2.4s var(--ease-in-out) infinite;
+}
+@keyframes cue-sweep {
+  0%, 100% { transform: scaleX(0.25); opacity: 0.45; }
+  50%      { transform: scaleX(1); opacity: 1; }
+}
+@media (max-width: 900px) {
+  .hero-strip__inner { grid-template-columns: repeat(2, 1fr); }
+  .hero-strip__cell:nth-child(3) { border-left: 0; padding-left: 0; }
+  .hero-strip__cell--cue { display: none; }
+}
+@media (max-width: 560px) {
+  .hero-strip__inner { grid-template-columns: 1fr 1fr; }
+  .hero-strip__cell:nth-child(n+3) { display: none; }
+}
+
+/* ============================================================
+   9. By the numbers — numerals at real scale
+   ============================================================ */
+
+body.page-grid .by-numbers__heading {
+  font-size: clamp(2rem, 4.4vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+body.page-grid .stats-band__value,
+body.page-grid .by-numbers__suffix {
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 6.4vw, 5.75rem);
+  font-weight: 300;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+body.page-grid .by-numbers__suffix {
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  color: var(--color-accent);
+}
+body.page-grid .by-numbers__index {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.24em;
+  color: var(--color-text-muted);
+}
+body.page-grid .by-numbers__stat {
+  transition: background 500ms var(--ease-out);
+}
+
+/* ============================================================
+   10. Who we are — masked image reveal + parallax
+   ============================================================ */
+
+body.page-grid.js-motion .who-we-are__media {
+  overflow: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1400ms var(--ease-expo);
+  will-change: clip-path;
+}
+body.page-grid.js-motion .who-we-are__media.is-revealed { clip-path: inset(0 0 0 0); }
+body.page-grid.js-motion .who-we-are__photo {
+  transform: scale(1.12);
+  transition: transform 1800ms var(--ease-expo);
+}
+body.page-grid.js-motion .who-we-are__media.is-revealed .who-we-are__photo { transform: scale(1); }
+body.page-grid .who-we-are__heading {
+  font-size: clamp(1.75rem, 3.4vw, 2.9rem);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
+/* ============================================================
+   11. Oversized scroll-driven band
+   ============================================================ */
+
+.band {
+  overflow: hidden;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  border-block: 1px solid var(--rule);
+  background: var(--color-bg-deepest);
+}
+body.page-grid.paper .band { background: var(--color-bg-paper); }
+
+.band__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.band__set {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(3.5rem, 11.5vw, 11rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  padding-right: 0.25em;
+  /* Outlined rather than filled — reads as a technical drawing, and keeps a
+     11vw wordmark from overwhelming everything around it. */
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 241, 234, 0.34);
+}
+.band__set i {
+  font-style: normal;
+  -webkit-text-stroke: 1px var(--color-accent);
+  padding-inline: 0.12em;
+}
+body.page-grid.paper .band__set { -webkit-text-stroke-color: rgba(26, 24, 23, 0.32); }
+
+/* ============================================================
+   12. Approach — the pull quote is a moment
+   ============================================================ */
+
+body.page-grid .approach__quote {
+  font-size: clamp(1.5rem, 3.2vw, 2.85rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+}
+body.page-grid .approach__attribution {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+body.page-grid .approach h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   13. Industries + partners
+   ============================================================ */
+
+body.page-grid .industries__heading {
+  font-size: clamp(2rem, 4.4vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+body.page-grid .industry-tile__num,
+body.page-grid .industries__meta {
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+}
+body.page-grid .industry-tile__name { letter-spacing: -0.03em; }
+
+body.page-grid .partners__heading {
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+body.page-grid .partners__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   14. CTA + magnetic buttons
+   ============================================================ */
+
+body.page-grid .cta-block__heading {
+  font-size: clamp(1.85rem, 4vw, 3.25rem);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+[data-magnetic] {
+  will-change: transform;
+  transition: transform 600ms var(--ease-expo);
+}
+body.page-grid .btn {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   15. Footer wordmark
+   ============================================================ */
+
+/* Filled, not outlined. An outline on Fraunces at 300 weight and 21rem draws
+   two hairlines per stem, which reads as a broken render rather than a
+   watermark — the band above can carry the outline treatment because it is set
+   at a size where the counters stay open. */
+.footer-mark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(5rem, 24vw, 21rem);
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  text-align: center;
+  color: rgba(244, 241, 234, 0.045);
+  margin-top: clamp(1rem, 4vw, 3rem);
+  user-select: none;
+}
+body.page-grid.paper .footer-mark { color: rgba(26, 24, 23, 0.05); }
+
+/* ============================================================
+   16. Reduced motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .film__grain { animation: none; }
+  .kw__i { transform: none !important; }
+  .kw { overflow: visible; }
+  body.page-grid .who-we-are__media { clip-path: none; }
+  body.page-grid .who-we-are__photo { transform: none; }
+  .hero-strip__line { animation: none; transform: scaleX(1); }
+  body.page-grid .hero-eyebrow::before { animation: none; transform: scaleX(1); }
+  .reticle { display: none; }
+  body.page-grid.has-reticle,
+  body.page-grid.has-reticle a,
+  body.page-grid.has-reticle button,
+  body.page-grid.has-reticle [data-cursor] { cursor: auto; }
+  .boot { display: none; }
+}
+
+/* Touch devices never get the reticle */
+@media (hover: none), (pointer: coarse) {
+  .reticle { display: none; }
+}
