@@ -34,7 +34,9 @@ body.paper .form-label { color: var(--color-text-ink-muted); }
 .form-select {
   width: 100%;
   padding: 0.85rem 1rem;
-  background: transparent;
+  /* background-color, not the `background` shorthand: the shorthand would reset
+     background-image, and .form-select below paints its chevron that way. */
+  background-color: transparent;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   color: var(--color-text-bright);
@@ -50,12 +52,45 @@ body.paper .form-select {
   border-color: var(--color-border-ink-strong);
 }
 
+/* The select's own text is near-white for the dark form, but the native option
+   list is drawn by the OS on a white background — so the options inherited
+   white-on-white and were unreadable. These colours are deliberately literal
+   rather than tokens: the popup stays white in BOTH themes, so the text must
+   not flip to a light value when the paper theme redefines the tokens. */
+.form-select option {
+  background-color: #FFFFFF;
+  color: #1A1817;
+}
+
+/* Chevron alignment.
+   The native select arrow is drawn by the browser and cannot be positioned with
+   CSS — its vertical offset is whatever the platform decides, which is what
+   looked off-centre. Suppressing it and painting our own as a background image
+   hands the alignment to `background-position`, where the `center` keyword
+   centres the icon against the field's full height exactly: equal space above
+   and below at any field height, with no magic numbers to drift.
+   Horizontally it sits 1rem from the right edge, the same 1rem as the field's
+   own side padding, so the spacing reads as consistent. padding-right keeps the
+   selected text clear of it. Size, border and typography are untouched. */
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238E8B83' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px 8px;
+  padding-right: 2.75rem;
+}
+
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
   border-color: var(--color-accent);
-  background: rgba(176, 122, 53, 0.05);
+  /* background-color, not `background` — see the note above; the shorthand here
+     would drop the select's chevron on focus. */
+  background-color: rgba(176, 122, 53, 0.05);
 }
 
 .form-textarea {

@@ -32,6 +32,18 @@ body.paper .partnership-quote__lead { color: var(--color-text-ink-soft); }
 }
 body.paper .partnership-quote__body { color: var(--color-text-ink-muted); }
 
+/* Centred variant — mirrors the centred statement block on the about page:
+   auto inline margins centre the block in its container, text-align centres the
+   heading and paragraphs inside it, and the body paragraphs need their own auto
+   margins because they carry a narrower max-width than the block. */
+.partnership-quote--centered {
+  margin-inline: auto;
+  text-align: center;
+}
+.partnership-quote--centered .partnership-quote__body {
+  margin-inline: auto;
+}
+
 /* ===== Criteria card (used inside .criteria-grid which lives in inner.css) ===== */
 .criteria-card {
   padding: var(--space-5);

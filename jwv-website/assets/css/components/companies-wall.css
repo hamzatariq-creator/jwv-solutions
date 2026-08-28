@@ -190,6 +190,25 @@
   padding-block: var(--space-8) var(--section-padding-y);
 }
 
+/* --- Portfolio header, above the tile grid ---
+   Matches the major-section heading scale used elsewhere on this page
+   (industries, CTA): same clamp, tracking and leading, so the card grid reads
+   as a titled section rather than a bare row of tiles. */
+.companies-wall__portfolio-header {
+  margin-bottom: var(--space-7);
+  text-align: center;
+}
+.companies-wall__portfolio-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  font-weight: 400;
+  color: var(--color-text-bright);
+  margin: var(--space-3) 0 0;
+}
+body.paper .companies-wall__portfolio-heading { color: var(--color-text-ink); }
+
 /* Tiles and panels are BOTH direct children of the wall, alternating
    tile / panel / tile / panel in source order. Keeping the panel a sibling
    rather than a child lets it take `grid-column: 1 / -1` and unfold as a
@@ -216,8 +235,10 @@ body.paper .companies-wall__grid {
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-2);
-  min-height: 268px;
-  padding: var(--space-5);
+  /* Taller than the original 268px so the portfolio cards carry real weight
+     and give the logos room to sit above the tagline. */
+  min-height: 380px;
+  padding: var(--space-6);
   overflow: hidden;
   isolation: isolate;
   cursor: pointer;
@@ -404,6 +425,46 @@ body.paper .companies-wall__grid {
   line-height: 1.02;
   color: #F4F1EA;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* Company logo badge — occupies the slot the 01/02/03 number badge used, and
+   keeps that badge's glass-pill treatment (which the + toggle opposite it still
+   uses) so the top row of the tile reads unchanged. The tinted, blurred plate
+   is what guarantees the white logo marks stay legible over any part of the
+   photo underneath — the upper-left of these images runs from near-black to a
+   bright sunset glow, so a bare logo could not be relied on.
+   Sized by height with `width: auto` so each lockup keeps its own aspect ratio.
+   Decorative: the company name is still present as text in the heading below,
+   so the img is aria-hidden with an empty alt rather than repeating it. */
+.company-tile__logo {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  /* No plate behind the logo — no background, border, border-radius, blur or
+     padding. The artwork sits directly on the card's image.
+
+     Width and height are both set EXPLICITLY; `width: auto` is what used to
+     clip these logos. The files declare no width/height attributes, so the
+     browser's intrinsic size for them is its 300px default paired with a
+     ROUNDED height (300x88). That ratio, 3.4091, is not the viewBox's true
+     3.4029, so an auto-width box came out a fraction too narrow and the
+     rightmost glyph — the "S" of ALTARIS, the "N" of MICHAELSON, the "y" of
+     "Company" — landed outside the content box and was clipped away.
+
+     A fixed box plus object-fit: contain letterboxes each lockup whole inside
+     it, at its own aspect ratio, so nothing is ever cropped. object-position
+     pins them to the left so all three start on the same vertical line despite
+     their slightly different ratios. */
+  width: 200px;
+  height: 68px;
+  object-fit: contain;
+  object-position: left center;
+  overflow: visible;
+  /* Takes over the job the plate was doing: holding the white marks clear of
+     whatever is in the photo behind them. This is a shadow on the artwork, not
+     a container around it — the same device .company-tile__name and the
+     industry tiles already use via text-shadow. */
+  filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 0.8));
 }
 
 .company-tile .company-tile__tagline {
@@ -681,7 +742,7 @@ body.paper .company-tile__fact-value { color: var(--color-text-ink); }
 
 @media (max-width: 560px) {
   .companies-wall__grid { grid-template-columns: 1fr; }
-  .company-tile { min-height: 220px; }
+  .company-tile { min-height: 300px; }
   .companies-wall__cinematic { height: 140vh; height: 140svh; }
   .company-tile__panel-body { padding: var(--space-5) var(--space-5) var(--space-6); }
 }

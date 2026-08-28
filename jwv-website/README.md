@@ -54,6 +54,31 @@ jwv-website/
 └── partials/               # canonical reference snippets (paste into each page)
 ```
 
+## Running locally
+
+There is no build step, but the site cannot be opened by double-clicking
+`index.html`. Every asset path is root-absolute (`/assets/...`) and the JS entry
+points are ES modules, which browsers refuse to load from a `file://` origin.
+Serve the `jwv-website` directory over HTTP instead.
+
+A zero-dependency server ships with the repo (uses .NET's HttpListener via
+Windows PowerShell — no Node or Python install required):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File serve.ps1
+```
+
+Then open <http://localhost:8080/>. Add `-Port 3000` to change the port, and
+press Ctrl+C to stop.
+
+Any other static server works equally well, as long as its document root is
+`jwv-website`:
+
+```bash
+npx serve jwv-website          # Node
+python -m http.server -d jwv-website 8080   # Python 3
+```
+
 ## Editing pages
 
 There is no template engine. Header and footer markup is repeated in every page. To change navigation or footer site-wide:

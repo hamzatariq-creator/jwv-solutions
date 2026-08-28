@@ -1,9 +1,27 @@
 /* form.js — submits forms via fetch (Formspree-compatible).
  * Forms are progressive: if JS fails, normal POST submission still works.
  * Adds a structured success/error message inline. */
+/* Prefill a form's selects from the query string, so the CTAs that deep-link
+ * into this form land the user on the right subject — partnerships.html points
+ * at /contact.html?topic=partnerships. Only an exact match against an existing
+ * <option> is honoured, so an unknown or hand-edited value quietly leaves the
+ * default selection alone. */
+function prefillFromQuery(form) {
+  const params = new URLSearchParams(window.location.search);
+  if (![...params.keys()].length) return;
+
+  form.querySelectorAll('select[name]').forEach((select) => {
+    const wanted = params.get(select.name);
+    if (wanted === null) return;
+    const match = [...select.options].some((option) => option.value === wanted);
+    if (match) select.value = wanted;
+  });
+}
+
 export function initForms() {
   document.querySelectorAll('form[data-form]').forEach((form) => {
     const status = form.querySelector('.form-status');
+    prefillFromQuery(form);
     form.addEventListener('submit', async (e) => {
       // Allow normal submission as fallback if action is set and JS path fails
       if (!form.action || form.action === '') return;

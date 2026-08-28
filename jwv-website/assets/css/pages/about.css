@@ -78,6 +78,41 @@ body.paper .we-are-block ul li strong { color: var(--color-text-ink); }
 /* ============================================================
    Principles — numbered grid of operating principles
    ============================================================ */
+/* ------------------------------------------------------------------
+   What we are — single wide statement block
+   ------------------------------------------------------------------
+   Replaces the two-card "we are / we are not" contrast grid. One block, with
+   the opening line carried as the section's h2 so the emphasis is structural
+   rather than a styled paragraph. The measure is capped so the copy stays
+   readable instead of spreading the full container width. */
+.about-statement {
+  /* Centred editorial block: the measure keeps the lines readable, the auto
+     inline margins centre the block in the container, and text-align centres
+     the eyebrow, heading and both paragraphs within it. */
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
+.about-statement__lead {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.05rem);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  font-weight: 400;
+  color: var(--color-text-bright);
+  margin: 0 0 var(--space-5) 0;
+}
+body.paper .about-statement__lead { color: var(--color-text-ink); }
+
+.about-statement > p {
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.about-statement > p + p { margin-top: var(--space-5); }
+body.paper .about-statement > p { color: var(--color-text-ink-muted); }
+
 .principles {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

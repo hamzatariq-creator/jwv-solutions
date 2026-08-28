@@ -542,9 +542,45 @@ body.page-grid.js-motion .who-we-are__photo {
 }
 body.page-grid.js-motion .who-we-are__media.is-revealed .who-we-are__photo { transform: scale(1); }
 body.page-grid .who-we-are__heading {
-  font-size: clamp(1.75rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.6rem, 2.9vw, 2.5rem);
   letter-spacing: -0.03em;
   line-height: 1.06;
+}
+
+/* Balance pass for the two-paragraph body copy.
+   The copy column runs much taller than a 4:3 photo can match, which left the
+   image stranded in the middle of a tall column. Three adjustments, all
+   geometry only — no type, colour, or animation changes:
+   1. Tighten paragraph-to-paragraph spacing (space-4 instead of the column's
+      space-5) so the two paragraphs read as one block.
+   2. Stretch the photo to the height of the copy column so both columns share
+      a top and bottom edge, bounded so the landscape photo is never cropped
+      into an extreme portrait.
+   Mobile keeps the original centred 4:3 treatment — this only applies to the
+   two-column layout. */
+body.page-grid .who-we-are__body + .who-we-are__body {
+  margin-top: calc(var(--space-4) - var(--space-5));
+}
+
+@media (min-width: 881px) {
+  body.page-grid .who-we-are {
+    align-items: stretch;
+  }
+  body.page-grid .who-we-are__media {
+    display: flex;
+    align-self: stretch;
+  }
+  body.page-grid .who-we-are__photo {
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    min-height: 30rem;
+    /* Generous ceiling only — the flex stretch is already bounded by the copy
+       column's height. Keeping it above that height matters: any cap that bites
+       leaves a gap at the bottom of the media column, which exposes the offset
+       accent card as a band instead of the thin top-left sliver it is meant to
+       be. */
+    max-height: 52rem;
+  }
 }
 
 /* ============================================================
@@ -588,11 +624,25 @@ body.page-grid.paper .band__set { -webkit-text-stroke-color: rgba(26, 24, 23, 0.
    12. Approach — the pull quote is a moment
    ============================================================ */
 
+/* The heading is three short sentences in a 5/12 column. At the inherited h2
+   size "Experienced operators." overflows its line and breaks mid-phrase, so
+   the size steps down just far enough for each sentence to hold its own line.
+   Scoped to this heading only — every other h2 on the page is untouched. */
+body.page-grid .approach #approach-heading {
+  font-size: clamp(1.85rem, 3vw, 2.5rem);
+}
+
+/* The statement is now a two-sentence paragraph rather than a short pull
+   quote, so it steps down in size to sit below the left-hand heading in the
+   hierarchy instead of competing with it. Line-height opens slightly because
+   the text now runs to several lines and needs the leading to stay readable.
+   The wider max-width keeps it from becoming a narrow column of short lines. */
 body.page-grid .approach__quote {
-  font-size: clamp(1.5rem, 3.2vw, 2.85rem);
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.2rem, 2.05vw, 1.75rem);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
   font-weight: 300;
+  max-width: 40ch;
 }
 body.page-grid .approach__attribution {
   font-family: var(--font-mono);
@@ -608,14 +658,34 @@ body.page-grid .approach h4 {
   color: var(--color-accent);
 }
 
+/* Four principles in a single row. The shared .grid--3 uses auto-fit with a
+   280px minimum, which needs 1216px for four columns and so wraps the fourth
+   onto its own line in the 1200px container. Pinning four equal columns keeps
+   them on one row; the slightly tighter gap buys the extra width back. Below
+   the split breakpoint this is not applied, so the cards fall back to the
+   shared responsive auto-fit behaviour. */
+@media (min-width: 900px) {
+  body.page-grid .approach .grid--3 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+}
+
 /* ============================================================
    13. Industries + partners
    ============================================================ */
 
+/* This slot now carries an introductory sentence rather than a short display
+   headline. Display sizing would run it to eight-plus lines of oversized type
+   and swamp the section, so it steps down to lead-paragraph scale: normal
+   letter-spacing, readable leading, and a wider measure than the component's
+   22ch so it reads as a paragraph instead of a narrow column. Still comfortably
+   larger than the eyebrow and sector count it sits between. */
 body.page-grid .industries__heading {
-  font-size: clamp(2rem, 4.4vw, 3.6rem);
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  max-width: 46ch;
 }
 body.page-grid .industry-tile__num,
 body.page-grid .industries__meta {

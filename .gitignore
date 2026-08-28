@@ -11,3 +11,7 @@
 *.log
 .cache/
 .tmp/
+
+# Local dev tooling (not part of the deployed site)
+.claude/
+serve.ps1

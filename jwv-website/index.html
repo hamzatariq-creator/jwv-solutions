@@ -6,6 +6,14 @@
   <meta name="theme-color" content="#0E1014">
   <meta name="format-detection" content="telephone=no">
 
+  <!-- Variant page for client review — kept out of search so it never competes
+       with the real homepage. Also absent from sitemap.xml by design. -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Marks that scripting is available, before first paint. The boot overlay
+       is gated on this so a no-JS visitor never gets a curtain that can't lift. -->
+  <script>document.documentElement.classList.add('js');</script>
+
   <!-- Theme bootstrap — runs before paint to avoid theme flash -->
   <script>(function(){try{var s=localStorage.getItem('jwv-theme');var pref=s||'dark';if(pref==='light'){document.documentElement.classList.add('paper');var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#F6F4EF');}}catch(e){}})();</script>
 
@@ -28,7 +36,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap">
+  <!-- Fraunces stays as the display face; Archivo replaces Inter for UI/body and
+       IBM Plex Mono replaces the system mono stack for all technical metadata. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
   <link rel="stylesheet" href="/assets/css/reset.css">
   <link rel="stylesheet" href="/assets/css/tokens.css">
@@ -39,15 +49,18 @@
   <link rel="stylesheet" href="/assets/css/components/header.css">
   <link rel="stylesheet" href="/assets/css/components/footer.css">
   <link rel="stylesheet" href="/assets/css/components/button.css">
-  <link rel="stylesheet" href="/assets/css/components/subsidiary-card.css">
   <link rel="stylesheet" href="/assets/css/components/form.css">
   <link rel="stylesheet" href="/assets/css/components/stats-band.css">
   <link rel="stylesheet" href="/assets/css/components/by-numbers.css">
   <link rel="stylesheet" href="/assets/css/components/industries.css">
   <link rel="stylesheet" href="/assets/css/components/who-we-are.css">
   <link rel="stylesheet" href="/assets/css/components/partners-marquee.css">
-  <link rel="stylesheet" href="/assets/css/components/companies-scrolly.css">
+  <!-- companies-wall.css replaces companies-scrolly.css on this page -->
+  <link rel="stylesheet" href="/assets/css/components/companies-wall.css">
   <link rel="stylesheet" href="/assets/css/pages/home.css">
+  <!-- Page-scoped design layer. Loads last so it can override shared components
+       for this page only; everything inside is scoped to body.page-grid. -->
+  <link rel="stylesheet" href="/assets/css/pages/home-grid.css">
 
   <script type="application/ld+json">
   {
@@ -64,25 +77,44 @@
   }
   </script>
 </head>
-<body class="page-home">
-  <div class="preloader" aria-hidden="true">
-    <div class="preloader__center">
-      <span class="preloader__top-rule"></span>
-      <div class="preloader__logo">
-        <img class="preloader__img preloader__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64">
-        <img class="preloader__img preloader__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64">
+<body class="page-home page-grid">
+
+  <!-- Cinematic preloader. Deliberately NOT `.preloader` — the shared component
+       is still linked in <head> and a different class keeps them from colliding.
+       Driven by grid-preloader.js, which main-grid.js calls instead of the
+       shared initPreloader(). -->
+  <div class="boot" aria-hidden="true">
+    <div class="boot__panel boot__panel--top"></div>
+    <div class="boot__panel boot__panel--bottom"></div>
+    <div class="boot__inner">
+      <div class="boot__meta boot__meta--tl">JWV Solutions</div>
+      <div class="boot__meta boot__meta--tr">Operating industrial partners</div>
+      <div class="boot__center">
+        <span class="boot__count"><span class="boot__count-value">0</span><span class="boot__count-pct">%</span></span>
+        <span class="boot__rule"><span class="boot__rule-fill"></span></span>
       </div>
-      <span class="preloader__tagline">
-        <span>Operating</span>
-        <span class="preloader__diamond"></span>
-        <span>Industrial</span>
-        <span class="preloader__diamond"></span>
-        <span>Partners</span>
-      </span>
+      <div class="boot__meta boot__meta--bl">Rhode Island · Connecticut</div>
+      <div class="boot__meta boot__meta--br">Preparing the index</div>
     </div>
-    <div class="preloader__progress"><span class="preloader__progress-fill"></span></div>
   </div>
-    </div>
+
+  <!-- Filmic texture: fixed grain + vignette over the whole page -->
+  <div class="film" aria-hidden="true"><span class="film__grain"></span><span class="film__vignette"></span></div>
+
+  <!-- Precision reticle cursor (desktop pointer only, injected class by JS) -->
+  <div class="reticle" aria-hidden="true">
+    <span class="reticle__ring"></span>
+    <span class="reticle__dot"></span>
+    <span class="reticle__label"></span>
+  </div>
+
+  <!-- Scroll progress hairline + section readout -->
+  <div class="scan" aria-hidden="true"><span class="scan__fill"></span></div>
+  <div class="readout" aria-hidden="true">
+    <span class="readout__index">01</span>
+    <span class="readout__sep">/</span>
+    <span class="readout__total">08</span>
+    <span class="readout__name">Index</span>
   </div>
 
   <a class="skip-link" href="#main">Skip to content</a>
@@ -91,13 +123,13 @@
     <div class="site-header__inner">
       <a class="site-logo" href="/" aria-label="JWV Solutions home">
         <img class="site-logo__img site-logo__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64" aria-hidden="true">
-      <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
+        <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
       </a>
       <nav class="site-nav" aria-label="Primary">
         <ul class="site-nav__list">
           <li><a class="site-nav__link" href="/" aria-current="page">Home</a></li>
           <li><a class="site-nav__link" href="/about.html">About</a></li>
-        <li><a class="site-nav__link" href="/partnerships.html">Partnerships</a></li>
+          <li><a class="site-nav__link" href="/partnerships.html">Partnerships</a></li>
           <li><a class="site-nav__link" href="/contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -114,7 +146,7 @@
   <main id="main">
 
     <!-- HERO: Pinned scroll-scrub animation. Three streams converge into a polished steel vessel. -->
-    <section class="hero-pin-spacer" aria-label="JWV Solutions hero">
+    <section class="hero-pin-spacer" aria-label="JWV Solutions hero" data-section="Index">
       <div class="hero-sticky">
         <canvas class="hero-canvas" aria-hidden="true"></canvas>
         <img class="hero-fallback" src="/assets/images/hero-frames/hero-three-streams_0001.webp" alt="Three industrial fluid streams converging into a polished steel vessel — representing JWV Solutions and its three operating companies" decoding="async" fetchpriority="high">
@@ -123,31 +155,38 @@
           <div class="hero-grid">
             <div class="hero-text">
               <span class="hero-eyebrow">JWV Solutions</span>
-              <h1 class="hero-headline">Three companies. <em>One partnership.</em></h1>
-              <p class="hero-sub">Operating partners across industrial packaging, specialty lubricants, and hydraulic fluid power — held together quietly, run independently.</p>
+              <h1 class="hero-headline" data-kinetic>Building a Stronger <em>Industrial Future</em></h1>
+              <p class="hero-sub" data-kinetic data-kinetic-delay="260">JVV LLC is an industrial holding company that acquires, operates, and grows specialized manufacturing and industrial businesses. We combine long-term ownership, operational expertise, and disciplined investment to build stronger companies and lasting value.</p>
               <div class="hero-cta">
-                <a class="btn btn--primary" href="/#companies">Meet the companies</a>
-                <a class="link-arrow" href="/about.html">Our approach</a>
+                <a class="btn btn--primary" href="#companies" data-magnetic data-cursor="Companies">Meet the companies</a>
+                <a class="link-arrow" href="/about.html" data-cursor="About">Our approach</a>
               </div>
             </div>
             <div aria-hidden="true"></div>
           </div>
         </div>
 
-        <div class="hero-scroll-cue" aria-hidden="true">Scroll</div>
+        <!-- Engineered data strip along the base of the hero -->
+        <div class="hero-strip" aria-hidden="true">
+          <div class="hero-strip__inner">
+            <span class="hero-strip__cell"><b>03</b> Operating companies</span>
+            <span class="hero-strip__cell"><b>100+</b> Years combined</span>
+            <span class="hero-strip__cell"><b>09</b> Sectors served</span>
+            <span class="hero-strip__cell hero-strip__cell--cue">Scroll<span class="hero-strip__line"></span></span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- BY THE NUMBERS: six-stat data wall — group-level credibility -->
-    <section class="section section--tight" aria-labelledby="by-numbers-heading">
+    <section class="section section--tight zone zone--deep" aria-labelledby="by-numbers-heading" data-section="Scale">
       <div class="container">
         <div class="by-numbers reveal">
-          <div class="by-numbers__header">
+          <div class="by-numbers__header by-numbers__header--centered">
             <div>
               <span class="eyebrow">By the numbers</span>
-              <h2 id="by-numbers-heading" class="by-numbers__heading" style="margin-top: var(--space-3);">A focused group, <em>not a conglomerate</em>.</h2>
+              <h2 id="by-numbers-heading" class="by-numbers__heading" data-kinetic style="margin-top: var(--space-3);">A focused group, <em>not a conglomerate</em>.</h2>
             </div>
-            <p class="by-numbers__lead">Three independent industrial businesses operating from Rhode Island and Connecticut. Every customer relationship, every audit, every quality system — owned by the people who run that subsidiary.</p>
           </div>
 
           <div class="by-numbers__grid reveal--stagger">
@@ -177,9 +216,9 @@
             </div>
             <div class="by-numbers__stat">
               <span class="by-numbers__index">005</span>
-              <div class="by-numbers__row"><span class="stats-band__value" data-target="3">0</span></div>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="2">0</span><span class="by-numbers__suffix">+</span></div>
               <span class="by-numbers__label">Operating locations</span>
-              <p class="by-numbers__desc">Facilities across Rhode Island and Connecticut, serving customers nationwide.</p>
+              <p class="by-numbers__desc">Seven New England Locations</p>
             </div>
             <div class="by-numbers__stat">
               <span class="by-numbers__index">006</span>
@@ -193,183 +232,410 @@
     </section>
 
     <!-- WHO WE ARE: brief narrative + team photo placeholder -->
-    <section class="section" aria-labelledby="who-we-are-heading">
+    <section class="section" aria-labelledby="who-we-are-heading" data-section="Partners">
       <div class="container">
         <div class="who-we-are reveal">
-          <div class="who-we-are__media">
+          <div class="who-we-are__media" data-parallax="-40">
             <div class="who-we-are__photo" style="background-image: url('/assets/images/leadership/team.jpg'); background-position: center;" role="img" aria-label="JWV Solutions partners and operating-company leadership in a working session"></div>
           </div>
           <div class="who-we-are__copy">
             <span class="eyebrow">Who we are</span>
-            <h2 id="who-we-are-heading" class="who-we-are__heading">A small group of operating partners, holding industrial businesses for the long run.</h2>
-            <p class="who-we-are__body">JWV Solutions is the parent of three independent industrial businesses — Altaris Industrial, ARTech Lubricants, and Michaelson Fluid Power. Together, our operating companies serve aerospace, defense, marine, medical, and industrial customers across the United States from facilities in Rhode Island and Connecticut, with over a century of combined operating expertise across specialty packaging, lubricant blending, and hydraulic fluid power.</p>
+            <h2 id="who-we-are-heading" class="who-we-are__heading" data-kinetic>A small group of operating partners, holding industrial businesses for the long run.</h2>
+            <p class="who-we-are__body">JVV Solutions is a long-term industrial holding company focused on acquiring and building specialized manufacturing and technical businesses. Through Altaris Industrial, Artech Lubricants, and Michaelson Fluid Power, we serve critical aerospace, defense, marine, medical, and industrial markets across the United States.</p>
+            <p class="who-we-are__body">Our companies combine more than a century of operating expertise across specialty manufacturing and packaging, engineered lubricants, and hydraulic fluid power systems. We invest with a long-term perspective, preserving the capabilities that make each business successful while providing the resources and leadership to support continued growth.</p>
             <a class="btn btn--primary who-we-are__cta" href="/about.html">About us</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- COMPANIES: pinned scrollytelling section. Right pane is sticky and scrubs an
-         animation across the full section's scroll length. The left pane stacks three
-         "company folds" — each one viewport tall — so as the user scrolls, the visual
-         rotates while the active company's content takes focus. The animation is currently
-         a placeholder (hero frames); swap to ingot frames in companies-scrolly.js once ready. -->
-    <section class="companies-scrolly" id="companies" aria-labelledby="companies-heading" data-active-company="altaris">
+    <!-- COMPANIES: fixed-length ingot cinematic, then every company at once in a
+         grid that lights up on hover and expands in place on click.
+         Replaces the pinned scrollytelling, whose height was companies x 100vh.
+         Adding a company here costs one <article> + one panel and NO extra
+         scrolling through the cinematic. -->
+    <!-- Oversized wordmark band, driven horizontally by scroll position. Acts as
+         the transition into the companies section. -->
+    <section class="band" aria-hidden="true" data-section="Group">
+      <div class="band__track">
+        <span class="band__set">Altaris <i>·</i> ARTech <i>·</i> Michaelson <i>·</i> </span>
+        <span class="band__set">Altaris <i>·</i> ARTech <i>·</i> Michaelson <i>·</i> </span>
+      </div>
+    </section>
 
-      <div class="container companies-scrolly__intro">
-        <div class="section-heading reveal">
-          <span class="eyebrow">Our companies</span>
-          <h2 id="companies-heading">Three independent operating businesses, each focused on what it does best.</h2>
-          <p>Every JWV company keeps its own name, its own customers, and its own way of working. The group exists to support that — not to consolidate it.</p>
+    <section class="companies-wall" id="companies" aria-labelledby="companies-heading" data-section="Companies">
+
+      <div class="companies-wall__cinematic">
+        <div class="companies-wall__sticky">
+          <canvas class="companies-wall__canvas" aria-hidden="true"></canvas>
+          <img class="companies-wall__fallback" src="/assets/images/ingot-frames/ingot-three-facets_0001.webp" alt="Hexagonal industrial ingot — three colored facets representing Altaris, ARTech, and Michaelson" decoding="async">
+          <div class="companies-wall__scrim" aria-hidden="true"></div>
+
+          <div class="companies-wall__intro">
+            <div class="companies-wall__intro-inner">
+              <div class="companies-wall__intro-text">
+                <span class="companies-wall__eyebrow">Our companies</span>
+                <h2 id="companies-heading" class="companies-wall__heading" data-kinetic>Independent operating businesses, each focused on what it does best.</h2>
+                <p class="companies-wall__lede" data-kinetic data-kinetic-delay="220">Every JWV company keeps its own name, its own customers, and its own way of working. The group exists to support that — not to consolidate it.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="companies-wall__count" aria-hidden="true">
+            <span class="companies-wall__count-value">03</span>
+            <span>Companies</span>
+          </div>
+
+          <div class="companies-wall__cue" aria-hidden="true">Scroll to the group</div>
         </div>
       </div>
 
-      <!-- Stage is full-width: sticky canvas + scrolling folds occupy the same grid cell -->
-      <div class="companies-scrolly__stage">
+      <div class="companies-wall__body">
+        <div class="container">
 
-        <!-- Sticky canvas — covers the full viewport during pinning -->
-        <div class="companies-scrolly__sticky">
-          <div class="ingot-stage">
-            <canvas class="ingot-canvas" aria-hidden="true"></canvas>
-            <img class="ingot-fallback" src="/assets/images/ingot-frames/ingot-three-facets_0001.webp" alt="Hexagonal industrial ingot — three colored facets representing Altaris, ARTech, and Michaelson" decoding="async">
-            <div class="ingot-stage__counter" aria-hidden="true">
-              <span class="ingot-stage__counter-value">01</span>
-              <span>/</span>
-              <span class="ingot-stage__counter-total">03</span>
+          <div class="companies-wall__portfolio-header reveal">
+            <span class="eyebrow">Portfolio</span>
+            <h2 class="companies-wall__portfolio-heading" data-kinetic>Portfolio Companies</h2>
+          </div>
+
+          <div class="companies-wall__grid">
+
+            <!-- 01 — Altaris Industrial -->
+            <article class="company-tile" data-cursor="Expand" data-company="altaris"
+                     style="--tile-accent: var(--color-altaris); --img: url('/assets/images/companies/altaris/grease-mixing.png');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <img class="company-tile__logo" src="/assets/images/companies/altaris/logo.svg" alt="" aria-hidden="true" width="532" height="156" loading="lazy" decoding="async">
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-altaris">
+                  <span class="company-tile__name">Altaris Industrial</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Industrial liquids and pastes — packaged with precision, shipped at scale.</p>
+              <span class="company-tile__hint">North Smithfield, RI</span>
+            </article>
+
+            <div class="company-tile__panel" id="company-panel-altaris" role="region"
+                 aria-label="Altaris Industrial details"
+                 style="--tile-accent: var(--color-altaris);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div>
+                    <p class="company-tile__desc">Contract packaging, toll mixing, post-processing, and procurement &amp; warehousing for adhesives, epoxies, lubricants, sealants, and thermal interface materials. Altaris serves industrial OEMs and material brands needing precision filling, blending, and supply-chain support.</p>
+                    <ul class="company-tile__highlights">
+                      <li>1K and 2K dispensing formats</li>
+                      <li>Batch sizes from 3ml to 5 gallons</li>
+                      <li>Climate-controlled warehousing</li>
+                    </ul>
+                  </div>
+                  <div class="company-tile__aside">
+                    <dl class="company-tile__facts">
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Operating</dt>
+                        <dd class="company-tile__fact-value">50+ years combined</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Location</dt>
+                        <dd class="company-tile__fact-value">North Smithfield, RI</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Industries</dt>
+                        <dd class="company-tile__fact-value">Aerospace · Defense · Medical · Industrial</dd>
+                      </div>
+                    </dl>
+                    <a class="btn btn--ghost company-tile__cta" href="https://altarisindustrial.com" rel="noopener">Visit altarisindustrial.com →</a>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- 02 — ARTech Lubricants -->
+            <article class="company-tile" data-cursor="Expand" data-company="artech"
+                     style="--tile-accent: var(--color-artech); --img: url('/assets/images/companies/artech/bearings-lubricant.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <img class="company-tile__logo" src="/assets/images/companies/artech/logo.svg" alt="" aria-hidden="true" width="532" height="160" loading="lazy" decoding="async">
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-artech">
+                  <span class="company-tile__name">ARtech Lubricants</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">A boutique blender of specialty greases, silicones, and gear oils.</p>
+              <span class="company-tile__hint">Bethel, CT</span>
+            </article>
+
+            <div class="company-tile__panel" id="company-panel-artech" role="region"
+                 aria-label="ARTech Lubricants details"
+                 style="--tile-accent: var(--color-artech);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div>
+                    <p class="company-tile__desc">A family-run contract blender of high-performance industrial lubricants. ARTech serves steel mills, mining, rail, defense, and aerospace customers with MIL-SPEC silicones, AGMA gear oils, and specialty greases — including custom formulations to exacting customer standards.</p>
+                    <ul class="company-tile__highlights">
+                      <li>MIL-SPEC and NSN-cataloged products</li>
+                      <li>Specialty greases, silicones, and gear oils</li>
+                      <li>Defense and aerospace approved formulations</li>
+                    </ul>
+                  </div>
+                  <div class="company-tile__aside">
+                    <dl class="company-tile__facts">
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Operating</dt>
+                        <dd class="company-tile__fact-value">20+ years</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Location</dt>
+                        <dd class="company-tile__fact-value">Bethel, CT</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Industries</dt>
+                        <dd class="company-tile__fact-value">Steel · Mining · Rail · Defense · Aerospace</dd>
+                      </div>
+                    </dl>
+                    <a class="btn btn--ghost company-tile__cta" href="https://artechlubricants.com" rel="noopener">Visit artechlubricants.com →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 03 — Michaelson Fluid Power -->
+            <article class="company-tile" data-cursor="Expand" data-company="michaelson"
+                     style="--tile-accent: var(--color-michaelson); --img: url('/assets/images/companies/michaelson/thumb.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <img class="company-tile__logo" src="/assets/images/companies/michaelson/logo.svg" alt="" aria-hidden="true" width="532" height="156" loading="lazy" decoding="async">
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-michaelson">
+                  <span class="company-tile__name">Michaelson Fluid Power</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Hydraulic systems, distribution, and authorized repair.</p>
+              <span class="company-tile__hint">Smithfield, RI</span>
+            </article>
+
+            <div class="company-tile__panel" id="company-panel-michaelson" role="region"
+                 aria-label="Michaelson Fluid Power details"
+                 style="--tile-accent: var(--color-michaelson);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div>
+                    <p class="company-tile__desc">New England's preferred hydraulic power unit manufacturer and authorized service center. Michaelson designs and builds custom hydraulic systems and serves as an authorized distributor for Parker, Eaton, and Denison — plus authorized repair for Parker, Denison, Hydro-Line, and Monarch.</p>
+                    <ul class="company-tile__highlights">
+                      <li>Custom hydraulic power units up to 150 HP</li>
+                      <li>Authorized distributor: Parker, Eaton, Denison</li>
+                      <li>30+ component manufacturer partnerships</li>
+                    </ul>
+                  </div>
+                  <div class="company-tile__aside">
+                    <dl class="company-tile__facts">
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Operating</dt>
+                        <dd class="company-tile__fact-value">25+ years</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Facility</dt>
+                        <dd class="company-tile__fact-value">10,000 sq ft · Smithfield, RI</dd>
+                      </div>
+                      <div class="company-tile__fact">
+                        <dt class="company-tile__fact-label">Industries</dt>
+                        <dd class="company-tile__fact-value">Industrial · Marine · Mobile · Defense · Aircraft</dd>
+                      </div>
+                    </dl>
+                    <a class="btn btn--ghost company-tile__cta" href="https://michaelsonfluidpower.com" rel="noopener">Visit michaelsonfluidpower.com →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 SCALE DEMO — uncomment the block below to take the grid to ten
+                 companies. Nothing else needs to change: no CSS, no JS, and the
+                 cinematic above stays exactly the same length. That is the
+                 point of the layout, and this is the fastest way to show it.
+                 Re-comment before shipping anything client-facing as final.
+                 ============================================================ -->
+            <!--
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-04"
+                     style="--tile-accent: var(--color-accent); --img: url('/assets/images/industries/factory-floor.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">04</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-04">
+                  <span class="company-tile__name">Company Four</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-04" role="region" aria-label="Company Four details" style="--tile-accent: var(--color-accent);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-05"
+                     style="--tile-accent: var(--color-altaris); --img: url('/assets/images/industries/refinery.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">05</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-05">
+                  <span class="company-tile__name">Company Five</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-05" role="region" aria-label="Company Five details" style="--tile-accent: var(--color-altaris);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-06"
+                     style="--tile-accent: var(--color-artech); --img: url('/assets/images/industries/pcb-electronics.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">06</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-06">
+                  <span class="company-tile__name">Company Six</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-06" role="region" aria-label="Company Six details" style="--tile-accent: var(--color-artech);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-07"
+                     style="--tile-accent: var(--color-michaelson); --img: url('/assets/images/industries/marine-port.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">07</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-07">
+                  <span class="company-tile__name">Company Seven</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-07" role="region" aria-label="Company Seven details" style="--tile-accent: var(--color-michaelson);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-08"
+                     style="--tile-accent: var(--color-accent); --img: url('/assets/images/industries/jet-engine.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">08</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-08">
+                  <span class="company-tile__name">Company Eight</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-08" role="region" aria-label="Company Eight details" style="--tile-accent: var(--color-accent);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-09"
+                     style="--tile-accent: var(--color-altaris); --img: url('/assets/images/industries/medical-syringe.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">09</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-09">
+                  <span class="company-tile__name">Company Nine</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-09" role="region" aria-label="Company Nine details" style="--tile-accent: var(--color-altaris);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+
+            <article class="company-tile" data-cursor="Expand" data-company="placeholder-10"
+                     style="--tile-accent: var(--color-artech); --img: url('/assets/images/industries/auto-assembly.jpg');">
+              <span class="company-tile__glow" aria-hidden="true"></span>
+              <svg class="company-tile__frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="100" pathLength="100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="company-tile__num">10</span>
+              <span class="company-tile__toggle" aria-hidden="true">+</span>
+              <h3 class="company-tile__heading">
+                <button class="company-tile__trigger" type="button" aria-expanded="false" aria-controls="company-panel-placeholder-10">
+                  <span class="company-tile__name">Company Ten</span>
+                </button>
+              </h3>
+              <p class="company-tile__tagline">Placeholder tile — layout demonstration only.</p>
+              <span class="company-tile__hint">Future acquisition</span>
+            </article>
+            <div class="company-tile__panel" id="company-panel-placeholder-10" role="region" aria-label="Company Ten details" style="--tile-accent: var(--color-artech);">
+              <div class="company-tile__panel-inner">
+                <div class="company-tile__panel-body">
+                  <div><p class="company-tile__desc">Placeholder copy standing in for a future operating company.</p></div>
+                  <div class="company-tile__aside"></div>
+                </div>
+              </div>
+            </div>
+            -->
+
           </div>
         </div>
-
-        <!-- Folds layer overlays the canvas; text safe zone is constrained to the left -->
-        <div class="companies-scrolly__folds">
-
-          <article class="company-fold" data-company="altaris">
-            <div class="company-fold__content">
-              <div class="company-fold__inner">
-                <div class="company-fold__sequence">01 / 03 — Operating company</div>
-                <h3 class="company-fold__name">Altaris Industrial</h3>
-                <p class="company-fold__tagline">Industrial liquids and pastes — packaged with precision, shipped at scale.</p>
-
-                <dl class="company-fold__facts">
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Operating</dt>
-                    <dd class="company-fold__fact-value">50+ years combined</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Location</dt>
-                    <dd class="company-fold__fact-value">North Smithfield, RI</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Industries</dt>
-                    <dd class="company-fold__fact-value">Aerospace · Defense · Medical · Industrial</dd>
-                  </div>
-                </dl>
-
-                <p class="company-fold__desc">Contract packaging, toll mixing, post-processing, and procurement &amp; warehousing for adhesives, epoxies, lubricants, sealants, and thermal interface materials. Altaris serves industrial OEMs and material brands needing precision filling, blending, and supply-chain support.</p>
-                <ul class="company-fold__highlights">
-                  <li>1K and 2K dispensing formats</li>
-                  <li>Batch sizes from 3ml to 5 gallons</li>
-                  <li>Climate-controlled warehousing</li>
-                </ul>
-
-                <div class="company-fold__cta-row">
-                  <div class="company-fold__thumb" style="background-image: url('/assets/images/companies/altaris/thumb.jpg');" role="img" aria-label="Industrial precision systems"></div>
-                  <a class="btn btn--ghost company-fold__cta" href="https://altarisindustrial.com" rel="noopener">Visit altarisindustrial.com →</a>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="company-fold" data-company="artech">
-            <div class="company-fold__content">
-              <div class="company-fold__inner">
-                <div class="company-fold__sequence">02 / 03 — Operating company</div>
-                <h3 class="company-fold__name">ARTech Lubricants</h3>
-                <p class="company-fold__tagline">A boutique blender of specialty greases, silicones, and gear oils.</p>
-
-                <dl class="company-fold__facts">
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Operating</dt>
-                    <dd class="company-fold__fact-value">20+ years</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Location</dt>
-                    <dd class="company-fold__fact-value">Bethel, CT</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Industries</dt>
-                    <dd class="company-fold__fact-value">Steel · Mining · Rail · Defense · Aerospace</dd>
-                  </div>
-                </dl>
-
-                <p class="company-fold__desc">A family-run contract blender of high-performance industrial lubricants. ARTech serves steel mills, mining, rail, defense, and aerospace customers with MIL-SPEC silicones, AGMA gear oils, and specialty greases — including custom formulations to exacting customer standards.</p>
-                <ul class="company-fold__highlights">
-                  <li>MIL-SPEC and NSN-cataloged products</li>
-                  <li>Specialty greases, silicones, and gear oils</li>
-                  <li>Defense and aerospace approved formulations</li>
-                </ul>
-
-                <div class="company-fold__cta-row">
-                  <div class="company-fold__thumb" style="background-image: url('/assets/images/companies/artech/thumb.jpg');" role="img" aria-label="Heavy industrial customer base where specialty lubricants are used"></div>
-                  <a class="btn btn--ghost company-fold__cta" href="https://artechlubricants.com" rel="noopener">Visit artechlubricants.com →</a>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="company-fold" data-company="michaelson">
-            <div class="company-fold__content">
-              <div class="company-fold__inner">
-                <div class="company-fold__sequence">03 / 03 — Operating company</div>
-                <h3 class="company-fold__name">Michaelson Fluid Power</h3>
-                <p class="company-fold__tagline">Hydraulic systems, distribution, and authorized repair.</p>
-
-                <dl class="company-fold__facts">
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Operating</dt>
-                    <dd class="company-fold__fact-value">25+ years</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Facility</dt>
-                    <dd class="company-fold__fact-value">10,000 sq ft · Smithfield, RI</dd>
-                  </div>
-                  <div class="company-fold__fact">
-                    <dt class="company-fold__fact-label">Industries</dt>
-                    <dd class="company-fold__fact-value">Industrial · Marine · Mobile · Defense · Aircraft</dd>
-                  </div>
-                </dl>
-
-                <p class="company-fold__desc">New England's preferred hydraulic power unit manufacturer and authorized service center. Michaelson designs and builds custom hydraulic systems and serves as an authorized distributor for Parker, Eaton, and Denison — plus authorized repair for Parker, Denison, Hydro-Line, and Monarch.</p>
-                <ul class="company-fold__highlights">
-                  <li>Custom hydraulic power units up to 150 HP</li>
-                  <li>Authorized distributor: Parker, Eaton, Denison</li>
-                  <li>30+ component manufacturer partnerships</li>
-                </ul>
-
-                <div class="company-fold__cta-row">
-                  <div class="company-fold__thumb" style="background-image: url('/assets/images/companies/michaelson/thumb.jpg');" role="img" aria-label="Industrial machinery — hydraulic systems and authorized repair"></div>
-                  <a class="btn btn--ghost company-fold__cta" href="https://michaelsonfluidpower.com" rel="noopener">Visit michaelsonfluidpower.com →</a>
-                </div>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
       </div>
     </section>
 
     <!-- APPROACH: how JWV operates -->
-    <section class="section approach" aria-labelledby="approach-heading">
+    <section class="section approach zone zone--lift" aria-labelledby="approach-heading" data-section="Approach">
       <div class="container">
         <div class="split">
           <div>
             <span class="eyebrow reveal">How we operate</span>
-            <h2 id="approach-heading" class="reveal" style="margin-top: var(--space-3);">A long horizon. Real operators. Quiet support.</h2>
+            <h2 id="approach-heading" class="reveal" data-kinetic style="margin-top: var(--space-3);">A long horizon. Experienced operators. Quiet support.</h2>
           </div>
           <div class="reveal">
-            <p class="approach__quote">We hold companies for the people inside them — <em>and the customers they serve</em> — not for an exit timeline.</p>
-            <p class="approach__attribution">— The JWV Partners</p>
+            <p class="approach__quote" data-kinetic>We acquire great industrial businesses <em>to build them, not sell them</em>. We preserve what works, invest where we can add value, and give our companies the support and autonomy to grow for the long term.</p>
+            <p class="approach__attribution">— The JVV Partners</p>
           </div>
         </div>
 
@@ -378,87 +644,91 @@
         <div class="grid grid--3 reveal--stagger">
           <div>
             <h4>Independence</h4>
-            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">Each operating company keeps its name, its team, and its way of working. We don't consolidate brands or strip identity.</p>
+            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">Each company retains its name, its team, and the identity that makes it successful. We preserve what works while providing the business and support to help the business grow.</p>
           </div>
           <div>
             <h4>Long horizon</h4>
-            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">No fund timeline, no forced exit. We hold companies for decades, which lets the operators make decisions for the long run.</p>
+            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">No fund timeline. No predetermined exit. We invest with a long-term perspective, giving our companies the freedom to make decisions that create lasting value.</p>
           </div>
           <div>
             <h4>Operator-led</h4>
-            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">The partners are operators first. Our role is to support what each company already does well — not to direct it from a distance.</p>
+            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">We are operators first. We work alongside our companies, supporting their leadership with practical experience, resources, and capital — without managing from a distance.</p>
+          </div>
+          <div>
+            <h4>Disciplined growth</h4>
+            <p style="margin-top: var(--space-3); color: var(--color-text-muted);">We invest where we can make a meaningful difference — expanding capabilities, strengthening operations, developing people, and pursuing opportunities that position our companies for sustainable growth.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- INDUSTRIES SERVED: asymmetric image-tile grid — markets the group ships into -->
-    <section class="section section--tight" aria-labelledby="industries-heading">
+    <section class="section section--tight" aria-labelledby="industries-heading" data-section="Industries">
       <div class="container">
         <div class="industries reveal">
           <div class="industries__header">
             <div>
               <span class="eyebrow">Industries served</span>
-              <h2 id="industries-heading" class="industries__heading" style="margin-top: var(--space-3);">Markets where downtime is the metric that matters.</h2>
+              <h2 id="industries-heading" class="industries__heading" data-kinetic style="margin-top: var(--space-3);">JWV owns specialized industrial businesses that independently serve critical markets, while benefiting from common ownership, capital, operational expertise, and shared resources.</h2>
             </div>
-            <div class="industries__meta"><strong>08</strong> sectors · single-source group</div>
+            <div class="industries__meta"><strong>8</strong> sectors · one industrial group</div>
           </div>
 
           <div class="industries__grid reveal--stagger">
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/jet-engine.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/jet-engine.jpg');">
               <span class="industry-tile__num">001</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Aerospace<span class="dot">.</span></span>
-              <span class="industry-tile__desc">Flight-critical adhesives, sealants, and authorized OEM hydraulic systems for AS9100D and ITAR-controlled programs.</span>
+              <span class="industry-tile__desc">Specialty materials, precision packaging, lubrication, and hydraulic systems supporting demanding aerospace applications.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/medical-syringe.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/medical-syringe.jpg');">
               <span class="industry-tile__num">002</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Medical<span class="dot">.</span></span>
-              <span class="industry-tile__desc">ISO 13485 materials, specialty lubricants, and contract packaging for medical device manufacturers.</span>
+              <span class="industry-tile__desc">Specialty materials, lubricants, and contract manufacturing and packaging supporting medical and life-science applications.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/auto-assembly.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/auto-assembly.jpg');">
               <span class="industry-tile__num">003</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Automotive<span class="dot">.</span></span>
-              <span class="industry-tile__desc">EV thermal interface, conductive epoxies, and high-spec lubrication for assembly lines.</span>
+              <span class="industry-tile__desc">Thermal management materials, specialty pigments, adhesives, and manufacturing services supporting conventional and electric vehicle applications.</span>
             </a>
 
-            <a class="industry-tile industry-tile--feature industry-tile--featured" href="/contact.html" style="--img: url('/assets/images/industries/refinery.jpg');">
+            <a class="industry-tile industry-tile--feature industry-tile--featured" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/refinery.jpg');">
               <span class="industry-tile__num">004 · Featured sector</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Energy &amp; Industrial<span class="dot">.</span></span>
-              <span class="industry-tile__desc">Hydraulic power units, specialty greases, and contract-packaged industrial fluids engineered for grid, refinery, and heavy-process infrastructure.</span>
+              <span class="industry-tile__desc">Hydraulic systems, specialty lubricants, and contract manufacturing supporting critical industrial equipment, infrastructure, and process operations.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/defense-helicopter.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/defense-helicopter.jpg');">
               <span class="industry-tile__num">005</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Defense<span class="dot">.</span></span>
-              <span class="industry-tile__desc">ITAR-cleared materials, MIL-SPEC lubricants, and hydraulic systems for ground, air, and naval defense programs.</span>
+              <span class="industry-tile__desc">Specialty materials, lubricants, manufacturing services, and hydraulic systems supporting aerospace, land, and marine defense applications.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/pcb-electronics.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/pcb-electronics.jpg');">
               <span class="industry-tile__num">006</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Electronics<span class="dot">.</span></span>
-              <span class="industry-tile__desc">IPC- and RoHS-compliant solder pastes, conductive epoxies, and thermal interface compounds.</span>
+              <span class="industry-tile__desc">Thermal interface materials, conductive materials, solder products, adhesives, and electronics packaging supporting electronics manufacturing.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/factory-floor.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/factory-floor.jpg');">
               <span class="industry-tile__num">007</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
-              <span class="industry-tile__name">Rail &amp; Mining<span class="dot">.</span></span>
-              <span class="industry-tile__desc">High-load greases, gear oils, and authorized fluid-power for steel mills, mines, and rail-yard equipment.</span>
+              <span class="industry-tile__name">Rail &amp; Heavy Industry<span class="dot">.</span></span>
+              <span class="industry-tile__desc">Specialty greases, gear lubricants, and hydraulic systems for demanding rail, mining, and heavy equipment applications.</span>
             </a>
 
-            <a class="industry-tile" href="/contact.html" style="--img: url('/assets/images/industries/marine-port.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/marine-port.jpg');">
               <span class="industry-tile__num">008</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Marine<span class="dot">.</span></span>
-              <span class="industry-tile__desc">Salt-spec lubricants and authorized fluid-power systems for marine and offshore platforms.</span>
+              <span class="industry-tile__desc">Specialty lubricants and engineered hydraulic systems supporting commercial, industrial, and defense marine applications.</span>
             </a>
           </div>
         </div>
@@ -466,10 +736,10 @@
     </section>
 
     <!-- INDUSTRY PARTNERS: brand authorizations and supplier relationships our operating companies hold -->
-    <section class="section partners" aria-labelledby="partners-heading">
+    <section class="section partners zone zone--deep" aria-labelledby="partners-heading" data-section="Network">
       <div class="container">
         <span class="partners__eyebrow reveal">Industry partners</span>
-        <h2 id="partners-heading" class="partners__heading reveal">Our leading<br>industry partners</h2>
+        <h2 id="partners-heading" class="partners__heading reveal" data-kinetic>Our leading<br>industry partners</h2>
         <div class="partners__rule reveal" aria-hidden="true"></div>
       </div>
 
@@ -492,7 +762,7 @@
     </section>
 
     <!-- CTA / Closing -->
-    <section class="cta-block" aria-labelledby="cta-heading">
+    <section class="cta-block" aria-labelledby="cta-heading" data-section="Contact">
       <div class="container">
         <div class="cta-block__grid reveal">
           <figure class="cta-block__media" aria-hidden="true">
@@ -504,11 +774,11 @@
           </figure>
           <div class="cta-block__content">
             <span class="eyebrow">Get in touch</span>
-            <h2 id="cta-heading" class="cta-block__heading">Working with one of our companies — or thinking about joining the group?</h2>
-            <p class="cta-block__sub">For sales and service, contact the operating company directly. For corporate matters or partnership inquiries, reach the group office.</p>
+            <h2 id="cta-heading" class="cta-block__heading" data-kinetic>Looking to work with one of our companies — or become part of JVV?</h2>
+            <p class="cta-block__sub">For products, sales, and service, connect directly with our operating companies. If you own an industrial business and are considering its next chapter, we welcome a confidential conversation.</p>
             <div class="cta-block__actions">
-              <a class="btn btn--primary" href="/contact.html">Contact the group</a>
-              <a class="btn btn--ghost" href="/partnerships.html">Partnership inquiries</a>
+              <a class="btn btn--primary" href="/contact.html" data-magnetic data-cursor="Contact">Contact the group</a>
+              <a class="btn btn--ghost" href="/partnerships.html" data-magnetic data-cursor="Enquire">Start a confidential conversation</a>
             </div>
           </div>
         </div>
@@ -524,9 +794,9 @@
         <div class="site-footer__brand">
           <a class="site-logo" href="/" aria-label="JWV Solutions home">
             <img class="site-logo__img site-logo__img--dark"  src="/assets/images/brand/logo-white.png" alt="" width="160" height="64" aria-hidden="true">
-      <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
+            <img class="site-logo__img site-logo__img--light" src="/assets/images/brand/logo-black.png" alt="" width="160" height="64" aria-hidden="true">
           </a>
-          <p>Operating partners across three independent industrial businesses.</p>
+          <p>Building and operating specialized industrial businesses for the long term.</p>
         </div>
         <div class="site-footer__col">
           <h6 class="site-footer__col-title">Group</h6>
@@ -540,7 +810,7 @@
           <h6 class="site-footer__col-title">Companies</h6>
           <ul>
             <li><a href="https://altarisindustrial.com" rel="noopener">Altaris Industrial</a></li>
-            <li><a href="https://artechlubricants.com" rel="noopener">ARTech Lubricants</a></li>
+            <li><a href="https://artechlubricants.com" rel="noopener">ARtech Lubricants</a></li>
             <li><a href="https://michaelsonfluidpower.com" rel="noopener">Michaelson Fluid Power</a></li>
           </ul>
         </div>
@@ -552,6 +822,7 @@
           </ul>
         </div>
       </div>
+      <div class="footer-mark" aria-hidden="true">JWV</div>
       <div class="site-footer__bottom">
         <span>&copy; <span id="footer-year">2026</span> JWV Solutions, Inc. All rights reserved.</span>
       </div>
@@ -565,6 +836,6 @@
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
 
-  <script type="module" src="/assets/js/main.js"></script>
+  <script type="module" src="/assets/js/main-grid.js"></script>
 </body>
 </html>
