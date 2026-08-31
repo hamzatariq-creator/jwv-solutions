@@ -149,6 +149,14 @@
                 <option value="other">Other</option>
               </select>
             </div>
+            <!-- Sits directly under Topic, since it qualifies that answer.
+                 Shown only when Topic is "Other"; starts hidden so it stays out
+                 of the way if JS is unavailable. form.js toggles it and clears
+                 the value when another topic is chosen. -->
+            <div class="form-row" data-topic-other hidden>
+              <label class="form-label" for="topic-other">Other (please specify)</label>
+              <input class="form-input" id="topic-other" name="topic_other" type="text" placeholder="Please specify…" autocomplete="off">
+            </div>
             <div class="form-row--split">
               <div class="form-row">
                 <label class="form-label" for="name">Your name</label>
@@ -168,13 +176,6 @@
                 <label class="form-label" for="phone">Phone (optional)</label>
                 <input class="form-input" id="phone" name="phone" type="tel" autocomplete="tel">
               </div>
-            </div>
-            <!-- Shown only when Topic is set to "Other". Starts hidden so that
-                 with JS unavailable it stays out of the way; form.js toggles it
-                 and clears the value when another topic is chosen. -->
-            <div class="form-row" data-topic-other hidden>
-              <label class="form-label" for="topic-other">Other (please specify)</label>
-              <input class="form-input" id="topic-other" name="topic_other" type="text" placeholder="Please specify…" autocomplete="off">
             </div>
             <div class="form-row">
               <label class="form-label" for="message">Message</label>
