@@ -80,7 +80,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -153,7 +153,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   margin-bottom: var(--space-4);
   display: flex;
   align-items: center;
@@ -184,7 +184,7 @@
   font-style: italic;
   font-weight: 400;
   line-height: var(--lh-snug);
-  color: #D6D2C8;
+  color: #F4F1EA;
   margin-bottom: var(--space-5);
   max-width: 32ch;
 }
@@ -217,7 +217,7 @@
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   white-space: nowrap;
 }
 .company-fold .company-fold__fact-value {
@@ -274,7 +274,7 @@
 .company-fold .company-fold__desc {
   font-size: var(--fs-body);
   line-height: var(--lh-relaxed);
-  color: #D6D2C8;
+  color: #F4F1EA;
   margin-bottom: var(--space-5);
   max-width: 50ch;
 }
@@ -289,7 +289,7 @@
 }
 .company-fold .company-fold__highlights li {
   font-size: var(--fs-body-sm);
-  color: #8E8B83;
+  color: #F4F1EA;
   display: flex;
   align-items: baseline;
   gap: var(--space-3);

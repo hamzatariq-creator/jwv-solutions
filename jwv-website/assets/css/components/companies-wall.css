@@ -117,7 +117,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   margin-bottom: var(--space-4);
 }
 .companies-wall__eyebrow::before {
@@ -141,7 +141,7 @@
 .companies-wall .companies-wall__lede {
   font-size: var(--fs-body);
   line-height: var(--lh-relaxed);
-  color: #D6D2C8;
+  color: #F4F1EA;
   max-width: 46ch;
 }
 
@@ -158,7 +158,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   pointer-events: none;
 }
 .companies-wall__count-value {
@@ -178,7 +178,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
-  color: #8E8B83;
+  color: #F4F1EA;
   pointer-events: none;
 }
 
@@ -471,7 +471,7 @@ body.paper .companies-wall__grid {
   font-family: var(--font-sans);
   font-size: var(--fs-body-sm);
   line-height: var(--lh-normal);
-  color: rgba(244, 241, 234, 0.82);
+  color: #F4F1EA;
   max-width: 32ch;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin: 0;
@@ -483,7 +483,7 @@ body.paper .companies-wall__grid {
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(244, 241, 234, 0.5);
+  color: #F4F1EA;
   transition: color var(--duration-fast) ease;
 }
 
@@ -552,7 +552,7 @@ body.paper .companies-wall__grid {
 
   .company-tile:hover .company-tile__hint,
   .company-tile:has(.company-tile__trigger:focus-visible) .company-tile__hint {
-    color: rgba(244, 241, 234, 0.85);
+    color: #F4F1EA;
   }
 
   /* One lights up, the rest recede */

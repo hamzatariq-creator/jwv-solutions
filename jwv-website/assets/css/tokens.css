@@ -9,9 +9,13 @@
   --color-bg-paper-soft: #ECE8DF;  /* lifted paper (light cards) */
 
   /* Text */
+  /* All three dark-theme text levels now resolve to the same warm white, so no
+     ordinary copy renders grey. Kept as three tokens rather than collapsed into
+     one, because the paper theme below still redefines them as three distinct
+     ink levels — light-theme text must stay dark to remain readable. */
   --color-text-bright: #F4F1EA;    /* primary text on dark */
-  --color-text: #D6D2C8;           /* body text on dark */
-  --color-text-muted: #8E8B83;     /* secondary text on dark */
+  --color-text: #F4F1EA;           /* body text on dark (was #D6D2C8 grey) */
+  --color-text-muted: #F4F1EA;     /* secondary text on dark (was #8E8B83 grey) */
   --color-text-ink: #1A1817;       /* primary text on light */
   --color-text-ink-soft: #4A4642;  /* body text on light */
   --color-text-ink-muted: #807B73; /* secondary text on light */

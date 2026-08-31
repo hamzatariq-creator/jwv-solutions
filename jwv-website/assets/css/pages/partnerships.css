@@ -36,6 +36,13 @@ body.paper .criteria-card {
   letter-spacing: var(--ls-tight);
   font-weight: 500;
   color: var(--color-text-bright);
+  /* Titles run to one or two lines depending on the card, which left each
+     card's paragraph starting at a different height. Reserving two lines puts
+     every paragraph on a common baseline across all four. The icon above is a
+     fixed 32px, so the titles themselves already start level. */
+  min-height: 2.6em;
+  /* Extra air between title and paragraph, on top of the card's flex gap. */
+  margin-bottom: var(--space-2);
 }
 body.paper .criteria-card h3 { color: var(--color-text-ink); }
 .criteria-card p {
@@ -69,20 +76,24 @@ body.paper .criteria-card p { color: var(--color-text-ink-muted); }
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: var(--space-4);
 }
 
-/* Connector: one horizontal segment per step, from its own node's centre across
-   the gutter to the next node's centre — hence the negative `right`, which
-   reaches past the column edge by the gutter plus half a node. The node sits
-   above it (z-index) and is opaque, so the line appears to run between nodes
-   rather than through them. No segment after the last step. */
+/* Connector: one horizontal segment per step, running from this column's centre
+   to the next column's centre. With the node centred, those points are at 50%
+   of each column, so the segment starts at 50% and its right edge reaches the
+   gutter plus another 50% beyond this column — columns being equal width, that
+   lands exactly on the next node. The node is opaque and sits above (z-index),
+   so the line reads as running between nodes, not through them. No segment
+   after the last step. */
 .process-step:not(:last-child)::before {
   content: "";
   position: absolute;
   top: calc(var(--node) / 2);
-  left: calc(var(--node) / 2);
-  right: calc(-1 * (var(--gap) + var(--node) / 2));
+  left: 50%;
+  right: calc(-1 * (var(--gap) + 50%));
   height: 1px;
   margin-top: -0.5px;
   background: var(--color-border);
@@ -106,6 +117,10 @@ body.paper .process-step:not(:last-child)::before { background: var(--color-bord
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.04em;
+  /* letter-spacing adds its space AFTER the final digit too, which drags
+     centred text visibly off-centre in a circle this size. Indenting by the
+     same amount puts the numeral back on the node's true centre. */
+  text-indent: 0.04em;
   color: var(--color-accent);
   font-variant-numeric: tabular-nums;
   transition: border-color var(--duration-base) var(--ease-out),
@@ -147,6 +162,17 @@ body.paper .process-step__body h3 { color: var(--color-text-ink); }
   color: var(--color-text-muted);
 }
 body.paper .process-step__body p { color: var(--color-text-ink-muted); }
+
+/* Sequential entrance: 01 lands, then 02, 03, 04. The shared .reveal--stagger
+   already sets --i per child and multiplies it by 90ms, which is too quick to
+   read as a sequence — at four steps the whole thing is over in 270ms. 220ms
+   per step spaces them out enough to feel like one step following another,
+   while still finishing under a second. Movement and easing are inherited from
+   animations.css, so this matches every other reveal on the site, and the
+   global reduced-motion rule there already disables it. */
+.process-list.reveal--stagger > * {
+  transition-delay: calc(var(--i, 0) * 220ms);
+}
 /* Tablet — two per row. The connector after step 2 has to go: at two columns it
    would leap the row break and point at nothing. Steps 1 and 3 keep theirs, so
    each row still reads left to right. */
@@ -174,6 +200,9 @@ body.paper .process-step__body p { color: var(--color-text-ink-muted); }
     row-gap: 0;
     padding-block: var(--space-5);
     align-items: start;
+    /* Node sits beside the copy here rather than above it, so centring would
+       leave the text floating away from its number. Back to left-aligned. */
+    text-align: start;
   }
   .process-step:not(:last-child)::before {
     display: block;

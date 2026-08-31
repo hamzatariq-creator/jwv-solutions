@@ -181,7 +181,7 @@ body.paper .industries__grid {
   font-family: var(--font-sans);
   font-size: var(--fs-body-sm);
   line-height: var(--lh-normal);
-  color: rgba(244,241,234,0.86);
+  color: #F4F1EA;
   max-width: 28ch;
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
