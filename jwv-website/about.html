@@ -65,7 +65,7 @@
           <div class="page-hero__inner">
             <span class="eyebrow">About JWV Solutions</span>
             <h1 class="page-hero__title">Building industrial businesses <em>for the long term.</em></h1>
-            <p class="page-hero__lead">JWV Solutions is an industrial holding company that acquires, supports, and grows specialized businesses for the long term. Today, our group includes Altaris Industrial, ARTech Lubricants, and Michaelson Fluid Power. Each company maintains its own identity, leadership, customers, and operating discipline, while benefiting from the capital, experience, and resources of the broader JWV group. Our investment horizon is measured in decades, not fund cycles.</p>
+            <p class="page-hero__lead">JWV Solutions is an industrial holding company that acquires, supports, and grows specialized businesses for the long term. Today, our group includes Altaris Industrial, ARtech Lubricants, and Michaelson Fluid Power. Each company maintains its own identity, leadership, customers, and operating discipline, while benefiting from the capital, experience, and resources of the broader JWV group. Our investment horizon is measured in decades, not fund cycles.</p>
             <div class="page-hero__cta">
               <a class="btn btn--primary" href="/#companies">Meet the companies</a>
               <a class="link-arrow" href="/partnerships.html">Partnership inquiries</a>
@@ -82,22 +82,34 @@
       </div>
     </section>
 
-    <!-- WHAT WE ARE — single wide statement block -->
+    <!-- WHAT WE ARE — image left, content right.
+         Uses the same .feature-band component as the two bands below, so the
+         alternating rhythm, image treatment and responsive stacking all come
+         from one place rather than a second bespoke layout. -->
     <section class="section section--tight" aria-labelledby="what-we-are-heading">
       <div class="container">
-        <div class="about-statement reveal">
-          <span class="eyebrow">What we are</span>
-          <h2 id="what-we-are-heading" class="about-statement__lead">An industrial holding company by design.</h2>
-          <p>JWV owns and supports specialized industrial businesses serving demanding markets across specialty manufacturing and packaging, lubricants, and hydraulic fluid power.</p>
-          <p>Our role is to provide capital, governance, strategic support, and practical operating experience while allowing the people closest to each business to lead it.</p>
+        <div class="feature-band reveal">
+          <figure class="feature-band__media" aria-hidden="true">
+            <img
+              src="/assets/images/facilities/workshop-interior.jpg"
+              alt=""
+              loading="lazy"
+              decoding="async">
+          </figure>
+          <div class="feature-band__content">
+            <span class="eyebrow">What we are</span>
+            <h2 id="what-we-are-heading">An industrial holding company by design.</h2>
+            <p>JWV owns and supports specialized industrial businesses serving demanding markets across specialty manufacturing and packaging, lubricants, and hydraulic fluid power.</p>
+            <p>Our role is to provide capital, governance, strategic support, and practical operating experience while allowing the people closest to each business to lead it.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FEATURE BAND — how we make decisions -->
+    <!-- OUR MODEL — content left, image right (--reverse) -->
     <section class="section section--tight">
       <div class="container">
-        <div class="feature-band reveal">
+        <div class="feature-band feature-band--reverse reveal">
           <figure class="feature-band__media" aria-hidden="true">
             <img
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
@@ -114,15 +126,12 @@
       </div>
     </section>
 
-    <!-- FEATURE BAND REVERSED — where we're based -->
+    <!-- HOW WE OPERATE — image left, content right (base .feature-band).
+         Figure comes first in the DOM because the base variant sets no `order`;
+         source order is what places the columns here. -->
     <section class="section section--tight">
       <div class="container">
-        <div class="feature-band feature-band--reverse reveal">
-          <div class="feature-band__content">
-            <span class="eyebrow">How We Operate</span>
-            <h2>Capital and perspective at the group level. Decisions close to the customer.</h2>
-            <p>Our companies maintain responsibility for their customers, people, and day-to-day operations. JWV focuses on capital allocation, strategic priorities, governance, and opportunities where the resources of the broader group can create additional value. We believe the best operating decisions are generally made by the people closest to the customer and the work.</p>
-          </div>
+        <div class="feature-band reveal">
           <figure class="feature-band__media" aria-hidden="true">
             <img
               src="https://images.unsplash.com/photo-1473445730015-841f29a9490b?auto=format&fit=crop&w=1200&q=80"
@@ -130,6 +139,11 @@
               loading="lazy"
               decoding="async">
           </figure>
+          <div class="feature-band__content">
+            <span class="eyebrow">How We Operate</span>
+            <h2>Capital and perspective at the group level. Decisions close to the customer.</h2>
+            <p>Our companies maintain responsibility for their customers, people, and day-to-day operations. JWV focuses on capital allocation, strategic priorities, governance, and opportunities where the resources of the broader group can create additional value. We believe the best operating decisions are generally made by the people closest to the customer and the work.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -174,31 +188,6 @@
       </div>
     </section>
 
-    <!-- LOCATIONS — facilities across Rhode Island and Connecticut -->
-    <section class="section section--tight" aria-labelledby="locations-heading">
-      <div class="container">
-        <div class="locations reveal">
-          <span class="eyebrow">Locations</span>
-          <h2 id="locations-heading" class="locations__heading">Facilities across Rhode Island and Connecticut.</h2>
-          <p class="locations__body">Group operations are concentrated in the US Northeast — industrial packaging and warehousing in North Smithfield, RI; specialty lubricant blending in Bethel, CT; and a dedicated fluid-power facility in Smithfield, RI. Customer reach extends nationwide, with regulated-industry capability for defense, aerospace, marine, and medical programs.</p>
-          <div class="locations__row reveal--stagger">
-            <figure>
-              <img src="/assets/images/facilities/factory-floor.jpg" alt="Industrial packaging and warehousing facility" loading="lazy" decoding="async">
-              <figcaption>Altaris · N. Smithfield, RI</figcaption>
-            </figure>
-            <figure>
-              <img src="/assets/images/facilities/machine-shop.jpg" alt="Specialty lubricant blending facility" loading="lazy" decoding="async">
-              <figcaption>ARTech · Bethel, CT</figcaption>
-            </figure>
-            <figure>
-              <img src="/assets/images/facilities/industrial-pipes.jpg" alt="Hydraulic fluid-power facility" loading="lazy" decoding="async">
-              <figcaption>Michaelson · Smithfield, RI</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <footer class="site-footer" role="contentinfo">
@@ -212,7 +201,7 @@
           <p>Operating partners across three independent industrial businesses.</p>
         </div>
         <div class="site-footer__col"><h6 class="site-footer__col-title">Group</h6><ul><li><a href="/about.html">About</a></li><li><a href="/partnerships.html">Partnerships</a></li><li><a href="/contact.html">Contact</a></li></ul></div>
-        <div class="site-footer__col"><h6 class="site-footer__col-title">Companies</h6><ul><li><a href="https://altarisindustrial.com" rel="noopener">Altaris Industrial</a></li><li><a href="https://artechlubricants.com" rel="noopener">ARTech Lubricants</a></li><li><a href="https://michaelsonfluidpower.com" rel="noopener">Michaelson Fluid Power</a></li></ul></div>
+        <div class="site-footer__col"><h6 class="site-footer__col-title">Companies</h6><ul><li><a href="https://altarisindustrial.com" rel="noopener">Altaris Industrial</a></li><li><a href="https://artechlubricants.com" rel="noopener">ARtech Lubricants</a></li><li><a href="https://michaelsonfluidpower.com" rel="noopener">Michaelson Fluid Power</a></li></ul></div>
         <div class="site-footer__col"><h6 class="site-footer__col-title">Connect</h6><ul><li><a href="mailto:info@jwv-solutions.com">info@jwv-solutions.com</a></li><li><a href="https://www.linkedin.com/company/jwv-solutions" rel="noopener">LinkedIn</a></li></ul></div>
       </div>
       <div class="site-footer__bottom">

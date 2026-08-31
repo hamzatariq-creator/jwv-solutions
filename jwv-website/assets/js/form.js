@@ -18,10 +18,34 @@ function prefillFromQuery(form) {
   });
 }
 
+/* Reveals the free-text row marked `data-topic-other` when the topic select is
+ * on "other", and hides it again for any other choice. The value is cleared on
+ * hide so a stale answer from an earlier selection is never submitted along
+ * with an unrelated topic. Runs once on load as well as on change, so a deep
+ * link that preselects "other" arrives with the field already open. */
+function initConditionalTopicField(form) {
+  const select = form.querySelector('select[name="topic"]');
+  const row = form.querySelector('[data-topic-other]');
+  if (!select || !row) return;
+
+  const input = row.querySelector('input, textarea');
+
+  const sync = () => {
+    const wantsOther = select.value === 'other';
+    row.hidden = !wantsOther;
+    if (input && !wantsOther) input.value = '';
+  };
+
+  sync();
+  select.addEventListener('change', sync);
+}
+
 export function initForms() {
   document.querySelectorAll('form[data-form]').forEach((form) => {
     const status = form.querySelector('.form-status');
     prefillFromQuery(form);
+    // After prefill, so a ?topic=other link opens the field on arrival.
+    initConditionalTopicField(form);
     form.addEventListener('submit', async (e) => {
       // Allow normal submission as fallback if action is set and JS path fails
       if (!form.action || form.action === '') return;

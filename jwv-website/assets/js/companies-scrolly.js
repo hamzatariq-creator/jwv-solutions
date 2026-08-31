@@ -1,7 +1,7 @@
 /* companies-scrolly.js — pinned scrollytelling section that scrubs the Industrial
  * Ingot frame sequence while the user scrolls past three "company folds" stacked
  * below the canvas pane. The ingot rotates from silver-right (Altaris) through
- * gold-center (ARTech) to burgundy-right (Michaelson) over the full scroll length. */
+ * gold-center (ARtech) to burgundy-right (Michaelson) over the full scroll length. */
 
 const FRAME_PATH = '/assets/images/ingot-frames/ingot-three-facets_';
 const FRAME_EXT  = '.webp';

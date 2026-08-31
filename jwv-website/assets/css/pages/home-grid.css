@@ -40,9 +40,29 @@ body.page-grid.paper {
 /* Tighter, more deliberate tracking across the page */
 body.page-grid { letter-spacing: -0.005em; }
 
+/* The footer is shared site-wide and must render identically on every page, so
+   it opts out of this layer entirely:
+   - `.site-footer__col-title` is deliberately absent from the selector below,
+     so the titles keep the styling footer.css gives them.
+   - The typography swap on `body.page-grid` is undone inside the footer. Those
+     tokens are set on the body and inherit everywhere, so without this reset the
+     footer picked up Archivo while every inner page rendered it in Inter — same
+     markup, different face. Re-declaring the tokens on the footer restores the
+     shared stack for its titles, links, tagline and copyright alike. */
+body.page-grid .site-footer {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, monospace;
+  /* Resetting the tokens alone is not enough. Only rules that literally say
+     `var(--font-sans)` pick the new value up — the links, tagline and copyright
+     line simply inherit whatever font-family <body> resolved to, which is
+     Archivo. Declaring it here re-resolves the token for the whole subtree, so
+     everything in the footer inherits the shared face. */
+  font-family: var(--font-sans);
+  letter-spacing: normal;
+}
+
 body.page-grid .eyebrow,
-body.page-grid .by-numbers__label,
-body.page-grid .site-footer__col-title {
+body.page-grid .by-numbers__label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
@@ -725,27 +745,6 @@ body.page-grid .btn {
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-
-/* ============================================================
-   15. Footer wordmark
-   ============================================================ */
-
-/* Filled, not outlined. An outline on Fraunces at 300 weight and 21rem draws
-   two hairlines per stem, which reads as a broken render rather than a
-   watermark — the band above can carry the outline treatment because it is set
-   at a size where the counters stay open. */
-.footer-mark {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(5rem, 24vw, 21rem);
-  line-height: 0.78;
-  letter-spacing: -0.06em;
-  text-align: center;
-  color: rgba(244, 241, 234, 0.045);
-  margin-top: clamp(1rem, 4vw, 3rem);
-  user-select: none;
-}
-body.page-grid.paper .footer-mark { color: rgba(26, 24, 23, 0.05); }
 
 /* ============================================================
    16. Reduced motion

@@ -88,19 +88,19 @@
         <div class="criteria-grid reveal--stagger">
           <article class="op-card" data-company="altaris">
             <h3 class="op-card__title">Altaris Industrial</h3>
-            <p class="op-card__desc">Specialized manufacturing, contract packaging, toll mixing, processing, and supply-chain support for industrial materials.</p>
+            <p class="op-card__desc">Specialty manufacturing, contract packaging, toll mixing, post-processing, and supply-chain support for industrial materials.</p>
             <a class="link-arrow" href="https://altarisindustrial.com" rel="noopener">altarisindustrial.com</a>
           </article>
 
           <article class="op-card" data-company="artech">
             <h3 class="op-card__title">ARtech Lubricants</h3>
-            <p class="op-card__desc">Specialty services, industrial lubricants, silicone fluids, gear oils, and custom blending.</p>
+            <p class="op-card__desc">Specialty greases, industrial lubricants, silicone fluids, gear oils, and custom blending.</p>
             <a class="link-arrow" href="https://artechlubricants.com" rel="noopener">artechlubricants.com</a>
           </article>
 
           <article class="op-card" data-company="michaelson">
             <h3 class="op-card__title">Michaelson Fluid Power</h3>
-            <p class="op-card__desc">Specialized hydraulic systems, power units, components, field service, and repair.</p>
+            <p class="op-card__desc">Engineered hydraulic systems, power units, components, field service, and repair.</p>
             <a class="link-arrow" href="https://michaelsonfluidpower.com" rel="noopener">michaelsonfluidpower.com</a>
           </article>
         </div>
@@ -131,7 +131,7 @@
     <!-- THE FORM -->
     <section class="section section--tight">
       <div class="container">
-        <div class="reveal" style="max-width: var(--container-text); margin: 0 auto;">
+        <div class="reveal" style="max-width: var(--container-narrow); margin: 0 auto;">
           <form class="form" data-form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" novalidate>
             <div class="form-row">
               <label class="form-label" for="topic">Topic</label>
@@ -168,6 +168,13 @@
                 <label class="form-label" for="phone">Phone (optional)</label>
                 <input class="form-input" id="phone" name="phone" type="tel" autocomplete="tel">
               </div>
+            </div>
+            <!-- Shown only when Topic is set to "Other". Starts hidden so that
+                 with JS unavailable it stays out of the way; form.js toggles it
+                 and clears the value when another topic is chosen. -->
+            <div class="form-row" data-topic-other hidden>
+              <label class="form-label" for="topic-other">Other (please specify)</label>
+              <input class="form-input" id="topic-other" name="topic_other" type="text" placeholder="Please specify…" autocomplete="off">
             </div>
             <div class="form-row">
               <label class="form-label" for="message">Message</label>

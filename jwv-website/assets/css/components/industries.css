@@ -95,21 +95,28 @@ body.paper .industries__grid {
   content: "";
   position: absolute;
   inset: 0;
+  /* Stronger, higher-reaching scrim than the original. Several of these photos
+     (the refinery and marine ones especially) are bright enough that the
+     industry name was competing with the image. This keeps the picture legible
+     while guaranteeing the title reads at a glance. */
   background: linear-gradient(
     to top,
-    rgba(14,16,20,0.94) 0%,
-    rgba(14,16,20,0.74) 26%,
-    rgba(14,16,20,0.30) 56%,
-    rgba(14,16,20,0.05) 82%,
-    transparent 100%
+    rgba(14,16,20,0.96) 0%,
+    rgba(14,16,20,0.88) 30%,
+    rgba(14,16,20,0.64) 60%,
+    rgba(14,16,20,0.40) 84%,
+    rgba(14,16,20,0.24) 100%
   );
   z-index: 1;
   transition: opacity var(--duration-base) ease;
 }
 .industry-tile > * { position: relative; z-index: 2; }
 
-.industry-tile:hover::before { transform: scale(1.06); filter: brightness(1.08); }
-.industry-tile:hover::after { opacity: 0.88; }
+/* Hover darkens rather than brightens, and takes the scrim to full strength:
+   the description fades in on hover, so this is the moment the tile needs the
+   MOST contrast, not the least. */
+.industry-tile:hover::before { transform: scale(1.06); filter: brightness(0.6); }
+.industry-tile:hover::after { opacity: 1; }
 .industry-tile:hover .industry-tile__arrow {
   background: var(--color-accent);
   border-color: var(--color-accent);
@@ -177,6 +184,31 @@ body.paper .industries__grid {
   color: rgba(244,241,234,0.86);
   max-width: 28ch;
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Description is hidden at rest and fades in on hover, leaving just the number,
+   arrow and industry name in the default view.
+   Deliberately gated behind a hover-capable, fine pointer: on touch there is no
+   hover state, so collapsing the copy there would simply make it unreachable.
+   Touch devices keep the descriptions permanently visible, as before.
+   max-height rather than display so the reveal can animate; the value is a
+   ceiling well clear of the longest description, not a fixed height. */
+@media (hover: hover) and (pointer: fine) {
+  .industry-tile__desc {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(8px);
+    overflow: hidden;
+    transition: opacity var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out),
+                max-height var(--duration-base) var(--ease-out);
+  }
+  .industry-tile:hover .industry-tile__desc,
+  .industry-tile:focus-visible .industry-tile__desc {
+    opacity: 1;
+    max-height: 14rem;
+    transform: none;
+  }
 }
 
 /* Span variants — feature tile is wide (2 cols × 1 row) so the grid stays

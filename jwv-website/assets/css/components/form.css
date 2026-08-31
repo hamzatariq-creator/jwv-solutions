@@ -3,7 +3,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  max-width: 560px;
+  /* Was 560px, which — inside a 680px wrapper in a 1280px container — left the
+     form marooned in the middle of the row. --container-narrow (880px) is the
+     token the site already uses for wide-but-not-full measures, so it keeps
+     generous margins on either side rather than running to the edges. The
+     wrapper on contact.html is set to the same token. */
+  max-width: var(--container-narrow);
+  width: 100%;
 }
 
 .form-row {
@@ -11,6 +17,10 @@
   flex-direction: column;
   gap: var(--space-2);
 }
+/* .form-row sets `display: flex`, which outranks the user-agent
+   `[hidden] { display: none }` — so without this the conditionally shown row
+   below would never actually hide. */
+.form-row[hidden] { display: none; }
 .form-row--split {
   display: grid;
   grid-template-columns: 1fr 1fr;
