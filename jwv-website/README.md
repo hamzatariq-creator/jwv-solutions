@@ -1,10 +1,9 @@
 # JWV Solutions — Holding Company Website
 
-Static HTML site for JWV Solutions, the parent of three operating businesses:
+Static HTML site for JWV Solutions, the parent of two operating businesses:
 
 - **Altaris Industrial** — industrial liquids and pastes (contract packaging, toll mixing, post-processing, procurement & warehousing)
 - **ARtech Lubricants** — boutique lubricant blender (specialty greases, MIL-SPEC silicones, gear oils)
-- **Michaelson Fluid Power** — hydraulic power units, authorized distribution and authorized repair
 
 ## Tech stack
 

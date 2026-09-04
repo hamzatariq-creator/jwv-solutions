@@ -216,7 +216,14 @@ body.paper .companies-wall__portfolio-heading { color: var(--color-text-ink); }
    tile's <button>, which is invalid. */
 .companies-wall__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Column count follows the number of companies rather than being fixed at
+     three, so the row always comes out even and no empty cell is left behind
+     when a company is added or removed. auto-fit lays out as many 22rem tracks
+     as the container allows (three at full width) and collapses the ones that
+     end up empty, letting the remaining tiles stretch to share the row. The
+     min(100%, ...) guard keeps a single tile from overflowing a container
+     narrower than 22rem. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   gap: 1px;
   background: var(--color-border);
   border: 1px solid var(--color-border);
