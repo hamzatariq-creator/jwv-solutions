@@ -109,7 +109,7 @@ body.paper .partners__heading { color: var(--color-text-ink); }
 }
 
 /* Per-logo height tuning so different aspect ratios all visually balance */
-.partner-logo--parker  img { height: 36px; }
+.partner-logo--parker  img { height: 38px; }
 .partner-logo--eaton   img { height: 38px; }
 .partner-logo--bosch   img { height: 40px; }
 .partner-logo--rexroth img { height: 32px; }

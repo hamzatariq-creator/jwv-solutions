@@ -216,14 +216,20 @@ body.paper .companies-wall__portfolio-heading { color: var(--color-text-ink); }
    tile's <button>, which is invalid. */
 .companies-wall__grid {
   display: grid;
-  /* Column count follows the number of companies rather than being fixed at
-     three, so the row always comes out even and no empty cell is left behind
-     when a company is added or removed. auto-fit lays out as many 22rem tracks
-     as the container allows (three at full width) and collapses the ones that
-     end up empty, letting the remaining tiles stretch to share the row. The
-     min(100%, ...) guard keeps a single tile from overflowing a container
-     narrower than 22rem. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  /* Column count comes from how many company tiles there are, stated outright,
+     rather than from how many tracks happen to fit the container.
+     It has to be explicit. auto-fit was the obvious choice here, but it only
+     collapses tracks that are EMPTY, and the expand-in-place panel below spans
+     `grid-column: 1 / -1`. Spanning a track counts as occupying it, so the
+     spare track came straight back the moment a panel opened — the two tiles
+     shrank to two thirds width and an empty third column appeared beside them.
+     A fixed count behaves identically whether a panel is open or closed.
+     Two companies today. The :has() rule further down raises this to three if
+     a third tile is ever added, and a browser without :has() support simply
+     keeps the two-column base, which is the correct answer for the current
+     content. minmax(0, 1fr) rather than plain 1fr so a long unbroken string
+     inside a tile cannot force a track wider than its share of the row. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   background: var(--color-border);
   border: 1px solid var(--color-border);
@@ -233,6 +239,19 @@ body.paper .companies-wall__portfolio-heading { color: var(--color-text-ink); }
 body.paper .companies-wall__grid {
   background: var(--color-border-ink);
   border-color: var(--color-border-ink);
+}
+
+/* Three or more companies — restore the three-across cap the section was built
+   around. Tiles are the only <article> children of the grid, so nth-of-type
+   counts tiles and ignores the panels sitting between them; an open panel
+   therefore cannot change the answer. Confined to the desktop range on
+   purpose: :has() carries the specificity of its argument, which would
+   otherwise outrank the plain-class breakpoint rules at the bottom of this
+   file and hold three columns onto tablet and phone widths. */
+@media (min-width: 901px) {
+  .companies-wall__grid:has(> .company-tile:nth-of-type(3)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 /* --- Tile face --- */
