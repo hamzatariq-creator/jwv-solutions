@@ -75,14 +75,26 @@ body.paper .quick-contact a { color: var(--color-text-ink); }
   border-bottom-color: var(--color-accent);
 }
 
-/* ===== Hero image crop =====
-   The hero frame is 4/5 on desktop and filled with `cover`, so a 3:2 photo
-   shows only 53% of its width. This one puts a person at each edge, so the
-   crop is centred between the two faces rather than on the image's midpoint,
-   which would have dropped the worker on the right almost entirely.
-   Below 880px the frame becomes 16/10 and the whole width fits, so this has no
-   effect there. Scoped to the Contact page: About and Partnerships share
-   .page-hero__media. */
+/* ===== Hero image frame and crop =====
+   The photo is 1.9:1 with the two people who matter -- the woman with the
+   tablet and the man with the clipboard -- occupying the middle 43% of its
+   width, and two more figures crowding the left edge.
+
+   The shared 4/5 frame shows only 42.2% of a photo this wide, which is
+   narrower than the pair itself: at that ratio one of the two is clipped no
+   matter where the crop sits. A square frame shows 52.7%, which holds both of
+   them with margin to spare and still leaves the left-edge figures outside the
+   crop. Set at every width for the same reason, rather than letting the 16/10
+   mobile frame widen back out and pull those figures in.
+
+   80% puts that window at 0.378..0.905 of the image: the pair (0.418..0.850)
+   sits inside it, and the nearest edge figure ends at 0.375, just outside.
+
+   Scoped to the Contact page -- About and Partnerships share this component
+   and keep the 4/5 portrait frame. */
+body.page-contact .page-hero__media {
+  aspect-ratio: 1 / 1;
+}
 body.page-contact .page-hero__media img {
-  object-position: 67% center;
+  object-position: 80% center;
 }
