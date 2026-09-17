@@ -1,0 +1,178 @@
+/* Hero periodic table — the homepage hero's artwork.
+   Replaces the WebP frame sequence that used to be scrubbed on a <canvas>.
+   Everything here is scoped to .hero-periodic, which only the homepage hero
+   renders, so no other page or section is affected. */
+
+.hero-periodic {
+  position: absolute;
+  inset: 0;
+  /* Same layer the canvas and its fallback used, so the hero text and the data
+     strip (both on --z-hero-text) still sit cleanly above the artwork. */
+  z-index: var(--z-hero-frames);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-inline: var(--container-padding);
+  /* Decorative: never intercept a click meant for the hero buttons. */
+  pointer-events: none;
+  /* Built by JS, so fade in once the tiles exist rather than popping. */
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
+.hero-periodic.is-built { opacity: 1; }
+
+/* Ambient wash behind the table, so it reads as part of the hero's lighting
+   rather than a panel dropped on top of it. */
+.hero-periodic::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  width: 78%;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  background: radial-gradient(
+    circle at center,
+    rgba(96, 156, 226, 0.13) 0%,
+    rgba(70, 120, 190, 0.06) 42%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.hero-periodic__table {
+  position: relative;
+  width: min(58vw, 950px);
+  /* Tile metrics are expressed in cqw below, so the whole table scales from
+     this one width with no breakpoint maths. */
+  container-type: inline-size;
+  /* The left columns pass behind the headline. Rather than clip them away,
+     which would look like missing elements, they fade down to a whisper so the
+     table settles into the background exactly where the text needs the
+     contrast, and comes up to full strength out in the open on the right. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.62) 46%, #000 62%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.62) 46%, #000 62%);
+}
+
+.hero-periodic__grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  /* Rows 1-7 are the periods, row 8 is the gap before the f-block, rows 9-10
+     are the lanthanides and actinides. */
+  grid-template-rows: repeat(7, auto) 0.55fr repeat(2, auto);
+  gap: 0.42cqw;
+}
+
+.hero-periodic__tile {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.15cqw;
+  border-radius: 0.42cqw;
+  background: rgba(244, 241, 234, 0.035);
+  border: 1px solid rgba(244, 241, 234, 0.075);
+  /* Quick to light, slow to fade. A symmetric transition reads mechanical;
+     this gives each element a soft decay, like something cooling. The
+     .is-lit rule below shortens the rise. */
+  transition:
+    background-color 1150ms var(--ease-out),
+    border-color 1150ms var(--ease-out),
+    box-shadow 1150ms var(--ease-out),
+    transform 1150ms var(--ease-out);
+}
+
+.hero-periodic__num {
+  font-family: var(--font-mono);
+  font-size: 1.05cqw;
+  line-height: 1;
+  color: rgba(244, 241, 234, 0.34);
+  font-variant-numeric: tabular-nums;
+  transition: color 1150ms var(--ease-out);
+}
+
+.hero-periodic__sym {
+  font-family: var(--font-sans);
+  font-size: 2cqw;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: rgba(244, 241, 234, 0.66);
+  transition: color 1150ms var(--ease-out), text-shadow 1150ms var(--ease-out);
+}
+
+.hero-periodic__label {
+  grid-column: 1 / span 2;
+  align-self: center;
+  justify-self: end;
+  padding-inline-end: 0.6cqw;
+  font-family: var(--font-sans);
+  font-size: 0.92cqw;
+  letter-spacing: 0.06em;
+  color: rgba(244, 241, 234, 0.3);
+  white-space: nowrap;
+}
+
+/* --- Lit state -------------------------------------------------------- */
+/* Soft blue-white, matching the reference: the tile face lifts, the edge
+   picks up a bright rim, and the glow spreads in two stages so it falls off
+   gradually instead of ending on a hard ring. */
+.hero-periodic__tile.is-lit {
+  background-color: rgba(120, 178, 240, 0.16);
+  border-color: rgba(178, 215, 255, 0.78);
+  box-shadow:
+    0 0 0.9cqw rgba(140, 195, 255, 0.55),
+    0 0 2.4cqw rgba(86, 150, 235, 0.32),
+    inset 0 0 0.9cqw rgba(190, 222, 255, 0.16);
+  transform: scale(1.06);
+  transition-duration: 420ms;
+}
+.hero-periodic__tile.is-lit .hero-periodic__sym {
+  color: #F4F9FF;
+  text-shadow: 0 0 0.7cqw rgba(170, 210, 255, 0.75);
+  transition-duration: 420ms;
+}
+.hero-periodic__tile.is-lit .hero-periodic__num {
+  color: rgba(226, 240, 255, 0.85);
+  transition-duration: 420ms;
+}
+
+/* --- Light theme ------------------------------------------------------ */
+/* The hero is pinned to dark artwork in both themes (the .hero-sticky
+   gradient is fixed), so the table keeps its dark treatment here too. Nothing
+   to restate. */
+
+/* --- Responsive ------------------------------------------------------- */
+
+/* Below the hero's own 880px breakpoint the layout restacks: home.css moves
+   the artwork into a "stage" row above the text. The table stops being a
+   right-hand background and becomes the centred visual for that row, so the
+   left-edge fade is dropped and it spans the full width. */
+@media (max-width: 880px) {
+  .hero-periodic {
+    justify-content: center;
+    align-items: center;
+    padding-block: var(--space-4);
+  }
+  .hero-periodic__table {
+    width: min(100%, 560px);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .hero-periodic::before {
+    right: auto;
+    left: 50%;
+    width: 96%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Very narrow screens: the atomic numbers stop being legible long before the
+   symbols do, so drop them rather than render a row of grey specks. */
+@media (max-width: 560px) {
+  .hero-periodic__num { display: none; }
+  .hero-periodic__sym { font-size: 2.4cqw; }
+  .hero-periodic__label { display: none; }
+}

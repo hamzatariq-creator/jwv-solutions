@@ -320,3 +320,15 @@ body.paper .partnerships-cta__sub { color: var(--color-text-ink-muted); }
   }
   .partnerships-cta__media { aspect-ratio: 16 / 10; }
 }
+
+/* ===== Hero image crop =====
+   The hero frame is a 4/5 portrait (16/10 on mobile) filled with `cover`, so a
+   16/9 photograph only shows about 45% of its width. The couple in this one
+   stands well right of centre, which the default `50% 50%` cut straight
+   through -- the frame came out as empty sea with a pair of legs at the edge.
+   Shifting the crop toward them keeps both figures whole and still leaves the
+   sun and the line of surf in frame to their left. Scoped to this page so the
+   About hero, which shares .page-hero__media, is untouched. */
+body.page-partnerships .page-hero__media img {
+  object-position: 82% center;
+}

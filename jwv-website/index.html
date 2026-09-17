@@ -32,7 +32,6 @@
   <link rel="manifest" href="/manifest.webmanifest">
 
   <!-- Preload first frame so the hero shows instantly -->
-  <link rel="preload" as="image" href="/assets/images/hero-frames/hero-three-streams_0001.webp" fetchpriority="high">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +45,7 @@
   <link rel="stylesheet" href="/assets/css/layout.css">
   <link rel="stylesheet" href="/assets/css/animations.css">
   <link rel="stylesheet" href="/assets/css/components/preloader.css">
+  <link rel="stylesheet" href="/assets/css/components/hero-periodic.css">
   <link rel="stylesheet" href="/assets/css/components/header.css">
   <link rel="stylesheet" href="/assets/css/components/footer.css">
   <link rel="stylesheet" href="/assets/css/components/button.css">
@@ -147,8 +147,10 @@
     <!-- HERO: Pinned scroll-scrub animation. Three streams converge into a polished steel vessel. -->
     <section class="hero-pin-spacer" aria-label="JWV Solutions hero" data-section="Index">
       <div class="hero-sticky">
-        <canvas class="hero-canvas" aria-hidden="true"></canvas>
-        <img class="hero-fallback" src="/assets/images/hero-frames/hero-three-streams_0001.webp" alt="Three industrial fluid streams converging into a polished steel vessel — representing JWV Solutions and its operating companies" decoding="async" fetchpriority="high">
+        <!-- Hero artwork: a periodic table whose elements light at random,
+             built and driven by hero-periodic.js. Decorative, so hidden from
+             assistive tech; the hero headline carries the meaning. -->
+        <div class="hero-periodic" aria-hidden="true"></div>
 
         <div class="hero-content">
           <div class="hero-grid">
@@ -198,8 +200,8 @@
             <div class="by-numbers__stat">
               <span class="by-numbers__index">002</span>
               <div class="by-numbers__row"><span class="stats-band__value" data-target="9">0</span><span class="by-numbers__suffix">+</span></div>
-              <span class="by-numbers__label">Sectors served</span>
-              <p class="by-numbers__desc">Aerospace · Defense · Marine · Medical · Automotive · Rail · Mining · Industrial.</p>
+              <span class="by-numbers__label">Sectors Served</span>
+              <p class="by-numbers__desc">Electronics &amp; Semiconductor · Aerospace &amp; Defense · Automotive &amp; Electrification · Industrial Manufacturing · Energy &amp; Power Generation · Transportation &amp; Rail · Heavy Equipment &amp; Off-Highway · Mining, Oil &amp; Gas · Medical &amp; Advanced Technology</p>
             </div>
             <div class="by-numbers__stat">
               <span class="by-numbers__index">003</span>
@@ -209,9 +211,9 @@
             </div>
             <div class="by-numbers__stat">
               <span class="by-numbers__index">004</span>
-              <div class="by-numbers__row"><span class="stats-band__value" data-target="4">0</span></div>
-              <span class="by-numbers__label">Authorized OEM lines</span>
-              <p class="by-numbers__desc">Parker · Eaton · Denison · Monarch — genuine parts and factory-certified rebuilds.</p>
+              <div class="by-numbers__row"><span class="stats-band__value" data-target="9">0</span><span class="by-numbers__suffix">+</span></div>
+              <span class="by-numbers__label">Chemistries &amp; Materials We Work With</span>
+              <p class="by-numbers__desc">Silicones · Epoxies · Urethanes · Acrylics · Lubricants &amp; Greases · Thermal Materials · Soldering Materials · Protective Coatings · Specialty Filled Compounds</p>
             </div>
             <div class="by-numbers__stat">
               <span class="by-numbers__index">005</span>
@@ -262,7 +264,7 @@
                   <span class="company-tile__name">Altaris Industrial</span>
                 </button>
               </h3>
-              <p class="company-tile__tagline">Industrial liquids and pastes — packaged with precision, shipped at scale.</p>
+              <p class="company-tile__tagline">Contract manufacturing and packaging of specialty and advanced materials for electronics, battery, aerospace, automotive and medical devices.</p>
               <span class="company-tile__hint">North Smithfield, RI</span>
             </article>
 
@@ -272,7 +274,7 @@
               <div class="company-tile__panel-inner">
                 <div class="company-tile__panel-body">
                   <div>
-                    <p class="company-tile__desc">Contract packaging, toll mixing, post-processing, and procurement &amp; warehousing for adhesives, epoxies, lubricants, sealants, and thermal interface materials. Altaris serves industrial OEMs and material brands needing precision filling, blending, and supply-chain support.</p>
+                    <p class="company-tile__desc">Altaris Industrial is focused on the manufacturing and commercialization of specialty and advanced materials, providing the technical processing, packaging, and production capabilities needed to bring complex formulations to market efficiently and reliably.</p>
                     <ul class="company-tile__highlights">
                       <li>1K and 2K dispensing formats</li>
                       <li>Batch sizes from 3ml to 5 gallons</li>
@@ -291,7 +293,15 @@
                       </div>
                       <div class="company-tile__fact">
                         <dt class="company-tile__fact-label">Industries</dt>
-                        <dd class="company-tile__fact-value">Aerospace · Defense · Medical · Industrial</dd>
+                        <dd class="company-tile__fact-value">
+                          <ul class="company-tile__fact-list">
+                            <li>Electronics &amp; Semiconductor</li>
+                            <li>Battery &amp; Energy Storage</li>
+                            <li>Aerospace &amp; Defense</li>
+                            <li>Automotive &amp; E-Mobility</li>
+                            <li>Medical Devices &amp; Advanced Manufacturing</li>
+                          </ul>
+                        </dd>
                       </div>
                     </dl>
                     <a class="btn btn--ghost company-tile__cta" href="https://altarisindustrial.com" rel="noopener">Visit altarisindustrial.com →</a>
@@ -312,8 +322,8 @@
                   <span class="company-tile__name">ARtech Lubricants</span>
                 </button>
               </h3>
-              <p class="company-tile__tagline">A boutique blender of specialty greases, silicones, and gear oils.</p>
-              <span class="company-tile__hint">Bethel, CT</span>
+              <p class="company-tile__tagline">Specialty lubricants and industrial performance materials engineered for demanding machinery, transportation, heavy equipment and energy applications.</p>
+              <span class="company-tile__hint">Smithfield, RI</span>
             </article>
 
             <div class="company-tile__panel" id="company-panel-artech" role="region"
@@ -322,7 +332,7 @@
               <div class="company-tile__panel-inner">
                 <div class="company-tile__panel-body">
                   <div>
-                    <p class="company-tile__desc">A family-run contract blender of high-performance industrial lubricants. ARtech serves steel mills, mining, rail, defense, and aerospace customers with MIL-SPEC silicones, AGMA gear oils, and specialty greases — including custom formulations to exacting customer standards.</p>
+                    <p class="company-tile__desc">ARtech Lubricants is focused on specialty lubrication and performance materials, combining established formulations, application expertise, and flexible manufacturing capabilities to support demanding industrial and OEM requirements.</p>
                     <ul class="company-tile__highlights">
                       <li>MIL-SPEC and NSN-cataloged products</li>
                       <li>Specialty greases, silicones, and gear oils</li>
@@ -337,11 +347,19 @@
                       </div>
                       <div class="company-tile__fact">
                         <dt class="company-tile__fact-label">Location</dt>
-                        <dd class="company-tile__fact-value">Bethel, CT</dd>
+                        <dd class="company-tile__fact-value">Smithfield, RI</dd>
                       </div>
                       <div class="company-tile__fact">
                         <dt class="company-tile__fact-label">Industries</dt>
-                        <dd class="company-tile__fact-value">Steel · Mining · Rail · Defense · Aerospace</dd>
+                        <dd class="company-tile__fact-value">
+                          <ul class="company-tile__fact-list">
+                            <li>Industrial Machinery &amp; Equipment</li>
+                            <li>Power Transmission &amp; Gear Systems</li>
+                            <li>Rail &amp; Transportation</li>
+                            <li>Mining, Construction &amp; Heavy Equipment</li>
+                            <li>Energy, Oil &amp; Gas</li>
+                          </ul>
+                        </dd>
                       </div>
                     </dl>
                     <a class="btn btn--ghost company-tile__cta" href="https://artechlubricants.com" rel="noopener">Visit artechlubricants.com →</a>
@@ -614,14 +632,14 @@
               <span class="industry-tile__desc">Thermal management materials, specialty lubricants, adhesives, and manufacturing services supporting conventional and electric vehicle applications.</span>
             </a>
 
-            <a class="industry-tile industry-tile--feature industry-tile--featured" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/refinery.jpg');">
+            <a class="industry-tile industry-tile--feature industry-tile--featured" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/wind-turbine.jpg');">
               <span class="industry-tile__num">004 · Featured sector</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Energy &amp; Industrial<span class="dot">.</span></span>
               <span class="industry-tile__desc">Hydraulic systems, specialty lubricants, and contract manufacturing supporting critical industrial equipment, infrastructure, and process operations.</span>
             </a>
 
-            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/defense-helicopter.jpg');">
+            <a class="industry-tile" data-cursor="Enquire" href="/contact.html" style="--img: url('/assets/images/industries/defense-carrier.jpg');">
               <span class="industry-tile__num">005</span>
               <span class="industry-tile__arrow" aria-hidden="true">→</span>
               <span class="industry-tile__name">Defense<span class="dot">.</span></span>

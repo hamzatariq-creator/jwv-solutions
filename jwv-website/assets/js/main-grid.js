@@ -6,7 +6,7 @@
  * module is imported from the same shared source — nothing is forked. */
 import { initNav } from './nav.js';
 import { initReveal } from './reveal.js';
-import { initHeroScrub } from './hero-animation.js';
+import { initHeroPeriodic } from './hero-periodic.js';
 import { initForms } from './form.js';
 import { initCookieBanner } from './cookie-banner.js';
 import { initSmoothScroll } from './smooth-scroll.js';
@@ -35,6 +35,11 @@ initCounter();
 // skips the canvas scrub internally when motion is reduced.
 initCompaniesWall();
 
+// Hero artwork. Outside the reduced-motion gate below on purpose: this is the
+// hero's visual, not an embellishment, so it always renders. The module itself
+// drops the random cycling and holds a few elements lit when motion is reduced.
+initHeroPeriodic();
+
 // Hero entrance — fade in on load
 window.addEventListener('load', () => {
   document.body.classList.add('hero-loaded');
@@ -58,5 +63,4 @@ if (header) {
 // Motion-heavy modules — only on homepage and only when not reduced
 if (document.body.classList.contains('page-home') && !prefersReducedMotion) {
   initSmoothScroll();
-  initHeroScrub();
 }

@@ -11,20 +11,16 @@
   background: #0E1014;
 }
 
-/* Pinned scroll-scrub container — 250vh on desktop gives the scrub room to
-   breathe. On small screens we shorten to 150vh so the scrub plays out (~half
-   a viewport of scroll past the hero) without trapping the user for 2.5
-   viewports. With prefers-reduced-motion, the scrub doesn't run at all, so
-   collapse to one viewport so content is reachable immediately. */
+/* Hero container height. This was 250vh (150vh on small screens) purely to
+   give the old frame-by-frame scroll-scrub room to play out: the taller the
+   spacer, the longer the sticky hero stayed pinned and the more scroll the
+   scrub had to work with. The periodic table animates on its own clock rather
+   than off scroll position, so that headroom would now be 1.5 extra viewports
+   of scrolling past a hero that never changes. One viewport is the honest
+   height, and it matches what reduced-motion already collapsed to. */
 .hero-pin-spacer {
-  height: 250vh;
+  height: 100vh;
   position: relative;
-}
-@media (max-width: 880px) {
-  .hero-pin-spacer { height: 150vh; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-pin-spacer { height: 100vh; }
 }
 
 .hero-sticky {
@@ -207,8 +203,7 @@
   }
 
   /* Animation slot — fills the row above the text */
-  .hero-canvas,
-  .hero-fallback {
+  .hero-periodic {
     grid-area: stage;
     position: relative;
     inset: auto;
@@ -216,7 +211,6 @@
     height: 100%;
     min-height: 0;
   }
-  .hero-fallback { object-fit: cover; }
 
   /* Text slot — sits below the animation, sized to its content */
   .hero-content {
