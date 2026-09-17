@@ -408,7 +408,10 @@ body.page-grid .site-nav__link {
    ============================================================ */
 
 body.page-grid .hero-grid { grid-template-columns: minmax(0, 1fr); }
-body.page-grid .hero-text { max-width: min(100%, 880px); }
+/* Narrower than the old 880px. The hero text and the periodic table share
+   the full width of the hero, so pulling the text in is what creates room for
+   the table to sit closer without the two colliding. */
+body.page-grid .hero-text { max-width: min(100%, 720px); }
 
 body.page-grid .hero-eyebrow {
   font-family: var(--font-mono);
@@ -431,7 +434,10 @@ body.page-grid .hero-eyebrow::before {
 @keyframes rule-draw { to { transform: scaleX(1); } }
 
 body.page-grid .hero-headline {
-  font-size: clamp(2.75rem, 6.6vw, 6.4rem);
+  /* Eased down roughly 18% from clamp(2.75rem, 6.6vw, 6.4rem). The fluid middle
+     value does most of the work: at common desktop widths this is what sets the
+     size, so trimming 6.6vw to 5.4vw is the change that actually lands. */
+  font-size: clamp(2.1rem, 4.8vw, 4.7rem);
   line-height: 0.94;
   letter-spacing: -0.038em;
   font-weight: 400;
@@ -441,10 +447,36 @@ body.page-grid .hero-headline em {
   font-weight: 300;
   color: var(--color-accent);
 }
+
+/* ===== "Industrial Future" =====
+   A static warm-gold lift on the italic. No animation, no registered custom
+   properties, no pseudo-element behind the text - just two text-shadows, so
+   there is nothing that can render as a rectangle or a background patch. */
+body.page-grid .hero-headline em,
+body.page-grid .hero-headline em .kw__i {
+  /* Applied to the .kw__i spans as well as the em: data-kinetic rewraps the
+     words at runtime, and those spans are the elements that actually paint the
+     glyphs. Static, no animation. */
+  text-shadow:
+    0 0 2px rgba(255, 196, 92, 0.75),
+    0 0 6px rgba(210, 150, 60, 0.35);
+}
+
 body.page-grid .hero-sub {
-  font-size: clamp(1rem, 1.35vw, 1.2rem);
-  line-height: 1.55;
-  max-width: 48ch;
+  font-size: clamp(0.9rem, 1.02vw, 1rem);
+  /* A touch more leading to keep the smaller copy comfortable to read. */
+  line-height: 1.62;
+  max-width: 46ch;
+}
+
+/* Hero CTAs come down with the rest of the block so the proportions hold.
+   Scoped to the hero: the same .btn is used at full size everywhere else. */
+body.page-grid .hero-cta .btn {
+  padding: 0.66rem 1.2rem;
+  font-size: 0.78125rem;
+}
+body.page-grid .hero-cta .link-arrow {
+  font-size: 0.78125rem;
 }
 
 /* Engineered data strip along the base of the hero */

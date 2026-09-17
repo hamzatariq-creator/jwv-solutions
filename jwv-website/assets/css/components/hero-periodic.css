@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-inline: var(--container-padding);
+  padding-right: var(--container-padding);
   /* Decorative: never intercept a click meant for the hero buttons. */
   pointer-events: none;
   /* Built by JS, so fade in once the tiles exist rather than popping. */
@@ -21,37 +21,53 @@
 }
 .hero-periodic.is-built { opacity: 1; }
 
-/* Ambient wash behind the table, so it reads as part of the hero's lighting
-   rather than a panel dropped on top of it. */
+/* Ambient navy wash: the depth behind the hero, lifting the table off the flat
+   background and bleeding left so the copy sits in the same pool of light
+   rather than on bare black.
+
+   Re-centred on the table. It used to sit about 90px to its left, a holdover
+   from when the table was wider and reached further across the hero; with the
+   table now in the right half the wash was pooling in empty space. The circle
+   runs past the right edge on purpose - only its inner half is wanted, and
+   .hero-sticky clips the rest. */
 .hero-periodic::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: -6%;
-  width: 78%;
+  right: -12%;
+  width: 76%;
   aspect-ratio: 1;
   transform: translateY(-50%);
   background: radial-gradient(
     circle at center,
-    rgba(96, 156, 226, 0.13) 0%,
-    rgba(70, 120, 190, 0.06) 42%,
+    rgba(96, 156, 226, 0.17) 0%,
+    rgba(70, 120, 190, 0.08) 42%,
     transparent 70%
   );
   pointer-events: none;
 }
 
+/* Right-side frame. A real wrapper: fixed share of the hero, inset from the
+   viewport edge, with overflow hidden so nothing can escape it. The table is
+   centred inside. Kept separate from .hero-periodic so the ambient wash on that
+   element stays full-width and unclipped. */
+.hero-periodic__frame {
+  width: min(51%, 820px);
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .hero-periodic__table {
   position: relative;
-  width: min(58vw, 950px);
+  /* Never wider than the frame, so it cannot overflow or reach the viewport
+     edge; the frame's own inset keeps it clear of both the text and the right
+     rail. */
+  width: 100%;
   /* Tile metrics are expressed in cqw below, so the whole table scales from
      this one width with no breakpoint maths. */
   container-type: inline-size;
-  /* The left columns pass behind the headline. Rather than clip them away,
-     which would look like missing elements, they fade down to a whisper so the
-     table settles into the background exactly where the text needs the
-     contrast, and comes up to full strength out in the open on the right. */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.62) 46%, #000 62%);
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.62) 46%, #000 62%);
 }
 
 .hero-periodic__grid {
@@ -154,12 +170,13 @@
   .hero-periodic {
     justify-content: center;
     align-items: center;
+    padding-inline: var(--container-padding);
     padding-block: var(--space-4);
   }
-  .hero-periodic__table {
-    width: min(100%, 560px);
-    -webkit-mask-image: none;
-    mask-image: none;
+  /* Stacked layout: the frame gets the full column, not a right-hand share. */
+  .hero-periodic__frame {
+    width: 100%;
+    max-width: 560px;
   }
   .hero-periodic::before {
     right: auto;

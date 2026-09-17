@@ -96,7 +96,13 @@ function buildTable(mount) {
   });
 
   table.appendChild(grid);
-  mount.appendChild(table);
+
+  /* Right-side frame: clips and centres the table. Kept as its own element so
+     the wash on .hero-periodic stays full-width and unclipped. */
+  const frame = document.createElement("div");
+  frame.className = "hero-periodic__frame";
+  frame.appendChild(table);
+  mount.appendChild(frame);
   return tiles;
 }
 
