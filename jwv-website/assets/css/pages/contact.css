@@ -74,3 +74,15 @@ body.paper .quick-contact a { color: var(--color-text-ink); }
   color: var(--color-accent);
   border-bottom-color: var(--color-accent);
 }
+
+/* ===== Hero image crop =====
+   The hero frame is 4/5 on desktop and filled with `cover`, so a 3:2 photo
+   shows only 53% of its width. This one puts a person at each edge, so the
+   crop is centred between the two faces rather than on the image's midpoint,
+   which would have dropped the worker on the right almost entirely.
+   Below 880px the frame becomes 16/10 and the whole width fits, so this has no
+   effect there. Scoped to the Contact page: About and Partnerships share
+   .page-hero__media. */
+body.page-contact .page-hero__media img {
+  object-position: 67% center;
+}
