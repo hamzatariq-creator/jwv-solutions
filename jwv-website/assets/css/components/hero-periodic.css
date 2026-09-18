@@ -9,10 +9,18 @@
   /* Same layer the canvas and its fallback used, so the hero text and the data
      strip (both on --z-hero-text) still sit cleanly above the artwork. */
   z-index: var(--z-hero-frames);
+  /* Same centred container as .hero-content: left/right 0 plus a max-width and
+     auto side margins centres an absolutely positioned box. Without this the
+     table was laid out against the viewport while the copy was laid out against
+     the 1280 container, so on wide screens the two drifted apart and the outer
+     margins came out lopsided. Sharing the container keeps the left and right
+     gutters equal at any width. */
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: var(--container-padding);
   /* Decorative: never intercept a click meant for the hero buttons. */
   pointer-events: none;
   /* Built by JS, so fade in once the tiles exist rather than popping. */
