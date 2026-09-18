@@ -448,20 +448,6 @@ body.page-grid .hero-headline em {
   color: var(--color-accent);
 }
 
-/* ===== "Industrial Future" =====
-   A static warm-gold lift on the italic. No animation, no registered custom
-   properties, no pseudo-element behind the text - just two text-shadows, so
-   there is nothing that can render as a rectangle or a background patch. */
-body.page-grid .hero-headline em,
-body.page-grid .hero-headline em .kw__i {
-  /* Applied to the .kw__i spans as well as the em: data-kinetic rewraps the
-     words at runtime, and those spans are the elements that actually paint the
-     glyphs. Static, no animation. */
-  text-shadow:
-    0 0 2px rgba(255, 196, 92, 0.75),
-    0 0 6px rgba(210, 150, 60, 0.35);
-}
-
 body.page-grid .hero-sub {
   font-size: clamp(0.9rem, 1.02vw, 1rem);
   /* A touch more leading to keep the smaller copy comfortable to read. */
